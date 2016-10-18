@@ -43,10 +43,12 @@ class BaseParser(object):
         self.raw = bytearray()
         self.packet_count += 1
 
-        self.key = BaseValue(self.read(self.size))
+        self.key = self.read(self.size)
 
+        # TODO: Set length as the original bytes
         self.length = struct.unpack('>B', self.read(1))[0]
 
+        # TODO: Use method to convert self.length from BER bytes to int length
         if self.length > 127:
             self.length = int.from_bytes(self.read(self.length & 0x7F), 'big')
 
@@ -65,35 +67,15 @@ class BaseParser(object):
 
         return data
 
-class BaseValue:
-    def __init__(self, value):
-        # @TODO Is key being stored as bytes or int?
-        self.value = value
-
-    def __str__(self):
-        return pretty_print(self.value)
-
-    def __int__(self):
-        # @TODO does it make more sense to use CRC for UL?
-        return bytes2int(self.value)
-
-    def __bytes__(self):
-        # @TODO Is key being stored as bytes or int? No gurantee you are 
-        #   going to get what you intended ATM.
-        return self.value
-
 class BaseElement:
     def __init__(self, item):
-        # @TODO make KEY class so __bytes__ and __int__ method. int(key) bytes(key)
-        self.key = BaseValue(item.key)
+        self.key = bytes2int(item.key)
         self.length = item.length
         self.value = item.value
 
-    def __str__(self):
-        return 'key={}, length={}, value={}'.format(int(self.key), self.length, self.value)
-
 class LSPrecisionTimeStamp(BaseElement):
-    pass
+    def __str__(self):
+        return "test"
 
 ST0601_tags = dict()
 ST0601_tags[2] = LSPrecisionTimeStamp
@@ -101,16 +83,11 @@ ST0601_tags[2] = LSPrecisionTimeStamp
 class BasePacket(BaseElement):
     def __init__(self, item):
         BaseElement.__init__(self, item)
-        # self.value = {item.key: BaseElement(item) for item in BaseParser(self.value, 1)}
         self.parse_elements()
         self.parse_nested_elements()
 
-        self.validate_packet()
-
     def parse_elements(self):
-        # @TODO move key to int conversion to method
-        # self.elements = {int(item.key): ST0601_tags.get(int(item.key),BaseElement)(item) for item in BaseParser(self.value, 1)}
-        self.elements = OrderedDict((int(item.key), ST0601_tags.get(int(item.key), BaseElement)(item)) for item in BaseParser(self.value, 1))
+        self.elements = OrderedDict((bytes2int(item.key), ST0601_tags.get(bytes2int(item.key), BaseElement)(item)) for item in BaseParser(self.value, 1))
 
     def parse_nested_elements(self):
         # Add recognized element for security metadata
@@ -120,43 +97,11 @@ class BasePacket(BaseElement):
         if 48 in self.elements:
             self.elements[48].elements = OrderedDict((item.key, BaseElement(item)) for item in BaseParser(self.elements[48].value, 1))
 
-    def validate_packet(self):
-        pass
-
-    def print_tags(self):
-        for key, value in self.elements.items():
-            print(value)
-
-
 class TestParser(BaseParser):
     def __next__(self):
         self.parse()
 
         return BasePacket(self)
-
-class PacketStream(BaseParser):
-    def __init__(self, source):
-        Parser.__init__(self, source, size=16)
-
-    def __next__(self):
-        Parser.__next__(self)
-
-        # ST 0601.8 - 11 All instances of the UAS Datalink LS shall contain
-        #     as the final element Tag 1, (Checksum).
-        if self.value[-4:-2] != b'\x01\x02':
-            warnings.warn("Checksum not final element tag", UserWarning)
-
-        # ST 0601.8 - 08 All instances of a UAS Datalink LS where the computed
-        #    checksum is not identical to the included checksum shall be discarded.
-
-        if self.value[-2:] != calc_checksum(self.raw):
-            warnings.warn("Invalid Checksum", UserWarning)
-
-        return self
-
-class LSParser():
-    def __init__(self, source):
-        Parser.__init__(self, source, size=1)
 
 def pretty_print(value):
     return " ".join(["{:02X}".format(byte) for byte in value])
@@ -181,9 +126,4 @@ def calc_checksum(data):
         words += data[length-1] << 8
 
     return struct.pack('>H', words & 0xFFFF)
-
-
-def int_key(packet):
-    return int.from_bytes(packet.key, 'big')
-
 
