@@ -89,6 +89,9 @@ class BaseElement:
         self.length = item.length
         self.value = item.value
 
+    def __str__(self):
+        return 'key={}, length={}, value={}'.format(int(self.key), self.length, self.value)
+
 class LSPrecisionTimeStamp(BaseElement):
     pass
 
@@ -102,9 +105,12 @@ class BasePacket(BaseElement):
         self.parse_elements()
         self.parse_nested_elements()
 
+        self.validate_packet()
+
     def parse_elements(self):
         # @TODO move key to int conversion to method
-        self.elements = OrderedDict({int(item.key): ST0601_tags.get(int(item.key),BaseElement)(item) for item in BaseParser(self.value, 1)})
+        # self.elements = {int(item.key): ST0601_tags.get(int(item.key),BaseElement)(item) for item in BaseParser(self.value, 1)}
+        self.elements = OrderedDict((int(item.key), ST0601_tags.get(int(item.key), BaseElement)(item)) for item in BaseParser(self.value, 1))
 
     def parse_nested_elements(self):
         # Add recognized element for security metadata
@@ -113,6 +119,14 @@ class BasePacket(BaseElement):
         # @TODO Clean up code...
         if 48 in self.elements:
             self.elements[48].elements = OrderedDict((item.key, BaseElement(item)) for item in BaseParser(self.elements[48].value, 1))
+
+    def validate_packet(self):
+        pass
+
+    def print_tags(self):
+        for key, value in self.elements.items():
+            print(value)
+
 
 class TestParser(BaseParser):
     def __next__(self):
