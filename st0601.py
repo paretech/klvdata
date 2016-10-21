@@ -180,7 +180,7 @@ class LSSensorTrueAltitude(klvcms.BaseElement):
         # @TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value) - offset
 
-# MISB ST0601 Tag 15
+# MISB ST0601 Tag 16
 class LSSensorHorizonalFieldOfView(klvcms.BaseElement):
     """Form a MISB ST0601 Sensor Horizontal Field of View Parser"""
     def parser(self, item):
@@ -189,6 +189,49 @@ class LSSensorHorizonalFieldOfView(klvcms.BaseElement):
         self.units = 'degrees'
         min_value = 0
         max_value = 180
+
+
+        # @TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value)
+
+# MISB ST0601 Tag 16
+class LSSensorHorizontalFieldOfView(klvcms.BaseElement):
+    """Form a MISB ST0601 Sensor Horizontal Field of View Parser"""
+    def parser(self, item):
+        self.name = "Horizontal Field of View"
+
+        self.units = 'degrees'
+        min_value = 0
+        max_value = 180
+
+
+        # @TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value)
+
+# MISB ST0601 Tag 17
+class LSSensorVerticalFieldOfView(klvcms.BaseElement):
+    """Form a MISB ST0601 Sensor Vertical Field of View Parser"""
+    def parser(self, item):
+        self.name = "Vertical Field of View"
+
+        self.units = 'degrees'
+        min_value = 0
+        max_value = 180
+
+
+        # @TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value)
+
+
+# MISB ST0601 Tag 18
+class LSSensorRelativeAzimuthAngle(klvcms.BaseElement):
+    """Sensor Relative Azimuth Angle Conversion"""
+    def parser(self, item):
+        self.name = "Sensor Relative Azimuth Angle"
+
+        self.units = 'degrees'
+        min_value = 0
+        max_value = 360
 
 
         # @TODO: Implement "error" indicator
@@ -211,6 +254,9 @@ ST0601_tags[12] = LSImageCoordinateSystem
 ST0601_tags[13] = LSSensorLatitude
 ST0601_tags[14] = LSSensorLongitude
 ST0601_tags[15] = LSSensorTrueAltitude
+ST0601_tags[16] = LSSensorHorizontalFieldOfView
+ST0601_tags[17] = LSSensorVerticalFieldOfView
+ST0601_tags[18] = LSSensorRelativeAzimuthAngle
 
 class TestParser(klvcms.BaseParser):
     def __next__(self):
