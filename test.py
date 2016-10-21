@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 
-import klvcms
+import st0601
 import pdb
+import sys
 from pprint import pprint
+from datetime import datetime
 
 if __name__ == '__main__':
-    with open('DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-        for packet in klvcms.TestParser(f, 16):
-            packet.print_tags()
+    if len(sys.argv) > 1:
+        f = sys.argv[1]
+    else:
+        f = 'DynamicConstantMISMMSPacketData.bin'
 
-
+    with open(f, 'rb') as f:
+        for packet in st0601.TestParser(f, 16):
+            for tag, value in packet.get_items():
+                print(value)

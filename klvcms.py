@@ -4,13 +4,13 @@ import sys
 import struct
 import pdb
 import io
-from datetime import datetime
 import time
 import warnings
 
-from collections import OrderedDict, defaultdict
+from datetime import datetime
 from pprint import pprint
 
+# TODO: Keep as iter but return more useful object...
 class BaseParser(object):
 
     """Base class for parsing Key Length Value (KLV) structured binary data.
@@ -37,6 +37,7 @@ class BaseParser(object):
     def __next__(self):
         self.parse()
 
+        # TODO: How about you return a BaseElement?
         return self
 
     def parse(self):
@@ -46,6 +47,9 @@ class BaseParser(object):
         self.key = self.read(self.size)
 
         # TODO: Set length as the original bytes
+        # TODO: Turns out for debugging it is good not to over write this value
+        #       never know when you need to know how many bytes are about to be
+        #       read...
         self.length = struct.unpack('>B', self.read(1))[0]
 
         # TODO: Use method to convert self.length from BER bytes to int length
@@ -69,47 +73,41 @@ class BaseParser(object):
 
 class BaseElement:
     def __init__(self, item):
-        self.key = bytes2int(item.key)
+        self.key = self._bytes_to_int(item.key)
         self.length = item.length
-        self.value = item.value
+        self.value = self.parser(item)
 
-class LSPrecisionTimeStamp(BaseElement):
+
+    def parser(self, item):
+        self.name = 'Unknown Tag Name'
+
+        self.unit = ''
+
+        return item.value
+
+    def _scale_value(self, min_value, max_value, value, signed=False):
+        value_range = max_value - min_value
+
+        int_range = 2**(len(value) * 8) - 1
+
+        return value_range/int_range * self._bytes_to_int(value, signed)
+
+    def _bytes_to_int(self, value, signed=False):
+        return int.from_bytes(value, byteorder='big', signed=signed)
+
+    def _bytes_to_str(self, value):
+        return value.decode('UTF-8')
+
     def __str__(self):
-        return "test"
+        return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self.value)
 
-ST0601_tags = dict()
-ST0601_tags[2] = LSPrecisionTimeStamp
 
-class BasePacket(BaseElement):
-    def __init__(self, item):
-        BaseElement.__init__(self, item)
-        self.parse_elements()
-        self.parse_nested_elements()
 
-    def parse_elements(self):
-        self.elements = OrderedDict((bytes2int(item.key), ST0601_tags.get(bytes2int(item.key), BaseElement)(item)) for item in BaseParser(self.value, 1))
 
-    def parse_nested_elements(self):
-        # Add recognized element for security metadata
-        # @TODO Move to MISB ST0601 parser. Does not belong in base
-        # @TODO Handle key error
-        # @TODO Clean up code...
-        if 48 in self.elements:
-            self.elements[48].elements = OrderedDict((item.key, BaseElement(item)) for item in BaseParser(self.elements[48].value, 1))
-
-class TestParser(BaseParser):
-    def __next__(self):
-        self.parse()
-
-        return BasePacket(self)
-
-def pretty_print(value):
-    return " ".join(["{:02X}".format(byte) for byte in value])
-
-def bytes2int(value):
-    # @TODO Make BYTEORDER a constant
-    # @TODO Make SIGNED a constant
-    return int.from_bytes(value, byteorder='big', signed=False)
+# def bytes2int(value, signed=False):
+#     # @TODO Make BYTEORDER a constant
+#     # @TODO Make SIGNED a constant
+#     return int.from_bytes(value, byteorder='big', signed=signed)
 
 def int2bytes(value, length):
     # @TODO Make BYTEORDER a constant
