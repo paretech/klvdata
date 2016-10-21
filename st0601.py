@@ -9,13 +9,9 @@ from datetime import datetime
 # MISB ST0601 Tag #1
 class LSChecksum(klvcms.BaseElement):
     """MISB ST0601 Checksum Parser"""
-
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = 'Checksum'
 
-    def parser(self, item):
         return item.value
 
     def __str__(self):
@@ -24,79 +20,61 @@ class LSChecksum(klvcms.BaseElement):
 # MISB ST0601 Tag #2
 class LSPrecisionTimeStamp(klvcms.BaseElement):
     """Form a MISB 0601.9 Tag=2 Precision Time Stamp Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = 'Precision Time Stamp'
 
-    def parser(self, item):
         return datetime.utcfromtimestamp(self._bytes_to_int(item.value)*1e-6)
 
 # MISB ST0601 Tag #3
 class LSMissionID(klvcms.BaseElement):
     """Form a MISB 0601.9 Tag=3 Mission ID Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = 'Mission ID'
 
-    def parser(self, item):
         return self._bytes_to_str(item.value)
 
 # MISB ST0601 Tag #4
 class LSPlatformTailNumber(klvcms.BaseElement):
     """Form a MISB 0601 Platform Tail Number Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = "Platform Tail Number"
 
-    def parser(self, item):
         return self._bytes_to_str(item.value)
 
 # MISB ST0601 Tag #5
 class LSPlatformHeadingAngle(klvcms.BaseElement):
     """Form a MIST ST0601 Platform heading Angle Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = "Platform Heading Angle"
 
-    def parser(self, item):
-        min_angle = 0 #degrees
-        max_angle = 360 #degrees
+        min_value = 0 #degrees
+        max_value = 360 #degrees
 
-        return self._scale_value(min_angle, max_angle, item.value, signed=True)
+        return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MIST ST0601 Tag #6
 class LSPlatformPitchAngle(klvcms.BaseElement):
     """Form a MISB ST0601 Platform Pitch Angle Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = "Platform Pitch Angle"
 
-    def parser(self, item):
-        min_angle = -20 #degrees
-        max_angle = +20 #degrees
+        min_value = -20 #degrees
+        max_value = +20 #degrees
 
         # TODO: Add "out of range" indicator
-        return self._scale_value(min_angle, max_angle, item.value, signed=True)
+        return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MISB ST0601 Tag #7
 class LSPlatformRollAngle(klvcms.BaseElement):
     """Form a MISB ST0601 Platform Roll Angle Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = "Platform Roll Angle"
 
-    def parser(self, item):
-        min_angle = -50 #degrees
-        max_angle = +50 #degrees
+        min_value = -50 #degrees
+        max_value = +50 #degrees
 
         # TODO: Add "out of range" indicator
-        return self._scale_value(min_angle, max_angle, item.value, signed=True)
+        return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MISB ST0601 Tag 8
 
@@ -105,12 +83,9 @@ class LSPlatformRollAngle(klvcms.BaseElement):
 # MISB ST0601 Tag 10
 class LSPlatformDesignation(klvcms.BaseElement):
     """Form a MISB ST0601 Platform Designation LS Tag Parser"""
-    def __init__(self, item):
-        super().__init__(item)
-
+    def parser(self, item):
         self.name = "Platform Designation"
 
-    def parser(self, item):
         return self._bytes_to_str(item.value)
 
 # MISB ST0601 Tag 11
@@ -144,11 +119,11 @@ class LSSensorLatitude(klvcms.BaseElement):
         self.name = "Sensor Latitude"
 
     def parser(self, item):
-        min_degrees = -90
-        max_degrees = +90
+        min_value = -90
+        max_value = +90
 
         # @TODO: Implement "error" indicator
-        return self._scale_value(min_degrees, max_degrees, item.value, signed=True)
+        return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MISB ST0601 Tag 14
 class LSSensorLongitude(klvcms.BaseElement):
@@ -156,14 +131,17 @@ class LSSensorLongitude(klvcms.BaseElement):
     def __init__(self, item):
         super().__init__(item)
 
-        self.name = "Sensor Longitude"
 
     def parser(self, item):
-        min_degrees = -180
-        max_degrees = +180
+        self.name = "Sensor Longitude"
+
+        self.unites = 'degrees'
+
+        min_value = -180
+        max_value = +180
 
         # @TODO: Implement "error" indicator
-        return self._scale_value(min_degrees, max_degrees, item.value, signed=True)
+        return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MISB ST0601 Tag 15
 class LSSensorTrueAltitude(klvcms.BaseElement):
