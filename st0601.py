@@ -8,7 +8,7 @@ from datetime import datetime
 
 # MISB ST0601 Tag #1
 class LSChecksum(klvcms.BaseElement):
-    """MISB ST0601 Checksum Parser"""
+    """Checksum Conversion"""
     def parser(self, item):
         self.name = 'Checksum'
 
@@ -19,7 +19,7 @@ class LSChecksum(klvcms.BaseElement):
 
 # MISB ST0601 Tag #2
 class LSPrecisionTimeStamp(klvcms.BaseElement):
-    """Form a MISB 0601.9 Tag=2 Precision Time Stamp Parser"""
+    """Precision Time Stamp Conversion"""
     def parser(self, item):
         self.name = 'Precision Time Stamp'
 
@@ -27,7 +27,7 @@ class LSPrecisionTimeStamp(klvcms.BaseElement):
 
 # MISB ST0601 Tag #3
 class LSMissionID(klvcms.BaseElement):
-    """Form a MISB 0601.9 Tag=3 Mission ID Parser"""
+    """Mission ID Conversion"""
     def parser(self, item):
         self.name = 'Mission ID'
 
@@ -35,7 +35,7 @@ class LSMissionID(klvcms.BaseElement):
 
 # MISB ST0601 Tag #4
 class LSPlatformTailNumber(klvcms.BaseElement):
-    """Form a MISB 0601 Platform Tail Number Parser"""
+    """Platform Tail Number Conversion"""
     def parser(self, item):
         self.name = "Platform Tail Number"
 
@@ -43,7 +43,7 @@ class LSPlatformTailNumber(klvcms.BaseElement):
 
 # MISB ST0601 Tag #5
 class LSPlatformHeadingAngle(klvcms.BaseElement):
-    """Form a MIST ST0601 Platform heading Angle Parser"""
+    """Platform Heading Angle Conversion"""
     def parser(self, item):
         self.name = "Platform Heading Angle"
 
@@ -54,7 +54,7 @@ class LSPlatformHeadingAngle(klvcms.BaseElement):
 
 # MIST ST0601 Tag #6
 class LSPlatformPitchAngle(klvcms.BaseElement):
-    """Form a MISB ST0601 Platform Pitch Angle Parser"""
+    """Platform Pitch Angle Conversion"""
     def parser(self, item):
         self.name = "Platform Pitch Angle"
 
@@ -66,7 +66,7 @@ class LSPlatformPitchAngle(klvcms.BaseElement):
 
 # MISB ST0601 Tag #7
 class LSPlatformRollAngle(klvcms.BaseElement):
-    """Form a MISB ST0601 Platform Roll Angle Parser"""
+    """Platform Roll Angle Conversion"""
     def parser(self, item):
         self.name = "Platform Roll Angle"
 
@@ -82,7 +82,7 @@ class LSPlatformRollAngle(klvcms.BaseElement):
 
 # MISB ST0601 Tag 10
 class LSPlatformDesignation(klvcms.BaseElement):
-    """Form a MISB ST0601 Platform Designation LS Tag Parser"""
+    """Platform Designation LS Tag Conversion"""
     def parser(self, item):
         self.name = "Platform Designation"
 
@@ -90,7 +90,7 @@ class LSPlatformDesignation(klvcms.BaseElement):
 
 # MISB ST0601 Tag 11
 class LSImageSourceSensor(klvcms.BaseElement):
-    """Form a MISB ST0601 Image Source Sensor Parser"""
+    """Image Source Sensor Conversion"""
     def __init__(self, item):
         super().__init__(item)
 
@@ -101,7 +101,7 @@ class LSImageSourceSensor(klvcms.BaseElement):
 
 # MISB ST0601 Tag 12
 class LSImageCoordinateSystem(klvcms.BaseElement):
-    """Form a MISB ST0601 Image Coordinate System Parser"""
+    """Image Coordinate System Conversion"""
     def __init__(self, item):
         super().__init__(item)
 
@@ -112,7 +112,7 @@ class LSImageCoordinateSystem(klvcms.BaseElement):
 
 # MISB ST0601 Tag 13
 class LSSensorLatitude(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor Latitude Parser"""
+    """Sensor Latitude Conversion"""
     def __init__(self, item):
         super().__init__(item)
 
@@ -127,7 +127,7 @@ class LSSensorLatitude(klvcms.BaseElement):
 
 # MISB ST0601 Tag 14
 class LSSensorLongitude(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor Longitude Parser"""
+    """Sensor Longitude Conversion"""
     def __init__(self, item):
         super().__init__(item)
 
@@ -145,7 +145,7 @@ class LSSensorLongitude(klvcms.BaseElement):
 
 # MISB ST0601 Tag 15
 class LSSensorTrueAltitude(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor True Altitude Parser"""
+    """Sensor True Altitude Conversion"""
     def parser(self, item):
         self.name = "Sensor True Altitude Parser"
 
@@ -160,7 +160,7 @@ class LSSensorTrueAltitude(klvcms.BaseElement):
 
 # MISB ST0601 Tag 16
 class LSSensorHorizonalFieldOfView(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor Horizontal Field of View Parser"""
+    """Sensor Horizontal Field of View Conversion"""
     def parser(self, item):
         self.name = "Horizontal Field of View"
 
@@ -174,7 +174,7 @@ class LSSensorHorizonalFieldOfView(klvcms.BaseElement):
 
 # MISB ST0601 Tag 16
 class LSSensorHorizontalFieldOfView(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor Horizontal Field of View Parser"""
+    """ST0601 Sensor Horizontal Field of View Conversion"""
     def parser(self, item):
         self.name = "Horizontal Field of View"
 
@@ -188,7 +188,7 @@ class LSSensorHorizontalFieldOfView(klvcms.BaseElement):
 
 # MISB ST0601 Tag 17
 class LSSensorVerticalFieldOfView(klvcms.BaseElement):
-    """Form a MISB ST0601 Sensor Vertical Field of View Parser"""
+    """ST0601 Sensor Vertical Field of View Conversion"""
     def parser(self, item):
         self.name = "Vertical Field of View"
 
