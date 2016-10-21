@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+# Copyright 2016 Matthew Pare. All rights reserved.
+
 import klvcms
 from collections import OrderedDict
 from datetime import datetime
