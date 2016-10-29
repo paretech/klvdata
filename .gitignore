@@ -1,7 +1,7 @@
-singpacket.bin
+*.bin
 
 *.pyc
 
-bfg-1.12.14.jar
+*.jar
 
 *.pdf
