@@ -74,7 +74,7 @@ class BaseElement:
         self.value = self.converter(item)
 
     def converter(self, item):
-        self.name = 'Unknown Tag Name'
+        self.name = 'Un-Identified Tag'
 
         self.unit = ''
 
@@ -91,13 +91,16 @@ class BaseElement:
     def _bytes_to_str(value):
         return value.decode('UTF-8')
 
+    @staticmethod
+    def _bytes_to_hex_dump(value):
+        return " ".join(["{:02X}".format(byte) for byte in value])
+
     def _scale_value(self, min_value, max_value, value, signed=False):
         value_range = max_value - min_value
 
         int_range = 2**(len(value) * 8) - 1
 
         return value_range/int_range * self._bytes_to_int(value, signed)
-
 
 class BasePacket(BaseElement):
     def __init__(self, item):
@@ -136,7 +139,4 @@ def calc_checksum(data):
         words += data[length-1] << 8
 
     return struct.pack('>H', words & 0xFFFF)
-
-def bytes2hexdump(value):
-    return " ".join(["{:02X}".format(byte) for byte in value])
 
