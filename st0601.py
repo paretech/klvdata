@@ -3,7 +3,6 @@
 # Copyright 2016 Matthew Pare. All rights reserved.
 
 import klvcms
-import re
 
 from collections import OrderedDict
 from datetime import datetime
@@ -11,19 +10,9 @@ from datetime import datetime
 class PacketParser(klvcms.BasePacket):
     element_converters = dict()
 
-    def parse_nested_elements(self):
-        # Add recognized element for security metadata
-        # @TODO Move to MISB ST0601 parser. Does not belong in base
-        # @TODO Clean up code...
-        if 48 in self.elements:
-            self.elements[48].elements = OrderedDict((item.key, klvcms.BaseElement(item)) for item in klvcms.BaseParser(self.elements[48].value, 1))
-
     def _get_parser(self, item):
         # TODO: Review use of self.__class__
         return self.__class__.element_converters.get(self._bytes_to_int(item.key), klvcms.BaseElement)
-
-    def __str__(self):
-        return '\n'.join(str(value[1]) for value in self.get_items())
 
 class StreamParser(klvcms.BaseParser):
     def __init__(self, source):
@@ -35,7 +24,7 @@ class StreamParser(klvcms.BaseParser):
         return PacketParser(self)
 
 def prepare_converter(cls):
-    # TODO: Make this work, consider exceptions like ID (Tag 3)...
+    # TODO: Make this work, consider exceptions like ID, MIIS
     # cls.name = ' '.join(re.findall('[A-Z][^A-Z]*', cls.__name__))
 
     cls.__doc__ = "MISB ST0601 {} Converter".format(cls.name)
@@ -104,13 +93,20 @@ class PlatformRollAngle(klvcms.BaseElement):
 
     def converter(self, item):
         self.units = 'degrees'
-        min_value = -50 #degrees
-        max_value = +50 #degrees
+        min_value, max_value = -50, +50 #degrees
 
         # TODO: Add "out of range" indicator
         return self._scale_value(min_value, max_value, item.value, signed=True)
 
-# MISB ST0601 Tag 8
+@prepare_converter
+class PlatformTrueAirspeed(klvcms.BaseElement):
+    tag, name = 8, "Platform True Airspeed"
+
+    def converter(self, item):
+        self.units = "meters"
+        min_value, max_value = 0, +255
+
+        return self._scale_value(min_value, max_value, item.value)
 
 # MISB ST0601 Tag 9
 
@@ -298,6 +294,14 @@ class FrameCenterElevation(klvcms.BaseElement):
 # TODO Work on 26-32, 40-42, 59, 48 first...
 
 @prepare_converter
+class SecurityLocalMetadataSet(klvcms.BaseElement):
+    tag, name = 48, "Security Local Metadata Set"
+
+    def converter(self, item):
+        # TODO Create ST0102 module and parse constituent elements.
+        return self._bytes_to_hex_dump(item.value)
+
+@prepare_converter
 class UASLSVersionNumber(klvcms.BaseElement):
     tag, name = 65, "UAS LS Version Number"
 
@@ -306,7 +310,7 @@ class UASLSVersionNumber(klvcms.BaseElement):
 
 @prepare_converter
 class MIISCoreIdentifier(klvcms.BaseElement):
-    tag, name = 94, "MIISCOreIdentifier"
+    tag, name = 94, "MIIS Core Identifier"
 
     def converter(self, item):
         return self._bytes_to_hex_dump(item.value)
@@ -314,11 +318,13 @@ class MIISCoreIdentifier(klvcms.BaseElement):
 if __name__ == '__main__':
     import sys
 
-    if len(sys.argv) > 1:
-        read_file = sys.argv[1]
-    else:
-        read_file = 'DynamicConstantMISMMSPacketData.bin'
-
-    with open(read_file, 'rb') as f:
-        for packet in StreamParser(f):
+    def parse_stream(s):
+        for packet in StreamParser(s):
             print(packet)
+
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'rb') as f:
+            parse_stream(f)
+    else:
+        parse_stream(sys.stdin.buffer)
+

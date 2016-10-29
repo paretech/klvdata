@@ -106,13 +106,9 @@ class BasePacket(BaseElement):
     def __init__(self, item):
         BaseElement.__init__(self, item)
         self.parse_elements()
-        self.parse_nested_elements()
 
     def parse_elements(self):
         self.elements = OrderedDict((self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in BaseParser(self.value, 1))
-
-    def parse_nested_elements(self):
-        pass
 
     def get_tags(self):
         return self.elements
@@ -128,6 +124,9 @@ class BasePacket(BaseElement):
 
     def _get_parser(self, item):
         return BaseElement
+
+    def __str__(self):
+        return '\n'.join(str(value[1]) for value in self.get_items())
 
 def calc_checksum(data):
     length = len(data) - 2
