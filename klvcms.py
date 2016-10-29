@@ -7,11 +7,11 @@ import struct
 import io
 import warnings
 
+from collections import OrderedDict
+
 # TODO: Keep as iter but return more useful object...
 class BaseParser(object):
-
     """Base class for parsing Key Length Value (KLV) structured binary data.
-
     """
 
     def __init__(self, source, size):
@@ -74,7 +74,6 @@ class BaseElement:
         self.length = item.length
         self.value = self.converter(item)
 
-
     def converter(self, item):
         self.name = 'Unknown Tag Name'
 
@@ -82,12 +81,8 @@ class BaseElement:
 
         return item.value
 
-    def _scale_value(self, min_value, max_value, value, signed=False):
-        value_range = max_value - min_value
-
-        int_range = 2**(len(value) * 8) - 1
-
-        return value_range/int_range * self._bytes_to_int(value, signed)
+    def __str__(self):
+        return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self.value)
 
     @staticmethod
     def _bytes_to_int(value, signed=False):
@@ -97,9 +92,40 @@ class BaseElement:
     def _bytes_to_str(value):
         return value.decode('UTF-8')
 
-    def __str__(self):
-        return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self.value)
+    def _scale_value(self, min_value, max_value, value, signed=False):
+        value_range = max_value - min_value
 
+        int_range = 2**(len(value) * 8) - 1
+
+        return value_range/int_range * self._bytes_to_int(value, signed)
+
+
+class BasePacket(BaseElement):
+    def __init__(self, item):
+        BaseElement.__init__(self, item)
+        self.parse_elements()
+        self.parse_nested_elements()
+
+    def parse_elements(self):
+        self.elements = OrderedDict((self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in BaseParser(self.value, 1))
+
+    def parse_nested_elements(self):
+        pass
+
+    def get_tags(self):
+        return self.elements
+
+    def get_tag(self, key):
+        return self.get_tags()[key]
+
+    def get_keys(self):
+        return self.get_tags().keys()
+
+    def get_items(self):
+        return self.get_tags().items()
+
+    def _get_parser(self, item):
+        return BaseElement
 
 def calc_checksum(data):
     length = len(data) - 2
@@ -112,7 +138,6 @@ def calc_checksum(data):
 
     return struct.pack('>H', words & 0xFFFF)
 
-# Previously named "pretty_print"
 def bytes2hexdump(value):
     return " ".join(["{:02X}".format(byte) for byte in value])
 

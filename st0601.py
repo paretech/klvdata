@@ -6,18 +6,8 @@ import klvcms
 from collections import OrderedDict
 from datetime import datetime
 
-class BasePacket(klvcms.BaseElement):
-    element_parsers = dict()
-
-    def __init__(self, item):
-        klvcms.BaseElement.__init__(self, item)
-        self.parse_elements()
-        self.parse_nested_elements()
-
-    def parse_elements(self):
-        self.elements = OrderedDict()
-
-        self.elements = OrderedDict((self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in klvcms.BaseParser(self.value, 1))
+class PacketParser(klvcms.BasePacket):
+    element_converters = dict()
 
     def parse_nested_elements(self):
         # Add recognized element for security metadata
@@ -26,34 +16,27 @@ class BasePacket(klvcms.BaseElement):
         if 48 in self.elements:
             self.elements[48].elements = OrderedDict((item.key, klvcms.BaseElement(item)) for item in klvcms.BaseParser(self.elements[48].value, 1))
 
-    def get_tags(self):
-        return self.elements
-
-    def get_tag(self, key):
-        return self.get_tags()[key]
-
-    def get_keys(self):
-        return self.get_tags().keys()
-
-    def get_items(self):
-        return self.get_tags().items()
-
     def _get_parser(self, item):
-        return ST0601_tags.get(self._bytes_to_int(item.key), klvcms.BaseElement)
+        # TODO: Review use of self.__class__
+        return self.__class__.element_converters.get(self._bytes_to_int(item.key), klvcms.BaseElement)
 
-class TestParser(klvcms.BaseParser):
-    converters = dict()
+    def __str__(self):
+        return '\n'.join(str(value[1]) for value in self.get_items())
+
+class StreamParser(klvcms.BaseParser):
+    def __init__(self, source):
+        super().__init__(source, 16)
 
     def __next__(self):
         self.parse()
 
-        return BasePacket(self)
+        return PacketParser(self)
 
 def prepare_converter(cls):
     # Build converter docstring
     cls.__doc__ = "MISB ST0601 {} Converter".format(cls.name)
 
-    TestParser.converters[cls.tag] = cls
+    PacketParser.element_converters[cls.tag] = cls
 
     return cls
 
@@ -269,6 +252,8 @@ class LSSlantRange(klvcms.BaseElement):
         # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value)
 
-ST0601_tags = TestParser.converters
 
-
+if __name__ == '__main__':
+    with open('DynamicConstantMISMMSPacketData_modified.bin', 'rb') as f:
+        for packet in StreamParser(f):
+            print(packet)
