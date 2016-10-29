@@ -291,7 +291,7 @@ class FrameCenterElevation(klvcms.BaseElement):
         min_value, max_value, self.units = -900, +19e3, "meters"
         offset = min_value
 
-        return self._scale_value(min_value, max_value, item.value, signed=True) + offset
+        return self._scale_value(min_value, max_value, item.value) + offset
 
 # MISB Tags 26-64
 
