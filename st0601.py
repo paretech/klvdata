@@ -173,8 +173,8 @@ class SensorTrueAltitude(klvcms.BaseElement):
         return self._scale_value(min_value, max_value, item.value) + offset
 
 @prepare_converter
-class SensorHorizonalFieldOfView(klvcms.BaseElement):
-    tag, name = 16, "Horizontal Field of View"
+class SensorHorizontalFieldOfView(klvcms.BaseElement):
+    tag, name = 16, "Sensor Horizontal Field of View"
 
     def converter(self, item):
         self.units = 'degrees'
@@ -185,7 +185,7 @@ class SensorHorizonalFieldOfView(klvcms.BaseElement):
 
 @prepare_converter
 class SensorHorizontalFieldOfView(klvcms.BaseElement):
-    tag, name = 16, "Horizontal Field of View"
+    tag, name = 16, "Sensor Horizontal Field of View"
 
     def converter(self, item):
         self.units = 'degrees'
@@ -197,7 +197,7 @@ class SensorHorizontalFieldOfView(klvcms.BaseElement):
 
 @prepare_converter
 class SensorVerticalFieldOfView(klvcms.BaseElement):
-    tag, name = 17, "Vertical Field of View"
+    tag, name = 17, "Sensor Vertical Field of View"
 
     def converter(self, item):
         self.units = 'degrees'
@@ -294,6 +294,8 @@ class FrameCenterElevation(klvcms.BaseElement):
         return self._scale_value(min_value, max_value, item.value) + offset
 
 # MISB Tags 26-64
+
+# TODO Work on 26-32, 40-42, 59, 48 first...
 
 @prepare_converter
 class UASLSVersionNumber(klvcms.BaseElement):
