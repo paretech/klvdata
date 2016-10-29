@@ -4,13 +4,8 @@
 
 import sys
 import struct
-import pdb
 import io
-import time
 import warnings
-
-from datetime import datetime
-from pprint import pprint
 
 # TODO: Keep as iter but return more useful object...
 class BaseParser(object):
@@ -77,10 +72,10 @@ class BaseElement:
     def __init__(self, item):
         self.key = self._bytes_to_int(item.key)
         self.length = item.length
-        self.value = self.parser(item)
+        self.value = self.converter(item)
 
 
-    def parser(self, item):
+    def converter(self, item):
         self.name = 'Unknown Tag Name'
 
         self.unit = ''
@@ -94,27 +89,17 @@ class BaseElement:
 
         return value_range/int_range * self._bytes_to_int(value, signed)
 
-    def _bytes_to_int(self, value, signed=False):
+    @staticmethod
+    def _bytes_to_int(value, signed=False):
         return int.from_bytes(value, byteorder='big', signed=signed)
 
-    def _bytes_to_str(self, value):
+    @staticmethod
+    def _bytes_to_str(value):
         return value.decode('UTF-8')
 
     def __str__(self):
         return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self.value)
 
-
-
-
-# def bytes2int(value, signed=False):
-#     # @TODO Make BYTEORDER a constant
-#     # @TODO Make SIGNED a constant
-#     return int.from_bytes(value, byteorder='big', signed=signed)
-
-def int2bytes(value, length):
-    # @TODO Make BYTEORDER a constant
-    # @TODO Make SIGNED a constant
-    return value.to_bytes(length, byteorder='big', signed=False)
 
 def calc_checksum(data):
     length = len(data) - 2

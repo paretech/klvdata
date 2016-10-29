@@ -6,69 +6,82 @@ import klvcms
 from collections import OrderedDict
 from datetime import datetime
 
-# MISB ST0601 Tag #1
-class LSChecksum(klvcms.BaseElement):
-    """Checksum Conversion"""
-    def parser(self, item):
-        self.name = 'Checksum'
+class TestParser(klvcms.BaseParser):
+    converters = dict()
 
+    def __next__(self):
+        self.parse()
+
+        return BasePacket(self)
+
+def prepare_converter(cls):
+    # Build converter docstring
+    cls.__doc__ = "MISB ST0601 {} Converter".format(cls.name)
+
+    TestParser.converters[cls.tag] = cls
+
+    return cls
+
+@prepare_converter
+class LSChecksum(klvcms.BaseElement):
+    tag, name  = 1, 'Checksum'
+
+    def converter(self, item):
         return item.value
 
     def __str__(self):
         return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, bytes2hexdump(self.value))
 
-# MISB ST0601 Tag #2
+@prepare_converter
 class LSPrecisionTimeStamp(klvcms.BaseElement):
-    """Precision Time Stamp Conversion"""
-    def parser(self, item):
-        self.name = 'Precision Time Stamp'
+    tag, name = 2, 'Precision Time Stamp'
 
+    def converter(self, item):
         return datetime.utcfromtimestamp(self._bytes_to_int(item.value)*1e-6)
 
-# MISB ST0601 Tag #3
+@prepare_converter
 class LSMissionID(klvcms.BaseElement):
-    """Mission ID Conversion"""
-    def parser(self, item):
-        self.name = 'Mission ID'
+    tag, name = 3, 'Mission ID'
+
+    def converter(self, item):
 
         return self._bytes_to_str(item.value)
 
-# MISB ST0601 Tag #4
+@prepare_converter
 class LSPlatformTailNumber(klvcms.BaseElement):
     """Platform Tail Number Conversion"""
-    def parser(self, item):
-        self.name = "Platform Tail Number"
+    tag, name = 4, "Platform Tail Number"
+    def converter(self, item):
 
         return self._bytes_to_str(item.value)
 
-# MISB ST0601 Tag #5
+@prepare_converter
 class LSPlatformHeadingAngle(klvcms.BaseElement):
-    """Platform Heading Angle Conversion"""
-    def parser(self, item):
-        self.name = "Platform Heading Angle"
+    tag, name = 5, "Platform Heading Angle"
 
+    def converter(self, item):
         min_value = 0 #degrees
         max_value = 360 #degrees
 
         return self._scale_value(min_value, max_value, item.value, signed=True)
 
 # MIST ST0601 Tag #6
+@prepare_converter
 class LSPlatformPitchAngle(klvcms.BaseElement):
     """Platform Pitch Angle Conversion"""
-    def parser(self, item):
-        self.name = "Platform Pitch Angle"
+    tag, name = 6, "Platform Pitch Angle"
+    def converter(self, item):
 
         min_value = -20 #degrees
         max_value = +20 #degrees
 
-        # TODO: Add "out of range" indicator
         return self._scale_value(min_value, max_value, item.value, signed=True)
 
-# MISB ST0601 Tag #7
+@prepare_converter
 class LSPlatformRollAngle(klvcms.BaseElement):
     """Platform Roll Angle Conversion"""
-    def parser(self, item):
-        self.name = "Platform Roll Angle"
+    tag, name = 7, "Platform Roll Angle"
+    def converter(self, item):
 
         min_value = -50 #degrees
         max_value = +50 #degrees
@@ -80,74 +93,61 @@ class LSPlatformRollAngle(klvcms.BaseElement):
 
 # MISB ST0601 Tag 9
 
-# MISB ST0601 Tag 10
+@prepare_converter
 class LSPlatformDesignation(klvcms.BaseElement):
-    """Platform Designation LS Tag Conversion"""
-    def parser(self, item):
-        self.name = "Platform Designation"
+    tag, name = 10, "Platform Designation"
+
+    def converter(self, item):
 
         return self._bytes_to_str(item.value)
 
-# MISB ST0601 Tag 11
+@prepare_converter
 class LSImageSourceSensor(klvcms.BaseElement):
-    """Image Source Sensor Conversion"""
-    def __init__(self, item):
-        super().__init__(item)
+    tag, name = 11, "Image Source Sensor"
 
-        self.name = "Image Source Sensor"
+    def converter(self, item):
 
-    def parser(self, item):
         return self._bytes_to_str(item.value)
 
-# MISB ST0601 Tag 12
+@prepare_converter
 class LSImageCoordinateSystem(klvcms.BaseElement):
-    """Image Coordinate System Conversion"""
-    def __init__(self, item):
-        super().__init__(item)
+    tag, name = 12, "Image Coordinate System"
 
-        self.name = "Image Coordinate System"
+    def converter(self, item):
 
-    def parser(self, item):
         return self._bytes_to_str(item.value)
 
-# MISB ST0601 Tag 13
+@prepare_converter
 class LSSensorLatitude(klvcms.BaseElement):
-    """Sensor Latitude Conversion"""
-    def __init__(self, item):
-        super().__init__(item)
+    tag, name = 13, "Sensor Latitude"
 
-        self.name = "Sensor Latitude"
+    def converter(self, item):
 
-    def parser(self, item):
         min_value = -90
         max_value = +90
 
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value, signed=True)
 
-# MISB ST0601 Tag 14
+@prepare_converter
 class LSSensorLongitude(klvcms.BaseElement):
-    """Sensor Longitude Conversion"""
-    def __init__(self, item):
-        super().__init__(item)
+    tag, name = 14, "Sensor Longitude"
 
-
-    def parser(self, item):
-        self.name = "Sensor Longitude"
+    def converter(self, item):
 
         self.unites = 'degrees'
 
         min_value = -180
         max_value = +180
 
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value, signed=True)
 
-# MISB ST0601 Tag 15
+@prepare_converter
 class LSSensorTrueAltitude(klvcms.BaseElement):
-    """Sensor True Altitude Conversion"""
-    def parser(self, item):
-        self.name = "Sensor True Altitude Parser"
+    tag, name = 15, "Sensor True Altitude Parser"
+
+    def converter(self, item):
 
         self.units = 'meters'
         min_value = -900
@@ -155,92 +155,102 @@ class LSSensorTrueAltitude(klvcms.BaseElement):
 
         offset = 900
 
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value) - offset
 
-# MISB ST0601 Tag 16
+@prepare_converter
 class LSSensorHorizonalFieldOfView(klvcms.BaseElement):
-    """Sensor Horizontal Field of View Conversion"""
-    def parser(self, item):
-        self.name = "Horizontal Field of View"
+    tag, name = 16, "Horizontal Field of View"
+
+    def converter(self, item):
 
         self.units = 'degrees'
         min_value = 0
         max_value = 180
 
-
-        # @TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value)
 
-# MISB ST0601 Tag 16
+@prepare_converter
 class LSSensorHorizontalFieldOfView(klvcms.BaseElement):
-    """ST0601 Sensor Horizontal Field of View Conversion"""
-    def parser(self, item):
-        self.name = "Horizontal Field of View"
+    tag, name = 16, "Horizontal Field of View"
+
+    def converter(self, item):
 
         self.units = 'degrees'
         min_value = 0
         max_value = 180
 
-
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value)
 
-# MISB ST0601 Tag 17
+@prepare_converter
 class LSSensorVerticalFieldOfView(klvcms.BaseElement):
-    """ST0601 Sensor Vertical Field of View Conversion"""
-    def parser(self, item):
-        self.name = "Vertical Field of View"
+    tag, name = 17, "Vertical Field of View"
+
+    def converter(self, item):
 
         self.units = 'degrees'
         min_value = 0
         max_value = 180
 
-
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value)
 
 
-# MISB ST0601 Tag 18
+@prepare_converter
 class LSSensorRelativeAzimuthAngle(klvcms.BaseElement):
-    """Sensor Relative Azimuth Angle Conversion"""
-    def parser(self, item):
-        self.name = "Sensor Relative Azimuth Angle"
+    tag, name = 18, "Sensor Relative Azimuth Angle"
 
+    def converter(self, item):
         self.units = 'degrees'
         min_value = 0
         max_value = 360
 
 
-        # @TODO: Implement "error" indicator
+        # TODO: Implement "error" indicator
         return self._scale_value(min_value, max_value, item.value)
 
+@prepare_converter
+class LSSensorRelativeElevationAngle(klvcms.BaseElement):
+    tag, name = 19, "Sensor Relative Elevation Angle"
 
-ST0601_tags = dict()
-ST0601_tags[1] = LSChecksum
-ST0601_tags[2] = LSPrecisionTimeStamp
-ST0601_tags[3] = LSMissionID
-ST0601_tags[4] = LSPlatformTailNumber
-ST0601_tags[5] = LSPlatformHeadingAngle
-ST0601_tags[6] = LSPlatformPitchAngle
-ST0601_tags[7] = LSPlatformRollAngle
+    def converter(self, item):
+        self.units = 'degrees'
+        min_value = -180
+        max_value = +180
+
+        # TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value, signed=True)
+
+@prepare_converter
+class LSSensorRelativeRollAngle(klvcms.BaseElement):
+    tag, name = 20, "Sensor Relative Roll Angle"
+
+    def converter(self, item):
+
+        self.units = 'degrees'
+        min_value = 0
+        max_value = +360
+
+        # TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value)
+
+@prepare_converter
+class LSSlantRange(klvcms.BaseElement):
+    tag, name = 21, "Slant Range"
+
+    def converter(self, item):
+
+        # NOTE Keep in mind that these are source units
+        self.units = 'meters'
+        min_value = 0
+        max_value = +5e6
 
 
-ST0601_tags[10] = LSPlatformDesignation
-ST0601_tags[11] = LSImageSourceSensor
-ST0601_tags[12] = LSImageCoordinateSystem
-ST0601_tags[13] = LSSensorLatitude
-ST0601_tags[14] = LSSensorLongitude
-ST0601_tags[15] = LSSensorTrueAltitude
-ST0601_tags[16] = LSSensorHorizontalFieldOfView
-ST0601_tags[17] = LSSensorVerticalFieldOfView
-ST0601_tags[18] = LSSensorRelativeAzimuthAngle
+        # TODO: Implement "error" indicator
+        return self._scale_value(min_value, max_value, item.value)
 
-class TestParser(klvcms.BaseParser):
-    def __next__(self):
-        self.parse()
-
-        return BasePacket(self)
+ST0601_tags = TestParser.converters
 
 
 class BasePacket(klvcms.BaseElement):
@@ -255,7 +265,6 @@ class BasePacket(klvcms.BaseElement):
         self.elements = OrderedDict()
 
         self.elements = OrderedDict((self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in klvcms.BaseParser(self.value, 1))
-#k        self.elements = (self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in BaseParser(self.value, 1)
 
     def parse_nested_elements(self):
         # Add recognized element for security metadata
