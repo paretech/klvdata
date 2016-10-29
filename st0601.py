@@ -260,7 +260,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         read_file = sys.argv[1]
     else:
-        read_file = 'DynamicConstantMISMMSPacketData_modified.bin'
+        read_file = 'DynamicConstantMISMMSPacketData.bin'
 
     with open(read_file, 'rb') as f:
         for packet in StreamParser(f):
