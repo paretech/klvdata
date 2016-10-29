@@ -2,7 +2,6 @@
 
 # Copyright 2016 Matthew Pare. All rights reserved.
 
-import sys
 import struct
 import io
 import warnings

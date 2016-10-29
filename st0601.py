@@ -3,6 +3,7 @@
 # Copyright 2016 Matthew Pare. All rights reserved.
 
 import klvcms
+
 from collections import OrderedDict
 from datetime import datetime
 
@@ -33,7 +34,7 @@ class StreamParser(klvcms.BaseParser):
         return PacketParser(self)
 
 def prepare_converter(cls):
-    # Build converter docstring
+    # Set converter docstring
     cls.__doc__ = "MISB ST0601 {} Converter".format(cls.name)
 
     PacketParser.element_converters[cls.tag] = cls
@@ -254,6 +255,13 @@ class LSSlantRange(klvcms.BaseElement):
 
 
 if __name__ == '__main__':
-    with open('DynamicConstantMISMMSPacketData_modified.bin', 'rb') as f:
+    import sys
+
+    if len(sys.argv) > 1:
+        read_file = sys.argv[1]
+    else:
+        read_file = 'DynamicConstantMISMMSPacketData_modified.bin'
+
+    with open(read_file, 'rb') as f:
         for packet in StreamParser(f):
             print(packet)
