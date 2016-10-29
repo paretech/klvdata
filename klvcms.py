@@ -112,3 +112,7 @@ def calc_checksum(data):
 
     return struct.pack('>H', words & 0xFFFF)
 
+# Previously named "pretty_print"
+def bytes2hexdump(value):
+    return " ".join(["{:02X}".format(byte) for byte in value])
+
