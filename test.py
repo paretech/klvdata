@@ -12,7 +12,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         f = sys.argv[1]
     else:
-        f = 'DynamicConstantMISMMSPacketData.bin'
+        f = 'DynamicConstantMISMMSPacketData_modified.bin'
 
     with open(f, 'rb') as f:
         for packet in st0601.TestParser(f, 16):
