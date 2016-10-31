@@ -12,7 +12,7 @@ class PacketParser(klvcms.BasePacket):
 
     def _get_parser(self, item):
         # TODO: Review use of self.__class__
-        return self.__class__.element_converters.get(self._bytes_to_int(item.key), klvcms.BaseElement)
+        return self.__class__.element_converters.get(self._bytes_to_int(item.key), klvcms.BaseConverter)
 
 class StreamParser(klvcms.BaseParser):
     def __init__(self, source):
@@ -23,19 +23,15 @@ class StreamParser(klvcms.BaseParser):
 
         return PacketParser(self)
 
-def prepare_converter(cls):
-    # TODO: Make this work, consider exceptions like ID, MIIS
-    # cls.name = ' '.join(re.findall('[A-Z][^A-Z]*', cls.__name__))
+def register(obj):
+    PacketParser.element_converters[obj.tag] = obj
+    return obj
 
-    cls.__doc__ = "MISB ST0601 {} Converter".format(cls.name)
-
-    PacketParser.element_converters[cls.tag] = cls
-
-    return cls
-
-@prepare_converter
-class Checksum(klvcms.BaseElement):
+@register
+class Checksum(klvcms.BaseConverter):
     tag, name  = 1, 'Checksum'
+
+    length = 2
 
     def converter(self, item):
         return item.value
@@ -43,273 +39,267 @@ class Checksum(klvcms.BaseElement):
     def __str__(self):
         return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self._bytes_to_hex_dump(self.value))
 
-@prepare_converter
-class PrecisionTimeStamp(klvcms.BaseElement):
+@register
+class PrecisionTimeStamp(klvcms.BaseConverter):
     tag, name = 2, 'Precision Time Stamp'
 
+    min_value, max_value, units = 0, 2**64 - 1, 'microseconds'
+    length, signed = 8, False
+
     def converter(self, item):
-        self.units = 'micro seconds'
         return datetime.utcfromtimestamp(self._bytes_to_int(item.value)*1e-6)
 
-@prepare_converter
-class MissionID(klvcms.BaseElement):
+@register
+class MissionID(klvcms.BaseConverter):
     tag, name = 3, 'Mission ID'
 
+    min_value, max_value, units = 1, 127, 'string'
+
     def converter(self, item):
         return self._bytes_to_str(item.value)
 
-@prepare_converter
-class PlatformTailNumber(klvcms.BaseElement):
+@register
+class PlatformTailNumber(klvcms.BaseConverter):
     tag, name = 4, "Platform Tail Number"
 
+    min_value, max_value, units = 1, 127, 'string'
+
     def converter(self, item):
         return self._bytes_to_str(item.value)
 
-@prepare_converter
-class PlatformHeadingAngle(klvcms.BaseElement):
+@register
+class PlatformHeadingAngle(klvcms.BaseConverter):
     tag, name = 5, "Platform Heading Angle"
 
+    min_value, max_value, units = 0, 360, 'degrees'
+    length, signed = 2, False
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0 #degrees
-        max_value = 360 #degrees
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class PlatformPitchAngle(klvcms.BaseElement):
+@register
+class PlatformPitchAngle(klvcms.BaseConverter):
     tag, name = 6, "Platform Pitch Angle"
 
+    min_value, max_value, units = -20, +20, 'degrees'
+    length, signed = 2, True
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = -20 #degrees
-        max_value = +20 #degrees
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class PlatformRollAngle(klvcms.BaseElement):
+@register
+class PlatformRollAngle(klvcms.BaseConverter):
     tag, name = 7, "Platform Roll Angle"
 
+    min_value, max_value, units = -50, +50, 'degrees'
+    length, signed = 2, True
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value, max_value = -50, +50 #degrees
+        return self._scale_value(item.value)
 
-        # TODO: Add "out of range" indicator
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class PlatformTrueAirspeed(klvcms.BaseElement):
+@register
+class PlatformTrueAirspeed(klvcms.BaseConverter):
     tag, name = 8, "Platform True Airspeed"
 
-    def converter(self, item):
-        self.units = "meters"
-        min_value, max_value = 0, +255
+    min_value, max_value, units = 0, +255, 'meters'
+    length, signed = 1, False
 
-        return self._scale_value(min_value, max_value, item.value)
+    def converter(self, item):
+        return self._scale_value(item.value)
 
 # MISB ST0601 Tag 9
 
-@prepare_converter
-class PlatformDesignation(klvcms.BaseElement):
+@register
+class PlatformDesignation(klvcms.BaseConverter):
     tag, name = 10, "Platform Designation"
 
+    min_value, max_value, units = 1, 127, 'string'
+
     def converter(self, item):
         return self._bytes_to_str(item.value)
 
-@prepare_converter
-class ImageSourceSensor(klvcms.BaseElement):
+@register
+class ImageSourceSensor(klvcms.BaseConverter):
     tag, name = 11, "Image Source Sensor"
 
+    min_value, max_value, units = 1, 127, 'string'
+
     def converter(self, item):
         return self._bytes_to_str(item.value)
 
-@prepare_converter
-class ImageCoordinateSystem(klvcms.BaseElement):
+@register
+class ImageCoordinateSystem(klvcms.BaseConverter):
     tag, name = 12, "Image Coordinate System"
 
+    min_value, max_value, units = 1, 127, 'string'
+
     def converter(self, item):
         return self._bytes_to_str(item.value)
 
-@prepare_converter
-class SensorLatitude(klvcms.BaseElement):
+@register
+class SensorLatitude(klvcms.BaseConverter):
     tag, name = 13, "Sensor Latitude"
 
+    min_value, max_value, units = -90, +90, 'degrees'
+    length, signed = 4, True
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = -90
-        max_value = +90
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class SensorLongitude(klvcms.BaseElement):
+@register
+class SensorLongitude(klvcms.BaseConverter):
     tag, name = 14, "Sensor Longitude"
 
+    min_value, max_value, units = -180, +180, 'degrees'
+    length, signed = 4, True
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = -180
-        max_value = +180
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class SensorTrueAltitude(klvcms.BaseElement):
+@register
+class SensorTrueAltitude(klvcms.BaseConverter):
     tag, name = 15, "Sensor True Altitude"
 
+    min_value, max_value, units = -900, +19e3, 'meters'
+    length, signed = 2, False
+
     def converter(self, item):
-        self.units = 'meters'
-        min_value = -900
-        max_value = +19000
-        offset = -900
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value) + offset
-
-@prepare_converter
-class SensorHorizontalFieldOfView(klvcms.BaseElement):
+@register
+class SensorHorizontalFieldOfView(klvcms.BaseConverter):
     tag, name = 16, "Sensor Horizontal Field of View"
 
+
+    min_value, max_value, units = 0, +180, 'degrees'
+    length, signed = 2, False
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0
-        max_value = 180
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class SensorHorizontalFieldOfView(klvcms.BaseElement):
+@register
+class SensorHorizontalFieldOfView(klvcms.BaseConverter):
     tag, name = 16, "Sensor Horizontal Field of View"
 
+    min_value, max_value, units = 0, +180, 'degrees'
+    length, signed = 2, False
+
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0
-        max_value = 180
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class SensorVerticalFieldOfView(klvcms.BaseElement):
+@register
+class SensorVerticalFieldOfView(klvcms.BaseConverter):
     tag, name = 17, "Sensor Vertical Field of View"
 
+    min_value, max_value, units = 0, +180, 'degrees'
+    length, signed = 2, False
+
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0
-        max_value = 180
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value)
-
-
-@prepare_converter
-class SensorRelativeAzimuthAngle(klvcms.BaseElement):
+@register
+class SensorRelativeAzimuthAngle(klvcms.BaseConverter):
     tag, name = 18, "Sensor Relative Azimuth Angle"
 
+    min_value, max_value, units = 0, +360, 'degrees'
+    length, signed = 4, False
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0
-        max_value = 360
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class SensorRelativeElevationAngle(klvcms.BaseElement):
+@register
+class SensorRelativeElevationAngle(klvcms.BaseConverter):
     tag, name = 19, "Sensor Relative Elevation Angle"
 
+    min_value, max_value, units = -180, +180, 'degrees'
+    length, signed = 4, True
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = -180
-        max_value = +180
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class SensorRelativeRollAngle(klvcms.BaseElement):
+@register
+class SensorRelativeRollAngle(klvcms.BaseConverter):
     tag, name = 20, "Sensor Relative Roll Angle"
 
+    min_value, max_value, units = 0, +360, 'degrees'
+    length, signed = 4, False
+
     def converter(self, item):
-        self.units = 'degrees'
-        min_value = 0
-        max_value = +360
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class SlantRange(klvcms.BaseElement):
+@register
+class SlantRange(klvcms.BaseConverter):
     tag, name = 21, "Slant Range"
 
+    min_value, max_value, units = 0, +5e6, 'meters'
+    length, signed = 4, False
+
     def converter(self, item):
-        self.units = 'meters'
-        min_value = 0
-        max_value = +5e6
+        return self._scale_value(item.value)
 
-        # TODO: Implement "error" indicator
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class TargetWidth(klvcms.BaseElement):
+@register
+class TargetWidth(klvcms.BaseConverter):
     tag, name = 22, "Target Width"
 
+    min_value, max_value, units = 0, +10e3, 'meters'
+    length, signed = 2, False
+
     def converter(self, item):
-        min_value, max_value, self.units = 0, +10e3, "meters"
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class FrameCenterLatitude(klvcms.BaseElement):
+@register
+class FrameCenterLatitude(klvcms.BaseConverter):
     tag, name = 23, "Frame Center Latitude"
 
+    min_value, max_value, units = -90, +90, 'degrees'
+    length, signed = 4, True
+
     def converter(self, item):
-        min_value, max_value, self.units = -90, +90, "degrees"
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value, signed=True)
-
-@prepare_converter
-class FrameCenterLongitude(klvcms.BaseElement):
+@register
+class FrameCenterLongitude(klvcms.BaseConverter):
     tag, name = 24, "Frame Center Longitude"
 
+    min_value, max_value, units = -180, +180, 'degrees'
+    length, signed = 4, True
+
     def converter(self, item):
-        min_value, max_value, self.units = -180, +180, "degrees"
+        return self._scale_value(item.value)
 
-        return self._scale_value(min_value, max_value, item.value)
-
-@prepare_converter
-class FrameCenterElevation(klvcms.BaseElement):
+@register
+class FrameCenterElevation(klvcms.BaseConverter):
     tag, name = 25, "Frame Center Elevation"
 
-    def converter(self, item):
-        min_value, max_value, self.units = -900, +19e3, "meters"
-        offset = min_value
+    min_value, max_value, units = -900, +19e3, "meters"
+    length, signed = 2, False
 
-        return self._scale_value(min_value, max_value, item.value) + offset
+    def converter(self, item):
+        return self._scale_value(item.value)
 
 # MISB Tags 26-64
 
 # TODO Work on 26-32, 40-42, 59, 48 first...
 
-@prepare_converter
-class SecurityLocalMetadataSet(klvcms.BaseElement):
+@register
+class SecurityLocalMetadataSet(klvcms.BaseConverter):
     tag, name = 48, "Security Local Metadata Set"
 
     def converter(self, item):
         # TODO Create ST0102 module and parse constituent elements.
         return self._bytes_to_hex_dump(item.value)
 
-@prepare_converter
-class UASLSVersionNumber(klvcms.BaseElement):
+@register
+class UASLSVersionNumber(klvcms.BaseConverter):
     tag, name = 65, "UAS LS Version Number"
 
     def converter(self, item):
         return 'MISB ST 0601.{}'.format(self._bytes_to_int(item.value))
 
-@prepare_converter
-class MIISCoreIdentifier(klvcms.BaseElement):
+@register
+class MIISCoreIdentifier(klvcms.BaseConverter):
     tag, name = 94, "MIIS Core Identifier"
 
     def converter(self, item):

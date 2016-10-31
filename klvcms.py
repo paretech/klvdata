@@ -71,6 +71,7 @@ class BaseElement:
     def __init__(self, item):
         self.key = self._bytes_to_int(item.key)
         self.length = item.length
+        # TODO Store value as original bytes
         self.value = self.converter(item)
 
     def converter(self, item):
@@ -95,13 +96,27 @@ class BaseElement:
     def _bytes_to_hex_dump(value):
         return " ".join(["{:02X}".format(byte) for byte in value])
 
-    def _scale_value(self, min_value, max_value, value, signed=False):
-        value_range = max_value - min_value
+class BaseConverter(BaseElement):
+    def _scale_value(self, value):
+        if self.__class__.signed:
+            x1, y1 = -(2**(self.__class__.length * 8 - 1) - 1), self.__class__.min_value
+            x2, y2 = +(2**(self.__class__.length * 8 - 1) - 1), self.__class__.max_value
+        else:
+            x1, y1 = 0, self.__class__.min_value
+            x2, y2 = +(2**(self.__class__.length * 8) - 1), self.__class__.max_value
 
-        int_range = 2**(len(value) * 8) - 1
+        dy = y2 - y1
+        dx = x2 - x1
 
-        return value_range/int_range * self._bytes_to_int(value, signed)
+        m = dy/dx
+        b = y1 - m * x1
 
+        x = self._bytes_to_int(value, self.__class__.signed)
+        y = m*x + b
+
+        return y
+
+    # TODO Move _scale_value to this class and have converters in ST0601 inherit
 class BasePacket(BaseElement):
     def __init__(self, item):
         BaseElement.__init__(self, item)
