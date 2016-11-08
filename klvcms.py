@@ -25,9 +25,9 @@ class BaseParser(object):
         self.s = instream
         self.size = size
 
-    def __iter__(self):
         self.packet_count = 0
 
+    def __iter__(self):
         return self
 
     def __next__(self):
@@ -97,24 +97,23 @@ class BaseElement:
         return " ".join(["{:02X}".format(byte) for byte in value])
 
 class BaseConverter(BaseElement):
-    def _scale_value(self, value):
+    def _fixed_to_float(self, value):
+        """Convert the fixed point value self.value to a floating point value."""
         if self.__class__.signed:
-            x1, y1 = -(2**(self.__class__.length * 8 - 1) - 1), self.__class__.min_value
-            x2, y2 = +(2**(self.__class__.length * 8 - 1) - 1), self.__class__.max_value
+            x1 = -(2**(self.__class__.length * 8 - 1) - 1)
+            x2 = +(2**(self.__class__.length * 8 - 1) - 1)
         else:
-            x1, y1 = 0, self.__class__.min_value
-            x2, y2 = +(2**(self.__class__.length * 8) - 1), self.__class__.max_value
+            x1 = 0
+            x2 = +(2**(self.__class__.length * 8) - 1)
 
-        dy = y2 - y1
-        dx = x2 - x1
+        y1 = self.__class__.min_value
+        y2 = self.__class__.max_value
 
-        m = dy/dx
-        b = y1 - m * x1
+        m = (y2 - y1) / (x2 - x1)
 
         x = self._bytes_to_int(value, self.__class__.signed)
-        y = m*x + b
 
-        return y
+        return m*(x - x1) + y1
 
     # TODO Move _scale_value to this class and have converters in ST0601 inherit
 class BasePacket(BaseElement):
