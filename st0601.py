@@ -49,6 +49,9 @@ class PrecisionTimeStamp(klvcms.BaseConverter):
     def converter(self, item):
         return datetime.utcfromtimestamp(self._bytes_to_int(item.value)*1e-6)
 
+    def __int__(self):
+        pass
+
 @register
 class MissionID(klvcms.BaseConverter):
     tag, name = 3, 'Mission ID'
@@ -75,7 +78,7 @@ class PlatformHeadingAngle(klvcms.BaseConverter):
     length, signed = 2, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class PlatformPitchAngle(klvcms.BaseConverter):
@@ -85,7 +88,7 @@ class PlatformPitchAngle(klvcms.BaseConverter):
     length, signed = 2, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class PlatformRollAngle(klvcms.BaseConverter):
@@ -95,7 +98,7 @@ class PlatformRollAngle(klvcms.BaseConverter):
     length, signed = 2, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class PlatformTrueAirspeed(klvcms.BaseConverter):
@@ -105,7 +108,7 @@ class PlatformTrueAirspeed(klvcms.BaseConverter):
     length, signed = 1, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 # MISB ST0601 Tag 9
 
@@ -144,7 +147,7 @@ class SensorLatitude(klvcms.BaseConverter):
     length, signed = 4, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorLongitude(klvcms.BaseConverter):
@@ -154,7 +157,7 @@ class SensorLongitude(klvcms.BaseConverter):
     length, signed = 4, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorTrueAltitude(klvcms.BaseConverter):
@@ -164,7 +167,7 @@ class SensorTrueAltitude(klvcms.BaseConverter):
     length, signed = 2, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorHorizontalFieldOfView(klvcms.BaseConverter):
@@ -175,7 +178,7 @@ class SensorHorizontalFieldOfView(klvcms.BaseConverter):
     length, signed = 2, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorHorizontalFieldOfView(klvcms.BaseConverter):
@@ -186,7 +189,7 @@ class SensorHorizontalFieldOfView(klvcms.BaseConverter):
 
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorVerticalFieldOfView(klvcms.BaseConverter):
@@ -197,7 +200,7 @@ class SensorVerticalFieldOfView(klvcms.BaseConverter):
 
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorRelativeAzimuthAngle(klvcms.BaseConverter):
@@ -207,7 +210,7 @@ class SensorRelativeAzimuthAngle(klvcms.BaseConverter):
     length, signed = 4, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorRelativeElevationAngle(klvcms.BaseConverter):
@@ -217,7 +220,7 @@ class SensorRelativeElevationAngle(klvcms.BaseConverter):
     length, signed = 4, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SensorRelativeRollAngle(klvcms.BaseConverter):
@@ -227,7 +230,7 @@ class SensorRelativeRollAngle(klvcms.BaseConverter):
     length, signed = 4, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class SlantRange(klvcms.BaseConverter):
@@ -237,7 +240,7 @@ class SlantRange(klvcms.BaseConverter):
     length, signed = 4, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class TargetWidth(klvcms.BaseConverter):
@@ -247,7 +250,7 @@ class TargetWidth(klvcms.BaseConverter):
     length, signed = 2, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class FrameCenterLatitude(klvcms.BaseConverter):
@@ -257,7 +260,7 @@ class FrameCenterLatitude(klvcms.BaseConverter):
     length, signed = 4, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class FrameCenterLongitude(klvcms.BaseConverter):
@@ -267,7 +270,7 @@ class FrameCenterLongitude(klvcms.BaseConverter):
     length, signed = 4, True
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 @register
 class FrameCenterElevation(klvcms.BaseConverter):
@@ -277,7 +280,7 @@ class FrameCenterElevation(klvcms.BaseConverter):
     length, signed = 2, False
 
     def converter(self, item):
-        return self._scale_value(item.value)
+        return self._fixed_to_float(item.value)
 
 # MISB Tags 26-64
 
