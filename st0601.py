@@ -3,291 +3,365 @@
 # Copyright 2016 Matthew Pare. All rights reserved.
 
 import klvcms
+import io
 
 from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, timedelta
 
-class PacketParser(klvcms.BasePacket):
-    element_converters = dict()
+class UASLSParser(object):
+    converters = {}
 
-    def _get_parser(self, item):
-        # TODO: Review use of self.__class__
-        return self.__class__.element_converters.get(self._bytes_to_int(item.key), klvcms.BaseConverter)
-
-class StreamParser(klvcms.BaseParser):
     def __init__(self, source):
-        super().__init__(source, 16)
+        if not hasattr(source, "read"):
+            source = open(source, "rb")
+
+        self.packet = klvcms.Parser(source, key_length=16)
 
     def __next__(self):
-        self.parse()
+        self._tags = OrderedDict()
+        next(self.packet)
+        self.parse_tags()
 
-        return PacketParser(self)
+
+        return self
+
+    def __iter__(self):
+        return self
+
+    def parse_tags(self):
+        for tag in klvcms.Parser(io.BytesIO(self.packet.value), key_length=1):
+            self._tags[tag.key] = self.converters.get(tag.key, UnsupportedTag)(tag)
 
 def register(obj):
-    PacketParser.element_converters[obj.tag] = obj
+    UASLSParser.converters[obj.tag] = obj
     return obj
 
-@register
-class Checksum(klvcms.BaseConverter):
-    tag, name  = 1, 'Checksum'
+class ConverterElement(object):
+    def __init__(self, element):
+        assert self.tag == element.key
 
-    length = 2
+        self._length = element.length
+        assert self.min_length <= element.length <= self.max_length
 
-    def converter(self, item):
-        return item.value
+        self._value = element.value
+        if hasattr(self, 'min_value'):
+            assert self.min_value <= self.value <= self.max_value
+
+    class Value(object):
+        def __set__(self, instance, value):
+            instance._value = value
+
+        def __get__(self, instance, owner):
+            return instance._value
+
+    value = Value()
 
     def __str__(self):
-        return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self._bytes_to_hex_dump(self.value))
+        return "{:02}: {:32} {:4} bytes {}".format(self.tag, self.name, self._length, self.value)
+
+    # TODO: When assign to base assign to value
+    # def __call__(self):
+
+class StringConverterElement(ConverterElement):
+    min_value, max_value, units = 0x00, 0x7F, 'string'
+
+    def __init__(self, element):
+        assert self.tag == element.key
+
+        assert self.min_length <= element.length <= self.max_length
+        self._length = element.length
+
+        for character in element.value:
+            # import pdb; pdb.set_trace()
+            assert self.min_value <= character <= self.max_value
+
+        self._value = element.value
+
+    class Value(object):
+        def __set__(self, instance, value):
+            instance._value = klvcms.str_to_bytes(value)
+
+        def __get__(self, instance, owner):
+            return klvcms.bytes_to_str(instance._value)
+
+    value = Value()
+
+class MappedConverterElement(ConverterElement):
+    def __init__(self, element):
+        assert self.tag == element.key
+
+        assert self.min_length <= element.length <= self.max_length
+        self._length = element.length
+
+        self._value = element.value
+        assert self.min_value <= self.value <= self.max_value
+
+    class Value():
+        def __get__(self, instance, owner):
+            return klvcms.fixed_to_float(instance._value, instance._length,
+                                         instance.min_value, instance.max_value,
+                                         instance.signed)
+
+        def __set__(self, instance, value):
+            # TODO
+            print("WHAT")
+            raise "Unimplemented"
+
+    value = Value()
+
+class DateConverterElement(ConverterElement):
+    def __init__(self, element):
+        assert self.tag == element.key
+
+        self._length = element.length
+        assert self.min_length <= self._length <= self.max_length
+
+        self._value = element.value
+
+    class Value(object):
+        def __set__(self, instance, value):
+            # TODO: Getting and setting value results in 1 us diff.
+            #  Python 2.5 compatibility
+            timestamp = (value - datetime(1970, 1, 1))/timedelta(microseconds=1)
+
+            # TODO Refactor to use IntConverterElement
+            instance._value = klvcms.int_to_bytes(int(timestamp), 8)
+
+        def __get__(self, instance, owner):
+            timestamp = klvcms.bytes_to_int(instance._value) * 1e-6
+            # TODO Refactor to use IntConverterElement
+            return datetime.utcfromtimestamp(timestamp)
+
+    value = Value()
+
+class UnsupportedTag(ConverterElement):
+    name = "Unsupported Tag"
+
+    def __init__(self, element):
+        # No validation
+        self.tag = element.key
+        self._length = element.length
+        self._value = element.value
 
 @register
-class PrecisionTimeStamp(klvcms.BaseConverter):
+class Checksum(ConverterElement):
+    tag, name  = 1, 'Checksum'
+    min_length, max_length, signed = 2, 2, False
+
+@register
+class PrecisionTimeStamp(DateConverterElement):
     tag, name = 2, 'Precision Time Stamp'
+    min_value, max_value, units = datetime.utcfromtimestamp(0), \
+            datetime.max, 'microseconds'
+    min_length, max_length, signed = 8, 8, False
 
-    min_value, max_value, units = 0, 2**64 - 1, 'microseconds'
-    length, signed = 8, False
-
-    def converter(self, item):
-        return datetime.utcfromtimestamp(self._bytes_to_int(item.value)*1e-6)
-
-    def __int__(self):
-        pass
 
 @register
-class MissionID(klvcms.BaseConverter):
+class MissionID(StringConverterElement):
+    '''Descriptive Mission Identifier to distinguish event or sortie.
+
+    Value field is Free Text. Maximum 127 characters
+    '''
     tag, name = 3, 'Mission ID'
-
-    min_value, max_value, units = 1, 127, 'string'
-
-    def converter(self, item):
-        return self._bytes_to_str(item.value)
+    min_length, max_length = 0, 127
 
 @register
-class PlatformTailNumber(klvcms.BaseConverter):
+class PlatformTailNumber(StringConverterElement):
     tag, name = 4, "Platform Tail Number"
-
-    min_value, max_value, units = 1, 127, 'string'
-
-    def converter(self, item):
-        return self._bytes_to_str(item.value)
+    min_length, max_length = 0, 127
 
 @register
-class PlatformHeadingAngle(klvcms.BaseConverter):
+class PlatformHeadingAngle(MappedConverterElement):
     tag, name = 5, "Platform Heading Angle"
 
+    # TODO: Design problem or thought needed to better structure converters
+    #       to support validation during parsing, getting and setting.
     min_value, max_value, units = 0, 360, 'degrees'
-    length, signed = 2, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, False
 
 @register
-class PlatformPitchAngle(klvcms.BaseConverter):
+class PlatformPitchAngle(MappedConverterElement):
     tag, name = 6, "Platform Pitch Angle"
-
     min_value, max_value, units = -20, +20, 'degrees'
-    length, signed = 2, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, True
 
 @register
-class PlatformRollAngle(klvcms.BaseConverter):
+class PlatformRollAngle(MappedConverterElement):
     tag, name = 7, "Platform Roll Angle"
-
     min_value, max_value, units = -50, +50, 'degrees'
-    length, signed = 2, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, True
 
 @register
-class PlatformTrueAirspeed(klvcms.BaseConverter):
+class PlatformTrueAirspeed(MappedConverterElement):
     tag, name = 8, "Platform True Airspeed"
-
     min_value, max_value, units = 0, +255, 'meters'
-    length, signed = 1, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 1, 1, False
 
 # MISB ST0601 Tag 9
 
 @register
-class PlatformDesignation(klvcms.BaseConverter):
+class PlatformDesignation(StringConverterElement):
     tag, name = 10, "Platform Designation"
-
-    min_value, max_value, units = 1, 127, 'string'
-
-    def converter(self, item):
-        return self._bytes_to_str(item.value)
+    min_length, max_length = 0, 127
 
 @register
-class ImageSourceSensor(klvcms.BaseConverter):
+class ImageSourceSensor(StringConverterElement):
     tag, name = 11, "Image Source Sensor"
-
-    min_value, max_value, units = 1, 127, 'string'
-
-    def converter(self, item):
-        return self._bytes_to_str(item.value)
+    min_length, max_length = 1, 127
 
 @register
-class ImageCoordinateSystem(klvcms.BaseConverter):
+class ImageCoordinateSystem(StringConverterElement):
     tag, name = 12, "Image Coordinate System"
-
-    min_value, max_value, units = 1, 127, 'string'
-
-    def converter(self, item):
-        return self._bytes_to_str(item.value)
+    min_length, max_length = 1, 127
 
 @register
-class SensorLatitude(klvcms.BaseConverter):
+class SensorLatitude(MappedConverterElement):
     tag, name = 13, "Sensor Latitude"
-
     min_value, max_value, units = -90, +90, 'degrees'
-    length, signed = 4, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class SensorLongitude(klvcms.BaseConverter):
+class SensorLongitude(MappedConverterElement):
     tag, name = 14, "Sensor Longitude"
-
     min_value, max_value, units = -180, +180, 'degrees'
-    length, signed = 4, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class SensorTrueAltitude(klvcms.BaseConverter):
+class SensorTrueAltitude(MappedConverterElement):
     tag, name = 15, "Sensor True Altitude"
-
     min_value, max_value, units = -900, +19e3, 'meters'
-    length, signed = 2, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, False
 
 @register
-class SensorHorizontalFieldOfView(klvcms.BaseConverter):
+class SensorHorizontalFieldOfView(MappedConverterElement):
     tag, name = 16, "Sensor Horizontal Field of View"
-
-
     min_value, max_value, units = 0, +180, 'degrees'
-    length, signed = 2, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, False
 
 @register
-class SensorHorizontalFieldOfView(klvcms.BaseConverter):
-    tag, name = 16, "Sensor Horizontal Field of View"
-
-    min_value, max_value, units = 0, +180, 'degrees'
-    length, signed = 2, False
-
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
-
-@register
-class SensorVerticalFieldOfView(klvcms.BaseConverter):
+class SensorVerticalFieldOfView(MappedConverterElement):
     tag, name = 17, "Sensor Vertical Field of View"
-
     min_value, max_value, units = 0, +180, 'degrees'
-    length, signed = 2, False
-
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, False
 
 @register
-class SensorRelativeAzimuthAngle(klvcms.BaseConverter):
+class SensorRelativeAzimuthAngle(MappedConverterElement):
     tag, name = 18, "Sensor Relative Azimuth Angle"
-
     min_value, max_value, units = 0, +360, 'degrees'
-    length, signed = 4, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, False
 
 @register
-class SensorRelativeElevationAngle(klvcms.BaseConverter):
+class SensorRelativeElevationAngle(MappedConverterElement):
     tag, name = 19, "Sensor Relative Elevation Angle"
-
     min_value, max_value, units = -180, +180, 'degrees'
-    length, signed = 4, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class SensorRelativeRollAngle(klvcms.BaseConverter):
+class SensorRelativeRollAngle(MappedConverterElement):
     tag, name = 20, "Sensor Relative Roll Angle"
-
     min_value, max_value, units = 0, +360, 'degrees'
-    length, signed = 4, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, False
 
 @register
-class SlantRange(klvcms.BaseConverter):
+class SlantRange(MappedConverterElement):
     tag, name = 21, "Slant Range"
-
     min_value, max_value, units = 0, +5e6, 'meters'
-    length, signed = 4, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, False
 
 @register
-class TargetWidth(klvcms.BaseConverter):
+class TargetWidth(MappedConverterElement):
     tag, name = 22, "Target Width"
-
     min_value, max_value, units = 0, +10e3, 'meters'
-    length, signed = 2, False
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 2, 2, False
 
 @register
-class FrameCenterLatitude(klvcms.BaseConverter):
+class FrameCenterLatitude(MappedConverterElement):
     tag, name = 23, "Frame Center Latitude"
-
     min_value, max_value, units = -90, +90, 'degrees'
-    length, signed = 4, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class FrameCenterLongitude(klvcms.BaseConverter):
+class FrameCenterLongitude(MappedConverterElement):
     tag, name = 24, "Frame Center Longitude"
-
     min_value, max_value, units = -180, +180, 'degrees'
-    length, signed = 4, True
-
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class FrameCenterElevation(klvcms.BaseConverter):
+class FrameCenterElevation(MappedConverterElement):
     tag, name = 25, "Frame Center Elevation"
-
     min_value, max_value, units = -900, +19e3, "meters"
-    length, signed = 2, False
+    min_length, max_length, signed = 2, 2, False
 
-    def converter(self, item):
-        return self._fixed_to_float(item.value)
+@register
+class OffsetCornerLatitudePoint1(MappedConverterElement):
+    tag, name = 26, "Offset Corner Latitude Point 1"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
 
+@register
+class OffsetCornerLongitudePoint1(MappedConverterElement):
+    tag, name = 27, "Offset Corner Longitude Point 1"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLatitudePoint2(MappedConverterElement):
+    tag, name = 28, "Offset Corner Latitude Point 2"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLongitudePoint2(MappedConverterElement):
+    tag, name = 29, "Offset Corner Longitude Point 2"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLatitudePoint3(MappedConverterElement):
+    tag, name = 30, "Offset Corner Latitude Point 3"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLongitudePoint3(MappedConverterElement):
+    tag, name = 31, "Offset Corner Longitude Point 3"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLatitudePoint4(MappedConverterElement):
+    tag, name = 32, "Offset Corner Latitude Point 4"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
+
+@register
+class OffsetCornerLongitudePoint4(MappedConverterElement):
+    tag, name = 33, "Offset Corner Longitude Point 4"
+    min_value, max_value, units = -0.075, +0.075, 'degrees'
+    min_length, max_length, signed = 2, 2, True
 # MISB Tags 26-64
 
 # TODO Work on 26-32, 40-42, 59, 48 first...
+@register
+class TargetLocationLatitude(MappedConverterElement):
+    tag, name = 40, "Target Location latitude"
+    min_value, max_value, units = -90, +90, 'degrees'
+    min_length, max_length, signed = 4, 4, True
 
 @register
-class SecurityLocalMetadataSet(klvcms.BaseConverter):
+class TargetLocationLongitude(MappedConverterElement):
+    tag, name = 41, "Target Location Longitude"
+    min_value, max_value, units = -180, +180, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+@register
+class TargetLocationElevation(MappedConverterElement):
+    tag, name = 42, "Target Location Elevation"
+    min_value, max_value, units = -900, +19e3, "meters"
+    min_length, max_length, signed = 2, 2, False
+
+# @register
+class SecurityLocalMetadataSet(object):
     tag, name = 48, "Security Local Metadata Set"
 
     def converter(self, item):
@@ -295,14 +369,14 @@ class SecurityLocalMetadataSet(klvcms.BaseConverter):
         return self._bytes_to_hex_dump(item.value)
 
 @register
-class UASLSVersionNumber(klvcms.BaseConverter):
+class UASLSVersionNumber(ConverterElement):
     tag, name = 65, "UAS LS Version Number"
 
-    def converter(self, item):
-        return 'MISB ST 0601.{}'.format(self._bytes_to_int(item.value))
+    # TODO: Associate max version with the version of the MISB implemented?
+    min_length, max_length, signed = 1, 1, False
 
-@register
-class MIISCoreIdentifier(klvcms.BaseConverter):
+# @register
+class MIISCoreIdentifier(object):
     tag, name = 94, "MIIS Core Identifier"
 
     def converter(self, item):
@@ -310,14 +384,14 @@ class MIISCoreIdentifier(klvcms.BaseConverter):
 
 if __name__ == '__main__':
     import sys
-
-    def parse_stream(s):
-        for packet in StreamParser(s):
-            print(packet)
+    from pprint import pprint
 
     if len(sys.argv) > 1:
-        with open(sys.argv[1], 'rb') as f:
-            parse_stream(f)
+        readfile = sys.argv[1]
     else:
-        parse_stream(sys.stdin.buffer)
+        readfile = 'DynamicConstantMISMMSPacketData.bin'
+
+    for packet in UASLSParser(readfile):
+        for tag in packet._tags.values():
+            print(tag)
 

@@ -3,144 +3,85 @@
 # Copyright 2016 Matthew Pare. All rights reserved.
 
 import struct
-import io
 import warnings
 
 from collections import OrderedDict
 
-# TODO: Keep as iter but return more useful object...
-class BaseParser(object):
+# TODO: make _IterParser and Parser classes
+class Parser(object):
     """Base class for parsing Key Length Value (KLV) structured binary data.
     """
 
-    def __init__(self, source, size):
-        if isinstance(source, io.IOBase):
-            instream = source
-        else:
-            instream = io.BytesIO(source)
-
-        if getattr(instream, 'read', None) is None:
-            raise TypeError('Parser must be a stream like object, not ' '{itype}'.format(itype=instream.__class__.__name__))
-
-        self.s = instream
-        self.size = size
-
-        self.packet_count = 0
+    def __init__(self, source, key_length=16):
+        self.source = source
+        self.key_length = key_length
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        self.parse()
+        self.key = bytes_to_int(self.__read(self.key_length))
 
-        # TODO: How about you return a BaseElement?
+        first_length_octet = self.__read(1)
+
+        self.length = bytes_to_int(first_length_octet)
+
+        if self.length > 127:
+            additional_bytes = self.length & 0x7F
+            remaining_length_octets = self.__read(additional_bytes)
+            self.length = bytes_to_int(remaining_length_octets)
+
+        self.value = self.__read(self.length)
+
         return self
 
-    def parse(self):
-        self.raw = bytearray()
-        self.packet_count += 1
-
-        self.key = self.read(self.size)
-
-        # TODO: Set length as the original bytes
-        # TODO: Turns out for debugging it is good not to over write this value
-        #       never know when you need to know how many bytes are about to be
-        #       read...
-        self.length = struct.unpack('>B', self.read(1))[0]
-
-        # TODO: Use method to convert self.length from BER bytes to int length
-        if self.length > 127:
-            self.length = int.from_bytes(self.read(self.length & 0x7F), 'big')
-
-        self.value = self.read(self.length)
-
-    def read(self, size):
+    def __read(self, size):
         if size == 0:
             warnings.warn("0 length read requested", UserWarning)
 
-        data = self.s.read(size)
+            return None
+
+        data = self.source.read(size)
 
         if not data:
             raise StopIteration
 
-        self.raw += data
-
         return data
 
-class BaseElement:
-    def __init__(self, item):
-        self.key = self._bytes_to_int(item.key)
-        self.length = item.length
-        # TODO Store value as original bytes
-        self.value = self.converter(item)
+def bytes_to_int(value, signed=False):
+    return int.from_bytes(value, byteorder='big', signed=signed)
 
-    def converter(self, item):
-        self.name = 'Un-Identified Tag'
+def int_to_bytes(value, length, signed=False):
+    return value.to_bytes(length, byteorder='big', signed=signed)
 
-        self.unit = ''
+def bytes_to_str(value):
+    return value.decode('UTF-8')
 
-        return item.value
+def str_to_bytes(value):
+    return bytes(value, 'UTF-8')
 
-    def __str__(self):
-        return "{:2}: '{}' ({} bytes) \"{}\"".format(self.key, self.name, self.length, self.value)
+def bytes_to_hex_dump(value):
+    return " ".join(["{:02X}".format(byte) for byte in value])
 
-    @staticmethod
-    def _bytes_to_int(value, signed=False):
-        return int.from_bytes(value, byteorder='big', signed=signed)
+def fixed_to_float(value, length, minimum, maximum, signed=True):
+    """Convert the fixed point value self.value to a floating point value."""
+    if signed:
+        x1 = -(2**(length * 8 - 1) - 1)
+        x2 = +(2**(length * 8 - 1) - 1)
+    else:
+        x1 = 0
+        x2 = +(2**(length * 8) - 1)
 
-    @staticmethod
-    def _bytes_to_str(value):
-        return value.decode('UTF-8')
+    y1, y2 = minimum, maximum
 
-    @staticmethod
-    def _bytes_to_hex_dump(value):
-        return " ".join(["{:02X}".format(byte) for byte in value])
+    m = (y2 - y1) / (x2 - x1)
 
-class BaseConverter(BaseElement):
-    def _fixed_to_float(self, value):
-        """Convert the fixed point value self.value to a floating point value."""
-        if self.__class__.signed:
-            x1 = -(2**(self.__class__.length * 8 - 1) - 1)
-            x2 = +(2**(self.__class__.length * 8 - 1) - 1)
-        else:
-            x1 = 0
-            x2 = +(2**(self.__class__.length * 8) - 1)
+    x = bytes_to_int(value, signed)
 
-        y1 = self.__class__.min_value
-        y2 = self.__class__.max_value
+    return m*(x - x1) + y1
 
-        m = (y2 - y1) / (x2 - x1)
-
-        x = self._bytes_to_int(value, self.__class__.signed)
-
-        return m*(x - x1) + y1
-
-    # TODO Move _scale_value to this class and have converters in ST0601 inherit
-class BasePacket(BaseElement):
-    def __init__(self, item):
-        BaseElement.__init__(self, item)
-        self.parse_elements()
-
-    def parse_elements(self):
-        self.elements = OrderedDict((self._bytes_to_int(item.key), self._get_parser(item)(item)) for item in BaseParser(self.value, 1))
-
-    def get_tags(self):
-        return self.elements
-
-    def get_tag(self, key):
-        return self.get_tags()[key]
-
-    def get_keys(self):
-        return self.get_tags().keys()
-
-    def get_items(self):
-        return self.get_tags().items()
-
-    def _get_parser(self, item):
-        return BaseElement
-
-    def __str__(self):
-        return '\n'.join(str(value[1]) for value in self.get_items())
+def float_to_fixed(self, value):
+    pass
 
 def calc_checksum(data):
     length = len(data) - 2
