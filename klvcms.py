@@ -49,22 +49,24 @@ class Parser(object):
         return data
 
 def bytes_to_int(value, signed=False):
-    return int.from_bytes(value, byteorder='big', signed=signed)
+    return int.from_bytes(bytes(value), byteorder='big', signed=signed)
 
 def int_to_bytes(value, length, signed=False):
-    return value.to_bytes(length, byteorder='big', signed=signed)
+    return int(value).to_bytes(length, byteorder='big', signed=signed)
 
 def bytes_to_str(value):
-    return value.decode('UTF-8')
+    return bytes(value).decode('UTF-8')
 
 def str_to_bytes(value):
-    return bytes(value, 'UTF-8')
+    return bytes(str(value), 'UTF-8')
 
 def bytes_to_hex_dump(value):
-    return " ".join(["{:02X}".format(byte) for byte in value])
+    return " ".join(["{:02X}".format(byte) for byte in bytes(value)])
 
-def fixed_to_float(value, length, minimum, maximum, signed=True):
+def bytes_to_float(value, minimum, maximum, signed=True):
     """Convert the fixed point value self.value to a floating point value."""
+    length = len(bytes(value))
+
     if signed:
         x1 = -(2**(length * 8 - 1) - 1)
         x2 = +(2**(length * 8 - 1) - 1)
@@ -78,10 +80,24 @@ def fixed_to_float(value, length, minimum, maximum, signed=True):
 
     x = bytes_to_int(value, signed)
 
-    return m*(x - x1) + y1
+    return m*(x - x1) + y1 # Return y
 
-def float_to_fixed(self, value):
-    pass
+def float_to_bytes(value, length, minimum, maximum, signed=True):
+    """Convert the fixed point value self.value to a floating point value."""
+    if signed:
+        x1 = -(2**(length * 8 - 1) - 1)
+        x2 = +(2**(length * 8 - 1) - 1)
+    else:
+        x1 = 0
+        x2 = +(2**(length * 8) - 1)
+
+    y1, y2 = minimum, maximum
+
+    m = (y2 - y1) / (x2 - x1)
+
+    y = value
+
+    return int_to_bytes((1/m) * (y - y1) + x1, length) # Return x
 
 def calc_checksum(data):
     length = len(data) - 2

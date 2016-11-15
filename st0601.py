@@ -98,14 +98,18 @@ class MappedConverterElement(ConverterElement):
 
     class Value():
         def __get__(self, instance, owner):
-            return klvcms.fixed_to_float(instance._value, instance._length,
-                                         instance.min_value, instance.max_value,
-                                         instance.signed)
+            return klvcms.bytes_to_float(
+                    instance._value,
+                    instance.min_value,
+                    instance.max_value,
+                    instance.signed)
 
         def __set__(self, instance, value):
-            # TODO
-            print("WHAT")
-            raise "Unimplemented"
+            instance._value = klvcms.float_to_bytes(
+                    value, instance._length,
+                    instance.min_value,
+                    instance.max_value,
+                    instance.signed)
 
     value = Value()
 
@@ -194,10 +198,14 @@ class PlatformRollAngle(MappedConverterElement):
 @register
 class PlatformTrueAirspeed(MappedConverterElement):
     tag, name = 8, "Platform True Airspeed"
-    min_value, max_value, units = 0, +255, 'meters'
+    min_value, max_value, units = 0, +255, 'meters/second'
     min_length, max_length, signed = 1, 1, False
 
-# MISB ST0601 Tag 9
+@register
+class PlatformTrueAirspeed(MappedConverterElement):
+    tag, name = 9, "Platform Indicated Airspeed"
+    min_value, max_value, units = 0, +255, 'meters/second'
+    min_length, max_length, signed = 1, 1, False
 
 @register
 class PlatformDesignation(StringConverterElement):
@@ -207,12 +215,12 @@ class PlatformDesignation(StringConverterElement):
 @register
 class ImageSourceSensor(StringConverterElement):
     tag, name = 11, "Image Source Sensor"
-    min_length, max_length = 1, 127
+    min_length, max_length = 0, 127
 
 @register
 class ImageCoordinateSystem(StringConverterElement):
     tag, name = 12, "Image Coordinate System"
-    min_length, max_length = 1, 127
+    min_length, max_length = 0, 127
 
 @register
 class SensorLatitude(MappedConverterElement):
@@ -339,9 +347,9 @@ class OffsetCornerLongitudePoint4(MappedConverterElement):
     tag, name = 33, "Offset Corner Longitude Point 4"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
-# MISB Tags 26-64
 
-# TODO Work on 26-32, 40-42, 59, 48 first...
+# Tags 34-39 "Atmospheric Conditions"
+
 @register
 class TargetLocationLatitude(MappedConverterElement):
     tag, name = 40, "Target Location latitude"
@@ -360,6 +368,10 @@ class TargetLocationElevation(MappedConverterElement):
     min_value, max_value, units = -900, +19e3, "meters"
     min_length, max_length, signed = 2, 2, False
 
+# Tags 43 - 46 "Target Information"
+
+# Tag 47 "Generic Flag"
+
 # @register
 class SecurityLocalMetadataSet(object):
     tag, name = 48, "Security Local Metadata Set"
@@ -368,6 +380,8 @@ class SecurityLocalMetadataSet(object):
         # TODO Create ST0102 module and parse constituent elements.
         return self._bytes_to_hex_dump(item.value)
 
+# Tags 49 - 64
+
 @register
 class UASLSVersionNumber(ConverterElement):
     tag, name = 65, "UAS LS Version Number"
@@ -375,12 +389,16 @@ class UASLSVersionNumber(ConverterElement):
     # TODO: Associate max version with the version of the MISB implemented?
     min_length, max_length, signed = 1, 1, False
 
+# Tags 66 - 93
+
 # @register
 class MIISCoreIdentifier(object):
     tag, name = 94, "MIIS Core Identifier"
 
     def converter(self, item):
         return self._bytes_to_hex_dump(item.value)
+
+# Tags 95 - 96
 
 if __name__ == '__main__':
     import sys
@@ -392,6 +410,8 @@ if __name__ == '__main__':
         readfile = 'DynamicConstantMISMMSPacketData.bin'
 
     for packet in UASLSParser(readfile):
+        for tag in packet._tags.values():
+            print(tag)
         for tag in packet._tags.values():
             print(tag)
 
