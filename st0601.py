@@ -52,9 +52,6 @@ class UASLSParser(object):
         for tag in klvcms.Parser(io.BytesIO(self.packet.value), key_length=1):
             self._tags[tag.key] = self.converters.get(tag.key, UnsupportedTag)(tag)
 
-            if tag.key == 48:
-                import pdb; pdb.set_trace()
-
 def register(obj):
     UASLSParser.converters[obj.tag] = obj
     return obj
