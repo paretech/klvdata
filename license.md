@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-**Copyright &copy; 2016 Matthew Pare (paretech@gmail.com)
+**Copyright &copy; 2016 Matthew Pare (paretech@gmail.com)**
 
 * * *
 
