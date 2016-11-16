@@ -1,3 +1,2 @@
-# klvcms
-
-# Copyright 2016 Matthew Pare. All rights reserved.
+Motion Imagery Standards Board (MISB) Key Length Value (KLV) Common Metadata
+System (CMS) Python Authoring and Parsing Library.
