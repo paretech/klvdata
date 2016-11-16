@@ -432,6 +432,4 @@ if __name__ == '__main__':
     for packet in UASLSParser(readfile):
         for tag in packet._tags.values():
             print(tag)
-        for tag in packet._tags.values():
-            print(tag)
 
