@@ -52,6 +52,9 @@ class UASLSParser(object):
         for tag in klvcms.Parser(io.BytesIO(self.packet.value), key_length=1):
             self._tags[tag.key] = self.converters.get(tag.key, UnsupportedTag)(tag)
 
+            if tag.key == 48:
+                import pdb; pdb.set_trace()
+
 def register(obj):
     UASLSParser.converters[obj.tag] = obj
     return obj
@@ -59,6 +62,8 @@ def register(obj):
 class ConverterElement(object):
     def __init__(self, element):
         assert self.tag == element.key
+        # Perhaps someone want to initialize this converter with a diff tag
+        self.tag = element.key
 
         self._length = element.length
         assert self.min_length <= element.length <= self.max_length
@@ -392,13 +397,26 @@ class TargetLocationElevation(MappedConverterElement):
 
 # Tag 47 "Generic Flag"
 
-# @register
-class SecurityLocalMetadataSet(object):
+@register
+class SecurityLocalMetadataSet(ConverterElement):
     tag, name = 48, "Security Local Metadata Set"
 
-    def converter(self, item):
-        # TODO Create ST0102 module and parse constituent elements.
-        return self._bytes_to_hex_dump(item.value)
+    def __init__(self, element):
+        self.tag = element.key
+        self._length = element.length
+        self._value = element.value
+
+        self._tags = OrderedDict()
+        self.parse_tags()
+
+    def parse_tags(self):
+        for tag in klvcms.Parser(io.BytesIO(self.value), key_length=1):
+            self._tags[tag.key] = UnsupportedTag(tag)
+
+    def __str__(self):
+        return super().__str__() + '\n' + '\n'.join(['    ' + str(tag) for tag in self._tags.values()])
+
+
 
 # Tags 49 - 64
 
