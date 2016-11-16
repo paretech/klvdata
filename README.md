@@ -1,7 +1,7 @@
 Motion Imagery Standards Board (MISB) Key Length Value (KLV) Common Metadata
 System (CMS) Python Authoring and Parsing Library.
 
-Built for Python 3.2.5 (deliberately) and later.
+Built for Python 3.2.5 and later.
 
 For examples try:
 ```
