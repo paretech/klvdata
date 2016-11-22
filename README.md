@@ -10,6 +10,9 @@ _**NOTE**: Since the publication of NATO STANAG 4609 Ed. 3, some of the standard
 
 _**NOTE**: The MISB standards do a seemingly good job of being self contained and not necessarily requiring the aquisition of external standards like SMPTE 336M. Considering the ease of access to MISB documents, this project's documentation will cite MISB documentation over origin documentation when available._
 
+## Licensing
+This project is released under the MIT license.
+
 ## References
 
 ## Examples
@@ -56,7 +59,7 @@ $ ./st0601.py DynamicConstantMISMMSPacketData.bin
 ### Python Support
 - Python 3.2.5 and later
 
-_**NOTE:** [Portable Python 3.2.5.1](http://portablepython.com/wiki/PortablePython3.2.5.1/) is easily available for Windows systems for which there are no dministrative rights._
+_**NOTE:** [Portable Python 3.2.5.1](http://portablepython.com/wiki/PortablePython3.2.5.1/) is easily available for Windows systems for which there are no administrative rights._
 
 ### Platform Support
 - Contemporary versions of Linux, Windows and Mac OS X.
