@@ -1,9 +1,18 @@
-Motion Imagery Standards Board (MISB) Key Length Value (KLV) Common Metadata
-System (CMS) Python Authoring and Parsing Library.
+# STANAG 4609 KLV Metadata Analyzer and Composer
+## Summary
+[North Atlantic Treaty Organization (NATO) Standardization Agreement (STANAG) 4609 Ed. 3](http://www.gwg.nga.mil/misb/docs/nato_docs/STANAG_4609_Ed3.pdf) specifies standards for exchanging and producing Motion Imagery (MI). In short, STANAG 4609 defines MI as a sequential stream of images ("video") and __metadata__ at a rate fast enough to characterize a phenomenon within a common Field of Regard (FOR). It is the intent that the following documentation and Python software will be beneficial in decoding, interpretation and authoring of the metadata used in the exploitation of MI.
 
-Built for Python 3.2.5 and later.
+Video, audio and metadata streams are combined into an MPEG Transport Stream (MPEG-TS, MTS or TS) (ISO/IEC 13818-1). Where videos are typically compressed using MPEG-2 (ISO/IEC 13818-2) or H.264 (ISO/IEC 14496-10) and metadata as byte streams in accordance with a [Society of Motion Picture and Television Engineers (SMPTE)](https://www.smpte.org/)) 336M and a variety of [Motion Imagery Standards Board (MISB)](http://www.gwg.nga.mil/misb/) recommended practices and standards.
 
-Output when run against the sample provided with MISB ST0902.5 Annex C, Table 5:
+The MISB standards and recommended practices are freely and openly available at <http://www.gwg.nga.mil/misb/index.html>. These documents are generally easy to understand and detail all the information that is necessary to implement a Key Length Value (KLV) metadata analyzer and composer based on MISB [RP 0701](http://www.gwg.nga.mil/misb/docs/rp/RP0701.pdf) "Common Metadata System Structure" and supporting the MISB [ST 0601.9](http://www.gwg.nga.mil/misb/docs/standards/ST0601.9.pdf) "Unamanned Air System (UAS) Datalink Local Set" including MISB [ST 0102.11](http://www.gwg.nga.mil/misb/docs/standards/ST0102.11.pdf) "Security Metadata Local Set" for MI as specified by STANAG 4609.
+
+_**NOTE**: Since the publication of NATO STANAG 4609 Ed. 3, some of the standards referenced as MISB recommeded practices (RP) have been superceeded by MISB standards (ST). For example, MISB RP 0102.4 has been superseded by MISB ST 0102.11. In some cases the title and other language has also changed._
+
+_**NOTE**: The MISB standards do a seemingly good job of being self contained and not necessarily requiring the aquisition of external standards like SMPTE 336M. Considering the ease of access to MISB documents, this project's documentation will cite MISB documentation over origin documentation when available._
+
+## References
+
+## Examples
 ```
 $ ./st0601.py DynamicConstantMISMMSPacketData.bin
 ```
@@ -41,3 +50,34 @@ $ ./st0601.py DynamicConstantMISMMSPacketData.bin
 94: Unsupported Tag                    34 bytes b'\x01p\xf5\x92\xf0#s6J\xf8\xaa\x91b\xc0\x0f.\xb2\xda\x16\xb7CA\x00\x08A\xa0\xbe6[Z\xb9j6E'
 01: Checksum                            2 bytes b'\xaaC'
 ```
+
+## Software Requirements
+
+### Python Support
+- Python 3.2.5 and later
+
+_**NOTE:** [Portable Python 3.2.5.1](http://portablepython.com/wiki/PortablePython3.2.5.1/) is easily available for Windows systems for which there are no dministrative rights._
+
+### Platform Support
+- Contemporary versions of Linux, Windows and Mac OS X.
+
+### User Interface
+- Command Line Interface (CLI)
+
+### Input
+- Standard Input
+- Local File
+- UDP Socket (multicast and unicast)
+- TCP Socket
+
+### Output
+- Standard Output
+- Local File
+- Standard Output AND Local File
+
+### Source Parsing
+
+### Composition and Authoring
+
+### Extensibility
+
