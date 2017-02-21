@@ -22,11 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import klvcms
+import parser
 import io
 
 from collections import OrderedDict
 from datetime import datetime, timedelta
+
 
 class UASLSParser(object):
     converters = {}
@@ -35,13 +36,12 @@ class UASLSParser(object):
         if not hasattr(source, "read"):
             source = open(source, "rb")
 
-        self.packet = klvcms.Parser(source, key_length=16)
+        self.packet = parser.Parser(source, key_length=16)
 
     def __next__(self):
         self._tags = OrderedDict()
         next(self.packet)
         self.parse_tags()
-
 
         return self
 
@@ -49,12 +49,14 @@ class UASLSParser(object):
         return self
 
     def parse_tags(self):
-        for tag in klvcms.Parser(io.BytesIO(self.packet.value), key_length=1):
+        for tag in parser.Parser(io.BytesIO(self.packet.value), key_length=1):
             self._tags[tag.key] = self.converters.get(tag.key, UnsupportedTag)(tag)
+
 
 def register(obj):
     UASLSParser.converters[obj.tag] = obj
     return obj
+
 
 class ConverterElement(object):
     def __init__(self, element):
@@ -81,8 +83,9 @@ class ConverterElement(object):
     def __str__(self):
         return "{:02}: {:32} {:4} bytes {}".format(self.tag, self.name, self._length, self.value)
 
-    # TODO: When assign to base assign to value
-    # def __call__(self):
+        # TODO: When assign to base assign to value
+        # def __call__(self):
+
 
 class StringConverterElement(ConverterElement):
     min_value, max_value, units = 0x00, 0x7F, 'string'
@@ -101,12 +104,13 @@ class StringConverterElement(ConverterElement):
 
     class Value(object):
         def __set__(self, instance, value):
-            instance._value = klvcms.str_to_bytes(value)
+            instance._value = parser.str_to_bytes(value)
 
         def __get__(self, instance, owner):
-            return klvcms.bytes_to_str(instance._value)
+            return parser.bytes_to_str(instance._value)
 
     value = Value()
+
 
 class MappedConverterElement(ConverterElement):
     def __init__(self, element):
@@ -120,20 +124,21 @@ class MappedConverterElement(ConverterElement):
 
     class Value():
         def __get__(self, instance, owner):
-            return klvcms.bytes_to_float(
-                    instance._value,
-                    instance.min_value,
-                    instance.max_value,
-                    instance.signed)
+            return parser.bytes_to_float(
+                instance._value,
+                instance.min_value,
+                instance.max_value,
+                instance.signed)
 
         def __set__(self, instance, value):
-            instance._value = klvcms.float_to_bytes(
-                    value, instance._length,
-                    instance.min_value,
-                    instance.max_value,
-                    instance.signed)
+            instance._value = parser.float_to_bytes(
+                value, instance._length,
+                instance.min_value,
+                instance.max_value,
+                instance.signed)
 
     value = Value()
+
 
 class DateConverterElement(ConverterElement):
     def __init__(self, element):
@@ -148,17 +153,18 @@ class DateConverterElement(ConverterElement):
         def __set__(self, instance, value):
             # TODO: Getting and setting value results in 1 us diff.
             #  Python 2.5 compatibility
-            timestamp = (value - datetime(1970, 1, 1))/timedelta(microseconds=1)
+            timestamp = (value - datetime(1970, 1, 1)) / timedelta(microseconds=1)
 
             # TODO Refactor to use IntConverterElement
-            instance._value = klvcms.int_to_bytes(int(timestamp), 8)
+            instance._value = parser.int_to_bytes(int(timestamp), 8)
 
         def __get__(self, instance, owner):
-            timestamp = klvcms.bytes_to_int(instance._value) * 1e-6
+            timestamp = parser.bytes_to_int(instance._value) * 1e-6
             # TODO Refactor to use IntConverterElement
             return datetime.utcfromtimestamp(timestamp)
 
     value = Value()
+
 
 class UnsupportedTag(ConverterElement):
     name = "Unsupported Tag"
@@ -169,16 +175,18 @@ class UnsupportedTag(ConverterElement):
         self._length = element.length
         self._value = element.value
 
+
 @register
 class Checksum(ConverterElement):
-    tag, name  = 1, 'Checksum'
+    tag, name = 1, 'Checksum'
     min_length, max_length, signed = 2, 2, False
+
 
 @register
 class PrecisionTimeStamp(DateConverterElement):
     tag, name = 2, 'Precision Time Stamp'
     min_value, max_value, units = datetime.utcfromtimestamp(0), \
-            datetime.max, 'microseconds'
+                                  datetime.max, 'microseconds'
     min_length, max_length, signed = 8, 8, False
 
 
@@ -191,10 +199,12 @@ class MissionID(StringConverterElement):
     tag, name = 3, 'Mission ID'
     min_length, max_length = 0, 127
 
+
 @register
 class PlatformTailNumber(StringConverterElement):
     tag, name = 4, "Platform Tail Number"
     min_length, max_length = 0, 127
+
 
 @register
 class PlatformHeadingAngle(MappedConverterElement):
@@ -205,11 +215,13 @@ class PlatformHeadingAngle(MappedConverterElement):
     min_value, max_value, units = 0, 360, 'degrees'
     min_length, max_length, signed = 2, 2, False
 
+
 @register
 class PlatformPitchAngle(MappedConverterElement):
     tag, name = 6, "Platform Pitch Angle"
     min_value, max_value, units = -20, +20, 'degrees'
     min_length, max_length, signed = 2, 2, True
+
 
 @register
 class PlatformRollAngle(MappedConverterElement):
@@ -217,11 +229,13 @@ class PlatformRollAngle(MappedConverterElement):
     min_value, max_value, units = -50, +50, 'degrees'
     min_length, max_length, signed = 2, 2, True
 
+
 @register
 class PlatformTrueAirspeed(MappedConverterElement):
     tag, name = 8, "Platform True Airspeed"
     min_value, max_value, units = 0, +255, 'meters/second'
     min_length, max_length, signed = 1, 1, False
+
 
 @register
 class PlatformTrueAirspeed(MappedConverterElement):
@@ -229,20 +243,24 @@ class PlatformTrueAirspeed(MappedConverterElement):
     min_value, max_value, units = 0, +255, 'meters/second'
     min_length, max_length, signed = 1, 1, False
 
+
 @register
 class PlatformDesignation(StringConverterElement):
     tag, name = 10, "Platform Designation"
     min_length, max_length = 0, 127
+
 
 @register
 class ImageSourceSensor(StringConverterElement):
     tag, name = 11, "Image Source Sensor"
     min_length, max_length = 0, 127
 
+
 @register
 class ImageCoordinateSystem(StringConverterElement):
     tag, name = 12, "Image Coordinate System"
     min_length, max_length = 0, 127
+
 
 @register
 class SensorLatitude(MappedConverterElement):
@@ -250,11 +268,13 @@ class SensorLatitude(MappedConverterElement):
     min_value, max_value, units = -90, +90, 'degrees'
     min_length, max_length, signed = 4, 4, True
 
+
 @register
 class SensorLongitude(MappedConverterElement):
     tag, name = 14, "Sensor Longitude"
     min_value, max_value, units = -180, +180, 'degrees'
     min_length, max_length, signed = 4, 4, True
+
 
 @register
 class SensorTrueAltitude(MappedConverterElement):
@@ -262,11 +282,13 @@ class SensorTrueAltitude(MappedConverterElement):
     min_value, max_value, units = -900, +19e3, 'meters'
     min_length, max_length, signed = 2, 2, False
 
+
 @register
 class SensorHorizontalFieldOfView(MappedConverterElement):
     tag, name = 16, "Sensor Horizontal Field of View"
     min_value, max_value, units = 0, +180, 'degrees'
     min_length, max_length, signed = 2, 2, False
+
 
 @register
 class SensorVerticalFieldOfView(MappedConverterElement):
@@ -274,11 +296,13 @@ class SensorVerticalFieldOfView(MappedConverterElement):
     min_value, max_value, units = 0, +180, 'degrees'
     min_length, max_length, signed = 2, 2, False
 
+
 @register
 class SensorRelativeAzimuthAngle(MappedConverterElement):
     tag, name = 18, "Sensor Relative Azimuth Angle"
     min_value, max_value, units = 0, +360, 'degrees'
     min_length, max_length, signed = 4, 4, False
+
 
 @register
 class SensorRelativeElevationAngle(MappedConverterElement):
@@ -286,11 +310,13 @@ class SensorRelativeElevationAngle(MappedConverterElement):
     min_value, max_value, units = -180, +180, 'degrees'
     min_length, max_length, signed = 4, 4, True
 
+
 @register
 class SensorRelativeRollAngle(MappedConverterElement):
     tag, name = 20, "Sensor Relative Roll Angle"
     min_value, max_value, units = 0, +360, 'degrees'
     min_length, max_length, signed = 4, 4, False
+
 
 @register
 class SlantRange(MappedConverterElement):
@@ -298,11 +324,13 @@ class SlantRange(MappedConverterElement):
     min_value, max_value, units = 0, +5e6, 'meters'
     min_length, max_length, signed = 4, 4, False
 
+
 @register
 class TargetWidth(MappedConverterElement):
     tag, name = 22, "Target Width"
     min_value, max_value, units = 0, +10e3, 'meters'
     min_length, max_length, signed = 2, 2, False
+
 
 @register
 class FrameCenterLatitude(MappedConverterElement):
@@ -310,11 +338,13 @@ class FrameCenterLatitude(MappedConverterElement):
     min_value, max_value, units = -90, +90, 'degrees'
     min_length, max_length, signed = 4, 4, True
 
+
 @register
 class FrameCenterLongitude(MappedConverterElement):
     tag, name = 24, "Frame Center Longitude"
     min_value, max_value, units = -180, +180, 'degrees'
     min_length, max_length, signed = 4, 4, True
+
 
 @register
 class FrameCenterElevation(MappedConverterElement):
@@ -322,11 +352,13 @@ class FrameCenterElevation(MappedConverterElement):
     min_value, max_value, units = -900, +19e3, "meters"
     min_length, max_length, signed = 2, 2, False
 
+
 @register
 class OffsetCornerLatitudePoint1(MappedConverterElement):
     tag, name = 26, "Offset Corner Latitude Point 1"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
+
 
 @register
 class OffsetCornerLongitudePoint1(MappedConverterElement):
@@ -334,11 +366,13 @@ class OffsetCornerLongitudePoint1(MappedConverterElement):
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
 
+
 @register
 class OffsetCornerLatitudePoint2(MappedConverterElement):
     tag, name = 28, "Offset Corner Latitude Point 2"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
+
 
 @register
 class OffsetCornerLongitudePoint2(MappedConverterElement):
@@ -346,11 +380,13 @@ class OffsetCornerLongitudePoint2(MappedConverterElement):
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
 
+
 @register
 class OffsetCornerLatitudePoint3(MappedConverterElement):
     tag, name = 30, "Offset Corner Latitude Point 3"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
+
 
 @register
 class OffsetCornerLongitudePoint3(MappedConverterElement):
@@ -358,17 +394,20 @@ class OffsetCornerLongitudePoint3(MappedConverterElement):
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
 
+
 @register
 class OffsetCornerLatitudePoint4(MappedConverterElement):
     tag, name = 32, "Offset Corner Latitude Point 4"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
 
+
 @register
 class OffsetCornerLongitudePoint4(MappedConverterElement):
     tag, name = 33, "Offset Corner Longitude Point 4"
     min_value, max_value, units = -0.075, +0.075, 'degrees'
     min_length, max_length, signed = 2, 2, True
+
 
 # Tags 34-39 "Atmospheric Conditions"
 
@@ -378,17 +417,20 @@ class TargetLocationLatitude(MappedConverterElement):
     min_value, max_value, units = -90, +90, 'degrees'
     min_length, max_length, signed = 4, 4, True
 
+
 @register
 class TargetLocationLongitude(MappedConverterElement):
     tag, name = 41, "Target Location Longitude"
     min_value, max_value, units = -180, +180, 'degrees'
     min_length, max_length, signed = 4, 4, True
 
+
 @register
 class TargetLocationElevation(MappedConverterElement):
     tag, name = 42, "Target Location Elevation"
     min_value, max_value, units = -900, +19e3, "meters"
     min_length, max_length, signed = 2, 2, False
+
 
 # Tags 43 - 46 "Target Information"
 
@@ -407,12 +449,11 @@ class SecurityLocalMetadataSet(ConverterElement):
         self.parse_tags()
 
     def parse_tags(self):
-        for tag in klvcms.Parser(io.BytesIO(self.value), key_length=1):
+        for tag in parser.Parser(io.BytesIO(self.value), key_length=1):
             self._tags[tag.key] = UnsupportedTag(tag)
 
     def __str__(self):
         return super().__str__() + '\n' + '\n'.join(['    ' + str(tag) for tag in self._tags.values()])
-
 
 
 # Tags 49 - 64
@@ -424,6 +465,7 @@ class UASLSVersionNumber(ConverterElement):
     # TODO: Associate max version with the version of the MISB implemented?
     min_length, max_length, signed = 1, 1, False
 
+
 # Tags 66 - 93
 
 # @register
@@ -432,6 +474,7 @@ class MIISCoreIdentifier(object):
 
     def converter(self, item):
         return self._bytes_to_hex_dump(item.value)
+
 
 # Tags 95 - 96
 
@@ -447,4 +490,3 @@ if __name__ == '__main__':
     for packet in UASLSParser(readfile):
         for tag in packet._tags.values():
             print(tag)
-

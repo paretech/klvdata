@@ -27,6 +27,7 @@ import warnings
 
 from collections import OrderedDict
 
+
 # TODO: make _IterParser and Parser classes
 class Parser(object):
     """Base class for parsing Key Length Value (KLV) structured binary data.
@@ -68,31 +69,37 @@ class Parser(object):
 
         return data
 
+
 def bytes_to_int(value, signed=False):
     return int.from_bytes(bytes(value), byteorder='big', signed=signed)
+
 
 def int_to_bytes(value, length, signed=False):
     return int(value).to_bytes(length, byteorder='big', signed=signed)
 
+
 def bytes_to_str(value):
     return bytes(value).decode('UTF-8')
+
 
 def str_to_bytes(value):
     return bytes(str(value), 'UTF-8')
 
+
 def bytes_to_hex_dump(value):
     return " ".join(["{:02X}".format(byte) for byte in bytes(value)])
+
 
 def bytes_to_float(value, minimum, maximum, signed=True):
     """Convert the fixed point value self.value to a floating point value."""
     length = len(bytes(value))
 
     if signed:
-        x1 = -(2**(length * 8 - 1) - 1)
-        x2 = +(2**(length * 8 - 1) - 1)
+        x1 = -(2 ** (length * 8 - 1) - 1)
+        x2 = +(2 ** (length * 8 - 1) - 1)
     else:
         x1 = 0
-        x2 = +(2**(length * 8) - 1)
+        x2 = +(2 ** (length * 8) - 1)
 
     y1, y2 = minimum, maximum
 
@@ -100,16 +107,17 @@ def bytes_to_float(value, minimum, maximum, signed=True):
 
     x = bytes_to_int(value, signed)
 
-    return m*(x - x1) + y1 # Return y
+    return m * (x - x1) + y1  # Return y
+
 
 def float_to_bytes(value, length, minimum, maximum, signed=True):
     """Convert the fixed point value self.value to a floating point value."""
     if signed:
-        x1 = -(2**(length * 8 - 1) - 1)
-        x2 = +(2**(length * 8 - 1) - 1)
+        x1 = -(2 ** (length * 8 - 1) - 1)
+        x2 = +(2 ** (length * 8 - 1) - 1)
     else:
         x1 = 0
-        x2 = +(2**(length * 8) - 1)
+        x2 = +(2 ** (length * 8) - 1)
 
     y1, y2 = minimum, maximum
 
@@ -117,16 +125,16 @@ def float_to_bytes(value, length, minimum, maximum, signed=True):
 
     y = value
 
-    return int_to_bytes((1/m) * (y - y1) + x1, length) # Return x
+    return int_to_bytes((1 / m) * (y - y1) + x1, length)  # Return x
+
 
 def calc_checksum(data):
     length = len(data) - 2
     wordsize, mod = divmod(length, 2)
 
-    words = sum(struct.unpack(">{:d}H".format(wordsize), data[0:length-mod]))
+    words = sum(struct.unpack(">{:d}H".format(wordsize), data[0:length - mod]))
 
     if mod:
-        words += data[length-1] << 8
+        words += data[length - 1] << 8
 
     return struct.pack('>H', words & 0xFFFF)
-
