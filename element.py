@@ -42,3 +42,8 @@ class Element:
     def __bytes__(self):
         """Return the MISB encoded representation of a Key, Length, Value element."""
         return bytes(self.key) + self.length + bytes(self.value)
+
+    def __repr__(self):
+        args = ', '.join(map(repr, (self.key, self.value)))
+        return '{}({})'.format(self.__class__.__name__, args)
+
