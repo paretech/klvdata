@@ -1,6 +1,6 @@
 # STANAG 4609 KLV Metadata Analyzer and Composer
 ## Summary
-The MISB standards and recommended practices are freely and openly available at <http://www.gwg.nga.mil/misb/index.html>. These documents are generally easy to understand and detail all the information that is necessary to implement a Key Length Value (KLV) metadata analyzer and composer.
+The MISB standards and recommended practices are freely and openly available at <http://www.gwg.nga.mil/misb/index.html>. These documents are generally easy to understand and detail the information required to implement a Key Length Value (KLV) metadata analyzer and composer (and then some).
 
 This collection of modules provides functionality for parsing and manipulating KLV data.
 
