@@ -26,9 +26,10 @@ from common import ber_encode
 
 
 class Element:
-    def __init__(self, key, value):
+    def __init__(self, key, value, length=None):
         self.key = key
         self.value = value
+        self._length = length
 
     @property
     def length(self):
@@ -36,8 +37,13 @@ class Element:
         return ber_encode(len(self))
 
     def __len__(self):
-        """Return the integer byte length of self.value."""
-        return len(self.value)
+        """Return the defined length or integer byte length of self.value."""
+        if self._length:
+            raise NotTestedError
+
+            return self._length
+        else:
+            return len(self.value)
 
     def __bytes__(self):
         """Return the MISB encoded representation of a Key, Length, Value element."""
@@ -46,4 +52,3 @@ class Element:
     def __repr__(self):
         args = ', '.join(map(repr, (self.key, self.value)))
         return '{}({})'.format(self.__class__.__name__, args)
-

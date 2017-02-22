@@ -71,18 +71,16 @@ class ElementShort(ElementTestCase):
 
 class ElementLong(ElementTestCase):
     def setUp(self):
-        self.key = bytes()
-        self.length = bytes()
-        self.value = bytes()
+        self.packet = bytes()
 
-        with open('DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-            packet = f.read()
+        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+            self.packet = f.read()
 
-            self.key = packet[0:15]
-            self.length = packet[16:18]
-            self.value = packet[18:]
-
-        self.packet = self.key + self.length + self.value
+        self.key = self.packet[0:16]
+        assert len(self.key) == 16
+        self.length = self.packet[16:18]
+        assert len(self.length) == 2
+        self.value = self.packet[18:]
 
         from element import Element
         self.element = Element(self.key, self.value)

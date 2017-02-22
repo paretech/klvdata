@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
 def bytes_to_int(value, signed=False):
     """Return integer given bytes."""
     return int.from_bytes(bytes(value), byteorder='big', signed=signed)
@@ -52,3 +53,65 @@ def ber_encode(length):
         byte_length = ((length.bit_length() - 1) // 8) + 1
 
         return int_to_bytes(byte_length + 128) + int_to_bytes(length, length=byte_length)
+
+
+def bytes_to_str(value):
+    return bytes(value).decode('UTF-8')
+
+
+def str_to_bytes(value):
+    return bytes(str(value), 'UTF-8')
+
+
+def bytes_to_hex_dump(value):
+    return " ".join(["{:02X}".format(byte) for byte in bytes(value)])
+
+
+def bytes_to_float(value, minimum, maximum, signed=True):
+    """Convert the fixed point value self.value to a floating point value."""
+    length = len(bytes(value))
+
+    if signed:
+        x1 = -(2 ** (length * 8 - 1) - 1)
+        x2 = +(2 ** (length * 8 - 1) - 1)
+    else:
+        x1 = 0
+        x2 = +(2 ** (length * 8) - 1)
+
+    y1, y2 = minimum, maximum
+
+    m = (y2 - y1) / (x2 - x1)
+
+    x = bytes_to_int(value, signed)
+
+    return m * (x - x1) + y1  # Return y
+
+
+def float_to_bytes(value, length, minimum, maximum, signed=True):
+    """Convert the fixed point value self.value to a floating point value."""
+    if signed:
+        x1 = -(2 ** (length * 8 - 1) - 1)
+        x2 = +(2 ** (length * 8 - 1) - 1)
+    else:
+        x1 = 0
+        x2 = +(2 ** (length * 8) - 1)
+
+    y1, y2 = minimum, maximum
+
+    m = (y2 - y1) / (x2 - x1)
+
+    y = value
+
+    return int_to_bytes((1 / m) * (y - y1) + x1, length)  # Return x
+
+
+def calc_checksum(data):
+    length = len(data) - 2
+    word_size, mod = divmod(length, 2)
+
+    words = sum(struct.unpack(">{:d}H".format(word_size), data[0:length - mod]))
+
+    if mod:
+        words += data[length - 1] << 8
+
+    return struct.pack('>H', words & 0xFFFF)
