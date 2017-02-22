@@ -22,6 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from struct import pack
+from struct import unpack
+
 
 def bytes_to_int(value, signed=False):
     """Return integer given bytes."""
@@ -109,9 +112,9 @@ def calc_checksum(data):
     length = len(data) - 2
     word_size, mod = divmod(length, 2)
 
-    words = sum(struct.unpack(">{:d}H".format(word_size), data[0:length - mod]))
+    words = sum(unpack(">{:d}H".format(word_size), data[0:length - mod]))
 
     if mod:
         words += data[length - 1] << 8
 
-    return struct.pack('>H', words & 0xFFFF)
+    return pack('>H', words & 0xFFFF)
