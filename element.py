@@ -44,5 +44,6 @@ class Element:
         return bytes(self.key) + self.length + bytes(self.value)
 
     def __repr__(self):
+        """Return as-code string used to re-create the object."""
         args = ', '.join(map(repr, (self.key, self.value)))
         return '{}({})'.format(self.__class__.__name__, args)
