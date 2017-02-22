@@ -70,7 +70,7 @@ class Parser(object):
 if __name__ == "__main__":
     from element import Element
 
-    with open('DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-        for packet in Parser(f):
+    with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+        for packet in Parser(f, key_length=16):
             for tag in Parser(Element(*packet).value, key_length=1):
                 print(Element(*tag))
