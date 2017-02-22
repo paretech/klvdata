@@ -52,6 +52,7 @@ class ParserSingleLong(ParserTestCase):
     def setUp(self):
         self.packet = bytes()
 
+        # Sample data from MISB ST 0902.5
         with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             self.packet = f.read()
 
