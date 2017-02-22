@@ -87,7 +87,8 @@ def bytes_to_float(value, minimum, maximum, signed=True):
 
     x = bytes_to_int(value, signed)
 
-    return m * (x - x1) + y1  # Return y
+    # Return y
+    return m * (x - x1) + y1
 
 
 def float_to_bytes(value, length, minimum, maximum, signed=True):
@@ -105,7 +106,8 @@ def float_to_bytes(value, length, minimum, maximum, signed=True):
 
     y = value
 
-    return int_to_bytes((1 / m) * (y - y1) + x1, length)  # Return x
+    # Return x
+    return int_to_bytes((1 / m) * (y - y1) + x1, length)
 
 
 def calc_checksum(data):
