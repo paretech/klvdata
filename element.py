@@ -37,7 +37,7 @@ class Element:
 
     def __len__(self):
         """Return the defined length or integer byte length of self.value."""
-            return len(self.value)
+        return len(self.value)
 
     def __bytes__(self):
         """Return the MISB encoded representation of a Key, Length, Value element."""
