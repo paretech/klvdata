@@ -26,10 +26,9 @@ from common import ber_encode
 
 
 class Element:
-    def __init__(self, key, value, length=None):
+    def __init__(self, key, value):
         self.key = key
         self.value = value
-        self._length = length
 
     @property
     def length(self):
@@ -38,11 +37,6 @@ class Element:
 
     def __len__(self):
         """Return the defined length or integer byte length of self.value."""
-        if self._length:
-            raise NotTestedError
-
-            return self._length
-        else:
             return len(self.value)
 
     def __bytes__(self):
