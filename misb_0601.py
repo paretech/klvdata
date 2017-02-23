@@ -28,7 +28,11 @@ from datetime import datetime
 from common import bytes_to_int
 
 
-class PrecisionTimeStamp(Element):
+class LocalSetElement(Element):
+    pass
+
+
+class PrecisionTimeStamp(LocalSetElement):
     _key = bytes.fromhex('02')
     _name = 'Precision Time Stamp'
     _length = 8

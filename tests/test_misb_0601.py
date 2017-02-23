@@ -67,9 +67,16 @@ class ParserSingleShort(LocalSetUAS):
 
         self.assertEquals(bytes(self.element), self.packet)
 
-    def test_display(self):
-        print(repr(self.element))
+    def test_str(self):
         print(self.element)
+        print(str(self.element))
+        print(repr(self.element))
+        self.assertEquals(str(self.element), 'Precision Time Stamp: 2009-01-12 22:08:22')
+
+    def test_repr(self):
+        # This is really a test against Element to see if its repr handles subclassing.
+        from misb_0601 import PrecisionTimeStamp
+        self.assertIsInstance(eval(repr(self.element)), PrecisionTimeStamp)
 
 if __name__ == '__main__':
     unittest.main()

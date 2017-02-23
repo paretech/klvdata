@@ -68,6 +68,10 @@ class ElementShort(ElementTestCase):
 
         self.assertEquals(bytes(self.element), self.packet)
 
+    def test_repr(self):
+        from element import Element
+        self.assertIsInstance(eval(repr(self.element)), Element)
+
 
 class ElementLong(ElementTestCase):
     def setUp(self):
