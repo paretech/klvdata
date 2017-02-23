@@ -22,35 +22,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from common import ber_encode
+
+from element import Element
+from datetime import datetime
+from common import bytes_to_int
 
 
-class Element:
-    class Key(bytes):
-        pass
+class PrecisionTimeStamp(Element):
+    _key = bytes.fromhex('02')
+    _name = 'Precision Time Stamp'
+    _length = 8
+    _signed = False
+    _unit = 'microseconds'
 
-    class Value(bytes):
-        pass
-
-    def __init__(self, key, value):
-        self.key = self.Key(key)
-        self.value = self.Value(value)
+    def __init__(self, value):
+        super().__init__(self._key, value)
 
     @property
-    def length(self):
-        """Return the BER encoded byte length of self.value."""
-        return ber_encode(len(self))
+    def datetime(self):
+        return datetime.utcfromtimestamp(int(bytes_to_int(self.value)/1e6))
 
-    def __len__(self):
-        """Return the defined length or integer byte length of self.value."""
-        return len(self.value)
+    def __str__(self):
+        return "{}: {}".format(self._name, self.datetime)
 
-    def __bytes__(self):
-        """Return the MISB encoded representation of a Key, Length, Value element."""
-        return bytes(self.key) + self.length + bytes(self.value)
 
-    def __repr__(self):
-        """Return as-code string used to re-create the object."""
-        args = ', '.join(map(repr, (self.key, self.value)))
-        return '{}({})'.format(self.__class__.__name__, args)
 
