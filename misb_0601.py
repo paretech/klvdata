@@ -34,9 +34,9 @@ class LocalSetElement(Element):
 
 
 class PrecisionTimeStamp(LocalSetElement):
-    _key = bytes.fromhex('02')
+    _key = b'\x02'
     _name = 'Precision Time Stamp'
-    _length = 8
+    _length = b'\x08'
     _signed = False
     _unit = 'microseconds'
 
