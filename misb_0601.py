@@ -29,19 +29,19 @@ from common import bytes_to_int
 
 
 class LocalSetElement(Element):
+    def __init__(self, value):
+        super().__init__(self._key, value)
+
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self.value)
 
 
-class PrecisionTimeStamp(LocalSetElement):
-    _key = b'\x02'
-    _name = 'Precision Time Stamp'
-    _length = b'\x08'
-    _signed = False
-    _unit = 'microseconds'
+class Checksum(LocalSetElement):
+    _key, _name = 1, 'Checksum'
 
-    def __init__(self, value):
-        super().__init__(self._key, value)
+
+class PrecisionTimeStamp(LocalSetElement):
+    _key, _name = b'\x02', 'Precision Time Stamp'
 
     @property
     def datetime(self):
@@ -49,6 +49,3 @@ class PrecisionTimeStamp(LocalSetElement):
 
     def __str__(self):
         return "{}: {}".format(self._name, self.datetime.isoformat(sep=' '))
-
-
-
