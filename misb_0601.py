@@ -43,7 +43,7 @@ class PrecisionTimeStamp(Element):
         return datetime.utcfromtimestamp(int(bytes_to_int(self.value)/1e6))
 
     def __str__(self):
-        return "{}: {}".format(self._name, self.datetime)
+        return "{}: {}".format(self._name, self.datetime.isoformat(sep=' '))
 
 
 

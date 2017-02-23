@@ -159,9 +159,7 @@ class DateConverterElement(ConverterElement):
             instance._value = parser.int_to_bytes(int(timestamp), 8)
 
         def __get__(self, instance, owner):
-            timestamp = parser.bytes_to_int(instance._value) * 1e-6
-            # TODO Refactor to use IntConverterElement
-            return datetime.utcfromtimestamp(timestamp)
+            date
 
     value = Value()
 
