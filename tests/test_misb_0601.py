@@ -76,6 +76,7 @@ class ParserSingleShort(LocalSetUAS):
     def test_repr(self):
         # This is really a test against Element to see if its repr handles subclassing.
         from misb_0601 import PrecisionTimeStamp
+        repr(self.element)
         self.assertIsInstance(eval(repr(self.element)), PrecisionTimeStamp)
 
 if __name__ == '__main__':

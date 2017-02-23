@@ -29,7 +29,8 @@ from common import bytes_to_int
 
 
 class LocalSetElement(Element):
-    pass
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__, self.value)
 
 
 class PrecisionTimeStamp(LocalSetElement):
