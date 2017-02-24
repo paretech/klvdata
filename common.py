@@ -59,14 +59,22 @@ def ber_encode(length):
 
 
 def bytes_to_str(value):
+    """Return UTF-8 formatted string from bytes object."""
     return bytes(value).decode('UTF-8')
 
 
 def str_to_bytes(value):
+    """Return bytes object from UTF-8 formatted string."""
     return bytes(str(value), 'UTF-8')
 
 
-def bytes_to_hex_dump(value):
+def hexstr_to_bytes(value):
+    """Return bytes object and filter out formatting characters from a string of hexadecimal numbers."""
+    return bytes.fromhex(''.join(filter(str.isalnum, value)))
+
+
+def bytes_to_hexstr(value):
+    """Return string of hexadecimal numbers separated by spaces from a bytes object."""
     return " ".join(["{:02X}".format(byte) for byte in bytes(value)])
 
 
@@ -110,7 +118,8 @@ def float_to_bytes(value, length, minimum, maximum, signed=True):
     return int_to_bytes((1 / m) * (y - y1) + x1, length)
 
 
-def calc_checksum(data):
+def packet_checksum(data):
+    """Return two byte checksum from a SMPTE ST 336 KLV structured bytes object."""
     length = len(data) - 2
     word_size, mod = divmod(length, 2)
 
