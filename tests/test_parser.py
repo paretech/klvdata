@@ -36,8 +36,8 @@ class ParserSingleShort(ParserTestCase):
 
         self.packet = self.key + self.length + self.value
 
-        from parser import Parser
-        self.parser = Parser(self.packet, key_length=1)
+        from klvparser import KLVParser
+        self.parser = KLVParser(self.packet, key_length=1)
 
     def test_key(self):
         key, value = next(self.parser)
@@ -62,8 +62,8 @@ class ParserSingleLong(ParserTestCase):
         assert len(self.length) == 2
         self.value = self.packet[18:]
 
-        from parser import Parser
-        self.parser = Parser(self.packet, key_length=16)
+        from klvparser import KLVParser
+        self.parser = KLVParser(self.packet, key_length=16)
 
     def test_key(self):
         key, value = next(self.parser)
@@ -72,6 +72,9 @@ class ParserSingleLong(ParserTestCase):
     def test_value(self):
         key, value = next(self.parser)
         self.assertEquals(value, self.value)
+    #
+    # def test_debug(self):
+    #     print(self)
 
 if __name__ == "__main__":
     unittest.main()

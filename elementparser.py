@@ -23,29 +23,8 @@
 # SOFTWARE.
 
 from element import Element
-from parser import Parser
 
 
-class PacketParser:
-    keys = {}
-
-    @classmethod
-    def add_parser(cls, obj):
-        cls.keys[obj.key] = obj
-
-        return obj
-
-    def __init__(self, _value, depth=-1):
-        self._value = {}
-
-        for key, value in Parser(_value, key_length=16):
-            self._value[key] = self.keys.get(key, UnknownUniversalSetElement)(value)
-
-
-class UnknownUniversalSetElement(Element):
-    pass
-
-# def register_packet(obj):
-#     PacketParser.keys[obj.key] = obj
-#
-#     return obj
+class ElementParser(Element):
+    def __init__(self, value):
+        super().__init__(self.key, value)

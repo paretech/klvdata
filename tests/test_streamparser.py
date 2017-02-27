@@ -20,48 +20,31 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 
-from common import ber_encode
+import unittest
 
 
-class Element:
-
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
-
-        self._items = None
-
-    @property
-    def key(self):
-        return self._key
-
-    @property
-    def length(self):
-        """Return the BER encoded byte length of self.value."""
-        return ber_encode(len(self))
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    def __bytes__(self):
-        """Return the MISB encoded representation of a Key, Length, Value element."""
-        return bytes(self.key) + self.length + bytes(self.value)
-
-    def __len__(self):
-        """Return the defined length or integer byte length of self.value."""
-        return len(self.value)
-
-    def __repr__(self):
-        """Return as-code string used to re-create the object."""
-        args = ', '.join(map(repr, (self.key, self.value)))
-        return '{}({})'.format(self.__class__.__name__, args)
+class PacketParserTestCase(unittest.TestCase):
+    pass
 
 
 
+class ParserSingleLong(PacketParserTestCase):
+    def setUp(self):
+        self.packet = bytes()
+
+        # Sample data from MISB ST 0902.5
+        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+            self.packet = f.read()
+
+        self.key = self.packet[0:16]
+        assert len(self.key) == 16
+        self.length = self.packet[16:18]
+        assert len(self.length) == 2
+        self.value = self.packet[18:]
+
+    def test_key(self):
+        pass
+
+if __name__ == "__main__":
+    unittest.main()

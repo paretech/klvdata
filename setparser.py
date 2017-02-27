@@ -22,46 +22,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from common import ber_encode
+from collections import OrderedDict
+from pprint import pformat
+from klvparser import KLVParser
+from element import Element
 
 
-class Element:
+class SetParser(Element):
+    """Parsable Element. Not intended to be used directly. Always as super class."""
 
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
+    def __init__(self, value):
+        """All parser needs is the value, no other information"""
+        super().__init__(self.key, value)
+        self._items = OrderedDict()
+        self._parse()
 
-        self._items = None
+    def _parse(self):
+        """Parse the parent into items. Only called on init."""
+        for key, value in KLVParser(self._value, key_length=1):
+            self._items[key] = self.get_parser(key)(key, value)
 
-    @property
-    def key(self):
-        return self._key
+    def items(self):
+        """Return ordered dictionary of parsed parent items."""
+        return self._items
 
-    @property
-    def length(self):
-        """Return the BER encoded byte length of self.value."""
-        return ber_encode(len(self))
+    @classmethod
+    def add_parser(cls, obj):
+        """Decorator method used to register a parser to the class parsing repertoire."""
+        cls._parsers[obj.key] = obj
 
-    @property
-    def value(self):
-        return self._value
+        return obj
 
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    def __bytes__(self):
-        """Return the MISB encoded representation of a Key, Length, Value element."""
-        return bytes(self.key) + self.length + bytes(self.value)
-
-    def __len__(self):
-        """Return the defined length or integer byte length of self.value."""
-        return len(self.value)
+    @classmethod
+    def get_parser(cls, key):
+        """Query parsers given key."""
+        return cls._parsers.get(key, Element)
 
     def __repr__(self):
-        """Return as-code string used to re-create the object."""
-        args = ', '.join(map(repr, (self.key, self.value)))
-        return '{}({})'.format(self.__class__.__name__, args)
-
-
-
+        return pformat(self.items())

@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import parser
+import klvparser
 import io
 
 from collections import OrderedDict
@@ -36,7 +36,7 @@ class UASLSParser(object):
         if not hasattr(source, "read"):
             source = open(source, "rb")
 
-        self.packet = parser.Parser(source, key_length=16)
+        self.packet = klvparser.KLVParser(source, key_length=16)
 
     def __next__(self):
         self._tags = OrderedDict()
@@ -49,8 +49,8 @@ class UASLSParser(object):
         return self
 
     def parse_tags(self):
-        for tag in parser.Parser(io.BytesIO(self.packet.value), key_length=1):
-            self._tags[tag.key] = self.converters.get(tag.key, UnsupportedTag)(tag)
+        for tag in klvparser.KLVParser(io.BytesIO(self.packet.value), key_length=1):
+            self._tags[tag.key] = fo
 
 
 def register(obj):
@@ -104,10 +104,10 @@ class StringConverterElement(ConverterElement):
 
     class Value(object):
         def __set__(self, instance, value):
-            instance._value = parser.str_to_bytes(value)
+            instance._value = klvparser.str_to_bytes(value)
 
         def __get__(self, instance, owner):
-            return parser.bytes_to_str(instance._value)
+            return klvparser.bytes_to_str(instance._value)
 
     value = Value()
 
@@ -124,14 +124,14 @@ class MappedConverterElement(ConverterElement):
 
     class Value():
         def __get__(self, instance, owner):
-            return parser.bytes_to_float(
+            return klvparser.bytes_to_float(
                 instance._value,
                 instance.min_value,
                 instance.max_value,
                 instance.signed)
 
         def __set__(self, instance, value):
-            instance._value = parser.float_to_bytes(
+            instance._value = klvparser.float_to_bytes(
                 value, instance._length,
                 instance.min_value,
                 instance.max_value,
@@ -156,7 +156,7 @@ class DateConverterElement(ConverterElement):
             timestamp = (value - datetime(1970, 1, 1)) / timedelta(microseconds=1)
 
             # TODO Refactor to use IntConverterElement
-            instance._value = parser.int_to_bytes(int(timestamp), 8)
+            instance._value = klvparser.int_to_bytes(int(timestamp), 8)
 
         def __get__(self, instance, owner):
             date
@@ -447,7 +447,7 @@ class SecurityLocalMetadataSet(ConverterElement):
         self.parse_tags()
 
     def parse_tags(self):
-        for tag in parser.Parser(io.BytesIO(self.value), key_length=1):
+        for tag in klvparser.KLVParser(io.BytesIO(self.value), key_length=1):
             self._tags[tag.key] = UnsupportedTag(tag)
 
     def __str__(self):

@@ -68,37 +68,8 @@ class ParserSingleShort(LocalSetUAS):
         self.assertEquals(bytes(self.element), self.packet)
 
     def test_str(self):
-        print(self.element)
-        print(str(self.element))
-        print(repr(self.element))
         self.assertEquals(str(self.element), 'Precision Time Stamp: 2009-01-12 22:08:22')
 
-    def test_repr(self):
-        # This is really a test against Element to see if its repr handles subclassing.
-        from misb0601 import PrecisionTimeStamp
-        repr(self.element)
-        self.assertIsInstance(eval(repr(self.element)), PrecisionTimeStamp)
-
-
-class ParserSingleShort(LocalSetUAS):
-    def setUp(self):
-        self.packet = bytes()
-
-        # Sample data from MISB ST 0902.5
-        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-            self.packet = f.read()
-
-        self.key = self.packet[0:16]
-        assert len(self.key) == 16
-        self.length = self.packet[16:18]
-        assert len(self.length) == 2
-        self.value = self.packet[18:]
-
-        from misb0601 import UASLocalSet
-        self.element = UASLocalSet(self.value)
-
-    def test_test(self):
-        print(self.element._value)
 
 if __name__ == '__main__':
     unittest.main()

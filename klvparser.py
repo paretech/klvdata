@@ -27,7 +27,7 @@ from io import IOBase
 from common import bytes_to_int
 
 
-class Parser(object):
+class KLVParser(object):
     """Return key, value pairs parsed from an SMPTE ST 336 source."""
     def __init__(self, source, key_length):
         if isinstance(source, IOBase):
@@ -71,6 +71,6 @@ if __name__ == "__main__":
     from element import Element
 
     with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-        for packet in Parser(f, key_length=16):
-            for tag in Parser(Element(*packet).value, key_length=1):
+        for packet in KLVParser(f, key_length=16):
+            for tag in KLVParser(Element(*packet).value, key_length=1):
                 print(Element(*tag))

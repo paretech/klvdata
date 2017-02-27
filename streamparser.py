@@ -22,46 +22,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from common import ber_encode
+from setparser import SetParser
+class StreamParser:
+    child_parsers = {}
 
+    @classmethod
+    def add_child_parser(cls, obj):
+        cls.child_parsers[obj.key] = obj
 
-class Element:
+        return obj
 
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
-
-        self._items = None
-
-    @property
-    def key(self):
-        return self._key
-
-    @property
-    def length(self):
-        """Return the BER encoded byte length of self.value."""
-        return ber_encode(len(self))
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    def __bytes__(self):
-        """Return the MISB encoded representation of a Key, Length, Value element."""
-        return bytes(self.key) + self.length + bytes(self.value)
-
-    def __len__(self):
-        """Return the defined length or integer byte length of self.value."""
-        return len(self.value)
-
-    def __repr__(self):
-        """Return as-code string used to re-create the object."""
-        args = ', '.join(map(repr, (self.key, self.value)))
-        return '{}({})'.format(self.__class__.__name__, args)
-
-
-
+    @classmethod
+    def child_parser(cls, child_key):
+        return cls.child_parser.get(child_key)
