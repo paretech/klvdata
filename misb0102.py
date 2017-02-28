@@ -98,9 +98,5 @@ class SecurityClassification(ElementParser):
         b'\x05': 'TOP SECRET',
     }
 
-    @property
-    def classification(self):
-        return self._classification[self.value]
-
     def __str__(self):
-        return "{}: {}".format(self.name, self.classification)
+        return str(self._classification[self.value])

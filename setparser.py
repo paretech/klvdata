@@ -36,17 +36,17 @@ class SetParser(Element, metaclass=ABCMeta):
     def __init__(self, value):
         """All parser needs is the value, no other information"""
         super().__init__(self.key, value)
-        self._items = OrderedDict()
+        self.items = OrderedDict()
         self._parse()
 
     def _parse(self):
         """Parse the parent into items. Called on init and modification of parent value."""
         for key, value in KLVParser(self.value, key_length=1):
             if key in self.parsers:
-                self._items[key] = self.parsers[key](value)
+                self.items[key] = self.parsers[key](value)
             else:
                 # Even if KLV is not known, make best effort to parse and preserve.
-                self._items[key] = Element(key, value)
+                self.items[key] = Element(key, value)
 
     @classmethod
     def add_parser(cls, obj):
@@ -79,4 +79,4 @@ class SetParser(Element, metaclass=ABCMeta):
         pass
 
     def __repr__(self):
-        return pformat(self._items, indent=1)
+        return pformat(self.items, indent=1)

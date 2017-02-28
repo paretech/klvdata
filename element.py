@@ -42,7 +42,7 @@ class Element:
         self.key = key
         self.value = value
 
-        self._items = None
+        self.items = None
 
     @property
     def length(self):
@@ -54,12 +54,12 @@ class Element:
         return bytes(self.key) + bytes(self.length) + bytes(self.value)
 
     def __len__(self):
-        """Return the defined length or integer byte length of self.value."""
-        return len(self.value)
+        """Return the byte length of self.value."""
+        return len(bytes(self.value))
 
     def __repr__(self):
         """Return as-code string used to re-create the object."""
-        args = ', '.join(map(repr, (self.key, self.value)))
+        args = ', '.join(map(repr, (bytes(self.key), bytes(self.value))))
         return '{}({})'.format(self.__class__.__name__, args)
 
 

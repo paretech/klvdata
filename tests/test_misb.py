@@ -41,7 +41,9 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(bytes(ST0102(value)), klv)
 
         # Specific to value under test
-        self.assertEquals(len(ST0102(value)._items), 6)
+        self.assertEquals(len(ST0102(value).items), 6)
+
+        print(ST0102(value).items[b'\x01'])
 
     def test_st0601_1(self):
         # This test vector from MISB ST0902.5. Some errors may have been hand corrected.
@@ -67,7 +69,7 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(bytes(ST0601(value)), klv)
 
         test = ST0601(value)
-        # print(test)
+        print(test)
 
     def test_st0601_2(self):
         # This test vector is hand generated, containing the MISB ST0601 16 byte key and the
