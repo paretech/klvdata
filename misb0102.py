@@ -22,23 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from collections import OrderedDict
-
-from element import Element
-from datetime import datetime
-from common import bytes_to_int
-from common import hexstr_to_bytes
-from common import bytes_to_hexstr
-
-from streamparser import StreamParser
-
-from klvparser import KLVParser
-
-from pprint import pformat
 from setparser import SetParser
-# from misb0601 import UASLocalSet
-
-
+from element import ElementParser
+from misb0601 import ST0601
 
 _classifying_country_coding = {
     b'\x01': 'ISO-3166 Two Letter',
@@ -80,7 +66,7 @@ _object_country_coding = {
 }
 
 
-# @UASLocalSet.add_child_parser
+@ST0601.add_parser
 class ST0102(SetParser):
     """MISB ST0102 Security Metadata nested local set parser.
 
@@ -91,11 +77,11 @@ class ST0102(SetParser):
     Must be a subclass of Element or duck type Element.
     """
     key, name = b'\x30', "Security Local Metadata Set"
-    _parsers = {}
+    parsers = {}
 
 
 @ST0102.add_parser
-class SecurityClassification(Element):
+class SecurityClassification(ElementParser):
     """MISB ST0102 Security Classification value interpretation parser.
 
     The Security Classification metadata element contains a value

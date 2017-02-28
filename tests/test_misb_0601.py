@@ -23,12 +23,7 @@
 
 import unittest
 
-
-class LocalSetUAS(unittest.TestCase):
-    pass
-
-
-class ParserSingleShort(LocalSetUAS):
+class ParserSingleShort(unittest.TestCase):
     def setUp(self):
         self.key = b'\x02'
         self.length = b'\x08'
@@ -39,22 +34,10 @@ class ParserSingleShort(LocalSetUAS):
         from misb0601 import PrecisionTimeStamp
         self.element = PrecisionTimeStamp(self.value)
 
-    def test_key(self):
-        self.assertEquals(self.element.key, self.key)
-
     def test_ber_length(self):
         from common import ber_decode
         from common import ber_encode
         self.assertEquals(ber_encode(ber_decode(self.length)), self.length)
-
-    def test_length(self):
-        self.assertEquals(self.element.length, self.length)
-
-    def test_value(self):
-        self.assertEquals(self.element.value, self.value)
-
-    def test_bytes(self):
-        self.assertEquals(bytes(self.element), self.packet)
 
     def test_modify_value(self):
         from datetime import datetime
@@ -66,10 +49,6 @@ class ParserSingleShort(LocalSetUAS):
         self.element.value = time
 
         self.assertEquals(bytes(self.element), self.packet)
-
-    def test_str(self):
-        self.assertEquals(str(self.element), 'Precision Time Stamp: 2009-01-12 22:08:22')
-
 
 if __name__ == '__main__':
     unittest.main()

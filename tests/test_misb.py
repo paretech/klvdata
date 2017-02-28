@@ -25,15 +25,6 @@ import unittest
 
 
 class ParserSingleShort(unittest.TestCase):
-    # def test_security_timestamp(self):
-    #     key = b'\x02'
-    #     length = b'\x08'
-    #     value = b'\x00\x04\x60\x50\x58\x4E\x01\x80'
-    #     klv = self.key + self.length + self.value
-    #
-    #     from misb0601 import PrecisionTimeStamp
-    #     self.element = PrecisionTimeStamp(self.value)
-
     def test_st0102(self):
         # Test parameters from MISB ST0902.5 Annex C for "Dynamic and Constant" MISMMS Packet Data
         key = b'\x30'
@@ -50,21 +41,70 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(bytes(ST0102(value)), klv)
 
         # Specific to value under test
-        self.assertEquals(len(ST0102(value).items()), 6)
+        self.assertEquals(len(ST0102(value)._items), 6)
 
-    def test_st0601(self):
-        key = b'\x06\x0e+4\x02\x0b\x01\x01\x0e\x01\x03\x01\x01\x00\x00\x00'
-        length = b'\x1e'
-        value = b'0\x1c\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
-        klv = key + length + value
+    def test_st0601_1(self):
+        # This test vector from MISB ST0902.5. Some errors may have been hand corrected.
+        # Annex C for "Dynamic and Constant" MISMMS Packet Data.  Sample data from MISB ST 0902.5
+        klv = bytes()
+
+        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+            klv = f.read()
+
+        key = klv[0:16]
+        assert len(key) == 16
+        length = klv[16:18]
+        assert len(length) == 2
+        value = klv[18:]
 
         from misb0601 import ST0601
+        # from misb0102 import ST0102
 
         # Basic Properties
         self.assertEquals(ST0601(value).key, key)
         self.assertEquals(ST0601(value).length, length)
         self.assertEquals(ST0601(value).value, value)
         self.assertEquals(bytes(ST0601(value)), klv)
+
+
+
+    def test_st0601_2(self):
+        # This test vector is hand generated, containing the MISB ST0601 16 byte key and the
+        # MISB ST0102 nested security metadata local set from MISB ST0902.5
+        # Annex C for "Dynamic and Constant" MISMMS Packet Data.
+        key = b'\x06\x0e+4\x02\x0b\x01\x01\x0e\x01\x03\x01\x01\x00\x00\x00'
+        length = b'\x1e'
+        value = b'0\x1c\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
+        klv = key + length + value
+
+        from misb0601 import ST0601
+        # from misb0102 import ST0102
+
+        # Basic Properties
+        self.assertEquals(ST0601(value).key, key)
+        self.assertEquals(ST0601(value).length, length)
+        self.assertEquals(ST0601(value).value, value)
+        self.assertEquals(bytes(ST0601(value)), klv)
+
+
+
+    def test_st0601_timestamp(self):
+        key = b'\x02'
+        length = b'\x08'
+        value = b'\x00\x04\x60\x50\x58\x4E\x01\x80'
+        klv = key + length + value
+
+        from misb0601 import PrecisionTimeStamp
+
+        # Basic Properties
+        self.assertEquals(PrecisionTimeStamp(value).key, key)
+        self.assertEquals(PrecisionTimeStamp(value).length, length)
+        self.assertEquals(PrecisionTimeStamp(value).value, value)
+        self.assertEquals(bytes(PrecisionTimeStamp(value)), klv)
+
+        # Check __str__
+        self.assertEquals(str(PrecisionTimeStamp(value)), 'Precision Time Stamp: 2009-01-12 22:08:22')
+
 
 if __name__ == '__main__':
     unittest.main()

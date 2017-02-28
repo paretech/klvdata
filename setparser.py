@@ -26,9 +26,11 @@ from collections import OrderedDict
 from pprint import pformat
 from klvparser import KLVParser
 from element import Element
+from abc import ABCMeta
+from abc import abstractmethod
 
 
-class SetParser(Element):
+class SetParser(Element, metaclass=ABCMeta):
     """Parsable Element. Not intended to be used directly. Always as super class."""
 
     def __init__(self, value):
@@ -38,25 +40,34 @@ class SetParser(Element):
         self._parse()
 
     def _parse(self):
-        """Parse the parent into items. Only called on init."""
-        for key, value in KLVParser(self._value, key_length=1):
-            self._items[key] = self.get_parser(key)(key, value)
-
-    def items(self):
-        """Return ordered dictionary of parsed parent items."""
-        return self._items
+        """Parse the parent into items. Called on init and modification of parent value."""
+        for key, value in KLVParser(self.value, key_length=1):
+            if key in self.parsers:
+                self._items[key] = self.parsers[key](value)
+            else:
+                # Even if KLV is not known, make best effort to parse and preserve.
+                self._items[key] = Element(key, value)
 
     @classmethod
     def add_parser(cls, obj):
         """Decorator method used to register a parser to the class parsing repertoire."""
-        cls._parsers[obj.key] = obj
+        cls.parsers[obj.key] = obj
 
         return obj
 
+    @property
     @classmethod
-    def get_parser(cls, key):
-        """Query parsers given key."""
-        return cls._parsers.get(key, Element)
+    @abstractmethod
+    def parsers(cls):
+        # Property must define __getitem__
+        pass
+
+    @parsers.setter
+    @classmethod
+    @abstractmethod
+    def parsers(cls):
+        # Property must define __setitem__
+        pass
 
     def __repr__(self):
-        return pformat(self.items())
+        return pformat(self._items, indent=3)

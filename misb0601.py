@@ -25,9 +25,8 @@
 from datetime import datetime
 from common import bytes_to_int
 from common import hexstr_to_bytes
-from element import Element
+from element import ElementParser
 from setparser import SetParser
-from elementparser import ElementParser
 
 
 class ST0601(SetParser):
@@ -35,7 +34,9 @@ class ST0601(SetParser):
     """
     key = hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')
     name = 'UAS Datalink Local Set'
-    _parsers = {}
+
+    # Every
+    parsers = {}
 
 
 @ST0601.add_parser
