@@ -50,8 +50,17 @@ class SetParser(Element, metaclass=ABCMeta):
 
     @classmethod
     def add_parser(cls, obj):
-        """Decorator method used to register a parser to the class parsing repertoire."""
-        cls.parsers[obj.key] = obj
+        """Decorator method used to register a parser to the class parsing repertoire.
+
+        obj is required to implement key attribute supporting bytes as returned by KLVParser key.
+        """
+
+        # If sublcass of ElementParser does not implement key, dict accepts key of
+        # type property object. bytes(obj.key) will raise TypeError. ElementParser
+        # requires key as abstract property but no raise until instantiation which
+        # does not occur because the value is never recalled and instantiated from
+        # parsers.
+        cls.parsers[bytes(obj.key)] = obj
 
         return obj
 

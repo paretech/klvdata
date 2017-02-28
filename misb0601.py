@@ -25,7 +25,7 @@
 from datetime import datetime
 from common import bytes_to_int
 from common import hexstr_to_bytes
-from element import ElementParser
+from elementparser import ElementParser
 from setparser import SetParser
 
 

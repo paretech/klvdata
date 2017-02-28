@@ -20,36 +20,30 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-import unittest
+from abc import ABCMeta
+from abc import abstractmethod
+from element import Element
 
+class ElementParser(Element, metaclass=ABCMeta):
+    """Construct a Element Parser base class.
 
-class ParserSingleShort(unittest.TestCase):
-    def setUp(self):
-        self.key = b'\x02'
-        self.length = b'\x08'
-        self.value = b'\x00\x04\x60\x50\x58\x4E\x01\x80'
+    Element Parsers are used to enforce the convention that all Element Parsers
+    already know the key of the element they are constructing.
 
-        self.packet = self.key + self.length + self.value
+    Element Parser is a helper class that simplifies known element definition
+    and makes a layer of abstraction for functionality that all known elements
+    can share. The parsing interfaces are cleaner and require less coding as
+    their definitions (subclasses of Element Parser) do not need to call init
+    on super with class key and instance value.
+    """
 
-        from misb0601 import PrecisionTimeStamp
-        self.element = PrecisionTimeStamp(self.value)
+    def __init__(self, value):
+        super().__init__(self.key, value)
 
-    def test_ber_length(self):
-        from common import ber_decode
-        from common import ber_encode
-        self.assertEquals(ber_encode(ber_decode(self.length)), self.length)
-
-    def test_modify_value(self):
-        from datetime import datetime
-        from struct import pack
-
-        time = pack('>Q', int(datetime.utcnow().timestamp()*1e6))
-
-        self.packet = self.key + self.length + time
-        self.element.value = time
-
-        self.assertEquals(bytes(self.element), self.packet)
-
-if __name__ == '__main__':
-    unittest.main()
+    @property
+    @classmethod
+    @abstractmethod
+    def key(cls):
+        pass

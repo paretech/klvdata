@@ -63,19 +63,6 @@ class Element:
         return '{}({})'.format(self.__class__.__name__, args)
 
 
-class ElementParser(Element):
-    """Construct a Element Parser base class.
 
-    Element Parsers are used to enforce the convention that all Element Parsers
-    already know the key of the element they are constructing.
-
-    Element Parser is a helper class that simplifies known element definition
-    and makes a layer of abstraction for functionality that all known elements
-    can share. The parsing interfaces are cleaner and require less coding as
-    their definitions (subclasses of Element Parser) do not need to call init
-    on super with class key and instance value.
-    """
-    def __init__(self, value):
-        super().__init__(self.key, value)
 
 

@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from setparser import SetParser
-from element import ElementParser
+from elementparser import ElementParser
 from misb0601 import ST0601
 
 _classifying_country_coding = {
