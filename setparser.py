@@ -22,12 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from abc import ABCMeta
+from abc import abstractmethod
 from collections import OrderedDict
 from pprint import pformat
 from klvparser import KLVParser
 from element import Element
-from abc import ABCMeta
-from abc import abstractmethod
 
 
 class SetParser(Element, metaclass=ABCMeta):
@@ -70,4 +70,4 @@ class SetParser(Element, metaclass=ABCMeta):
         pass
 
     def __repr__(self):
-        return pformat(self._items, indent=3)
+        return pformat(self._items, indent=1)

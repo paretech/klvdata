@@ -35,7 +35,6 @@ class ST0601(SetParser):
     key = hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')
     name = 'UAS Datalink Local Set'
 
-    # Every
     parsers = {}
 
 
@@ -49,6 +48,7 @@ class PrecisionTimeStamp(ElementParser):
     key, name = b'\x02', 'Precision Time Stamp'
 
     @property
+    # TODO: Why datetime a property? Will not all parsers have a native form? Cleanup.
     def datetime(self):
         return datetime.utcfromtimestamp(int(bytes_to_int(self.value)/1e6))
 
