@@ -72,9 +72,7 @@ class ParserSingleLong(ParserTestCase):
     def test_value(self):
         key, value = next(self.parser)
         self.assertEquals(value, self.value)
-    #
-    # def test_debug(self):
-    #     print(self)
+
 
 if __name__ == "__main__":
     unittest.main()

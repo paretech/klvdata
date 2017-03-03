@@ -24,6 +24,7 @@
 import unittest
 from common import bytes_to_hexstr
 
+
 class ParserSingleShort(unittest.TestCase):
     def test_st0102(self):
         # Test parameters from MISB ST0902.5 Annex C for "Dynamic and Constant" MISMMS Packet Data
@@ -83,8 +84,6 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(ST0601(value).length, length)
         self.assertEquals(ST0601(value).value, value)
         self.assertEquals(bytes(ST0601(value)), klv)
-
-
 
     def test_st0601_timestamp(self):
         key = b'\x02'
