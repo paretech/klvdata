@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import unittest
-
+from common import bytes_to_hexstr
 
 class ParserSingleShort(unittest.TestCase):
     def test_st0102(self):
@@ -68,9 +68,6 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(ST0601(value).value, value)
         self.assertEquals(bytes(ST0601(value)), klv)
 
-        test = ST0601(value)
-        print(test)
-
     def test_st0601_2(self):
         # This test vector is hand generated, containing the MISB ST0601 16 byte key and the
         # MISB ST0102 nested security metadata local set from MISB ST0902.5
@@ -102,11 +99,11 @@ class ParserSingleShort(unittest.TestCase):
         # Basic Properties
         self.assertEquals(PrecisionTimeStamp(value).key, key)
         self.assertEquals(PrecisionTimeStamp(value).length, length)
-        self.assertEquals(PrecisionTimeStamp(value).value, value)
+        self.assertEquals(bytes_to_hexstr(bytes(PrecisionTimeStamp(value).value)), bytes_to_hexstr(value))
         self.assertEquals(bytes(PrecisionTimeStamp(value)), klv)
 
         # Check __str__
-        self.assertEquals(str(PrecisionTimeStamp(value)), 'Precision Time Stamp: 2009-01-12 22:08:22')
+        self.assertEquals(str(PrecisionTimeStamp(value)), 'Precision Time Stamp: 2009-01-12 22:08:22+00:00')
 
 
 if __name__ == '__main__':

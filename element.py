@@ -35,7 +35,7 @@ class Element:
 
     Attributes:
         key (bytes): STMPE 336 key
-        value (bytes): STMPE 336 value
+        value (bytes): STMPE 336 value. Required to support the bytes() interface.
     """
 
     def __init__(self, key, value):

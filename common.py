@@ -25,6 +25,30 @@
 from struct import pack
 from struct import unpack
 
+################################################################################
+# This is probably the ugliest thing possible. Thou will likely be greatly
+# punished for thou sins. But for the short term this seemed most in the
+# spirit of this application as having objects behave the way they are
+# intended. Since this will potentially effect all uses of datetime once
+# imported, this sin is being placed at the top and in the open of common.
+#
+# Sins inspired by http://stackoverflow.com/questions/3318348
+################################################################################
+from datetime import datetime
+import ctypes as c
+
+
+_get_dict = c.pythonapi._PyObject_GetDictPtr
+_get_dict.restype = c.POINTER(c.py_object)
+_get_dict.argtypes = [c.py_object]
+
+
+def datetime__bytes__(dt):
+    return pack('>Q', int(dt.timestamp() * 1e6))
+
+_get_dict(datetime)[0]['__bytes__'] = datetime__bytes__
+################################################################################
+
 
 def bytes_to_int(value, signed=False):
     """Return integer given bytes."""
