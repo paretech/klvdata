@@ -33,19 +33,31 @@ from element import Element
 class SetParser(Element, metaclass=ABCMeta):
     """Parsable Element. Not intended to be used directly. Always as super class."""
 
-    def __init__(self, value):
+    def __init__(self, value, key_length=1):
         """All parser needs is the value, no other information"""
         super().__init__(self.key, value)
+        self.key_length = key_length
         self.items = OrderedDict()
-        self._parse()
+        self.parse()
 
-    def _parse(self):
-        """Parse the parent into items. Called on init and modification of parent value."""
-        for key, value in KLVParser(self.value, key_length=1):
-            if key in self.parsers:
+    def __getitem__(self, key):
+        """Return element provided bytes key.
+
+        For consistency of this collection of modules, __getitem__ does not
+        attempt to add convenience of being able to index by the int equivalent.
+        Instead, the user should pass keys with method bytes.
+        """
+        return self.items[bytes(key)]
+
+    def parse(self):
+        """Parse the parent into items. Called on init and modification of parent value.
+
+        If a known parser is not available for key, parse as generic KLV element.
+        """
+        for key, value in KLVParser(self.value, self.key_length):
+            try:
                 self.items[key] = self.parsers[key](value)
-            else:
-                # Even if KLV is not known, make best effort to parse and preserve.
+            except KeyError:
                 self.items[key] = Element(key, value)
 
     @classmethod

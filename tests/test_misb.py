@@ -43,8 +43,6 @@ class ParserSingleShort(unittest.TestCase):
         # Specific to value under test
         self.assertEquals(len(ST0102(value).items), 6)
 
-        print(ST0102(value).items[b'\x01'])
-
     def test_st0601_1(self):
         # This test vector from MISB ST0902.5. Some errors may have been hand corrected.
         # Annex C for "Dynamic and Constant" MISMMS Packet Data.  Sample data from MISB ST 0902.5
@@ -103,7 +101,7 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(bytes(PrecisionTimeStamp(value)), klv)
 
         # Check __str__
-        self.assertEquals(str(PrecisionTimeStamp(value)), 'Precision Time Stamp: 2009-01-12 22:08:22+00:00')
+        self.assertEquals(str(PrecisionTimeStamp(value)), 'PrecisionTimeStamp: 2009-01-12 22:08:22+00:00')
 
 
 if __name__ == '__main__':

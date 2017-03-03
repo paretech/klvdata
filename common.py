@@ -24,6 +24,13 @@
 
 from struct import pack
 from struct import unpack
+from datetime import datetime
+from datetime import timezone
+
+
+def datetime_to_bytes(value):
+    """Return bytes representing UTC time in microseconds."""
+    return pack('>Q', int(value.timestamp() * 1e6))
 
 ################################################################################
 # This is probably the ugliest thing possible. Thou will likely be greatly
@@ -34,20 +41,19 @@ from struct import unpack
 #
 # Sins inspired by http://stackoverflow.com/questions/3318348
 ################################################################################
-from datetime import datetime
 import ctypes as c
-
 
 _get_dict = c.pythonapi._PyObject_GetDictPtr
 _get_dict.restype = c.POINTER(c.py_object)
 _get_dict.argtypes = [c.py_object]
 
-
-def datetime__bytes__(dt):
-    return pack('>Q', int(dt.timestamp() * 1e6))
-
-_get_dict(datetime)[0]['__bytes__'] = datetime__bytes__
+_get_dict(datetime)[0]['__bytes__'] = datetime_to_bytes
 ################################################################################
+
+
+def bytes_to_datetime(value):
+    """Return datetime from microsecond bytes."""
+    return datetime.fromtimestamp(bytes_to_int(value)/1e6, tz=timezone.utc)
 
 
 def bytes_to_int(value, signed=False):

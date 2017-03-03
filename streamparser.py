@@ -22,16 +22,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from setparser import SetParser
+from klvparser import KLVParser
+from element import Element
+
+
 class StreamParser:
-    child_parsers = {}
+    parsers = {}
+
+    def __init__(self, source):
+        self.source = source
+
+        # All keys in parser are expected to be 16 bytes long.
+        self.iter_stream = KLVParser(self.source, key_length=16)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        key, value = next(self.iter_stream)
+
+        if key in self.parsers:
+            return self.parsers[key](value)
+        else:
+            # Even if KLV is not known, make best effort to parse and preserve.
+            return Element(key, value)
 
     @classmethod
-    def add_child_parser(cls, obj):
-        cls.child_parsers[obj.key] = obj
+    def add_parser(cls, obj):
+        """Decorator method used to register a parser to the class parsing repertoire.
+
+        obj is required to implement key attribute supporting bytes as returned by KLVParser key.
+        """
+
+        cls.parsers[bytes(obj.key)] = obj
 
         return obj
-
-    @classmethod
-    def child_parser(cls, child_key):
-        return cls.child_parser.get(child_key)

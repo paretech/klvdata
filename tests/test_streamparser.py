@@ -24,27 +24,18 @@
 import unittest
 
 
-class PacketParserTestCase(unittest.TestCase):
-    pass
+class ParserSingleLong(unittest.TestCase):
+    def test_singlepacket(self):
 
-
-
-class ParserSingleLong(PacketParserTestCase):
-    def setUp(self):
-        self.packet = bytes()
-
-        # Sample data from MISB ST 0902.5
+        # Example from MISB ST 0902.5
         with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-            self.packet = f.read()
+            packet = f.read()
 
-        self.key = self.packet[0:16]
-        assert len(self.key) == 16
-        self.length = self.packet[16:18]
-        assert len(self.length) == 2
-        self.value = self.packet[18:]
+        from streamparser import StreamParser
 
-    def test_key(self):
-        pass
+        for packet in StreamParser(packet):
+            pass
+
 
 if __name__ == "__main__":
     unittest.main()

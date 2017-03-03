@@ -34,8 +34,8 @@ class Element:
     The length is dynamically calculated based off the value.
 
     Attributes:
-        key (bytes): STMPE 336 key
-        value (bytes): STMPE 336 value. Required to support the bytes() interface.
+        key
+        value
     """
 
     def __init__(self, key, value):
