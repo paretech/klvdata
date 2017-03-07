@@ -28,6 +28,7 @@ from collections import OrderedDict
 from pprint import pformat
 from klvparser import KLVParser
 from element import Element
+from element import UnknownElement
 
 
 class SetParser(Element, metaclass=ABCMeta):
@@ -58,7 +59,7 @@ class SetParser(Element, metaclass=ABCMeta):
             try:
                 self.items[key] = self.parsers[key](value)
             except KeyError:
-                self.items[key] = Element(key, value)
+                self.items[key] = UnknownElement(key, value)
 
     @classmethod
     def add_parser(cls, obj):

@@ -32,23 +32,23 @@ def datetime_to_bytes(value):
     """Return bytes representing UTC time in microseconds."""
     return pack('>Q', int(value.timestamp() * 1e6))
 
-################################################################################
-# This is probably the ugliest thing possible. Thou will likely be greatly
-# punished for thou sins. But for the short term this seemed most in the
-# spirit of this application as having objects behave the way they are
-# intended. Since this will potentially effect all uses of datetime once
-# imported, this sin is being placed at the top and in the open of common.
+# ################################################################################
+# # This is probably the ugliest thing possible. Thou will likely be greatly
+# # punished for thou sins. But for the short term this seemed most in the
+# # spirit of this application as having objects behave the way they are
+# # intended. Since this will potentially effect all uses of datetime once
+# # imported, this sin is being placed at the top and in the open of common.
+# #
+# # Sins inspired by http://stackoverflow.com/questions/3318348
+# ################################################################################
+# import ctypes as c
 #
-# Sins inspired by http://stackoverflow.com/questions/3318348
-################################################################################
-import ctypes as c
-
-_get_dict = c.pythonapi._PyObject_GetDictPtr
-_get_dict.restype = c.POINTER(c.py_object)
-_get_dict.argtypes = [c.py_object]
-
-_get_dict(datetime)[0]['__bytes__'] = datetime_to_bytes
-################################################################################
+# _get_dict = c.pythonapi._PyObject_GetDictPtr
+# _get_dict.restype = c.POINTER(c.py_object)
+# _get_dict.argtypes = [c.py_object]
+#
+# _get_dict(datetime)[0]['__bytes__'] = datetime_to_bytes
+# ################################################################################
 
 
 def bytes_to_datetime(value):
@@ -103,49 +103,51 @@ def hexstr_to_bytes(value):
     return bytes.fromhex(''.join(filter(str.isalnum, value)))
 
 
-def bytes_to_hexstr(value):
+def bytes_to_hexstr(value, start='', sep=' '):
     """Return string of hexadecimal numbers separated by spaces from a bytes object."""
-    return " ".join(["{:02X}".format(byte) for byte in bytes(value)])
+    return start + sep.join(["{:02X}".format(byte) for byte in bytes(value)])
 
 
-def bytes_to_float(value, minimum, maximum, signed=True):
+def bytes_to_float(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
-    length = len(bytes(value))
+    # length = len(bytes(value))
+    #
+    # if signed:
+    #     x1 = -(2 ** (length * 8 - 1) - 1)
+    #     x2 = +(2 ** (length * 8 - 1) - 1)
+    # else:
+    #     x1 = 0
+    #     x2 = +(2 ** (length * 8) - 1)
+    x1, x2 = _domain
+    y1, y2 = _range
 
-    if signed:
-        x1 = -(2 ** (length * 8 - 1) - 1)
-        x2 = +(2 ** (length * 8 - 1) - 1)
-    else:
-        x1 = 0
-        x2 = +(2 ** (length * 8) - 1)
-
-    y1, y2 = minimum, maximum
-
+    # Slope
     m = (y2 - y1) / (x2 - x1)
 
-    x = bytes_to_int(value, signed)
+    x = bytes_to_int(value, signed=any((i < 0 for i in _range)))
 
     # Return y
     return m * (x - x1) + y1
 
 
-def float_to_bytes(value, length, minimum, maximum, signed=True):
+def float_to_bytes(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
-    if signed:
-        x1 = -(2 ** (length * 8 - 1) - 1)
-        x2 = +(2 ** (length * 8 - 1) - 1)
-    else:
-        x1 = 0
-        x2 = +(2 ** (length * 8) - 1)
+    # if signed:
+    #     x1 = -(2 ** (length * 8 - 1) - 1)
+    #     x2 = +(2 ** (length * 8 - 1) - 1)
+    # else:
+    #     x1 = 0
+    #     x2 = +(2 ** (length * 8) - 1)
+    x1, x2 = _domain
+    y1, y2 = _range
 
-    y1, y2 = minimum, maximum
-
+    # Slope
     m = (y2 - y1) / (x2 - x1)
 
     y = value
 
     # Return x
-    return int_to_bytes((1 / m) * (y - y1) + x1, length)
+    return int_to_bytes((1 / m) * (y - y1) + x1, length=int((x2-x1-1).bit_length()/8))
 
 
 def packet_checksum(data):

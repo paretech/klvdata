@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from klvparser import KLVParser
-from element import Element
+from element import UnknownElement
 
 
 class StreamParser:
@@ -45,7 +45,8 @@ class StreamParser:
             return self.parsers[key](value)
         else:
             # Even if KLV is not known, make best effort to parse and preserve.
-            return Element(key, value)
+            # Element is an abastract super class, do not create instances on Element.
+            return UnknownElement(key, value)
 
     @classmethod
     def add_parser(cls, obj):

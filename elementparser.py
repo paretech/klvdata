@@ -25,6 +25,13 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from element import Element
+from common import bytes_to_datetime
+from common import bytes_to_float
+from common import bytes_to_hexstr
+from common import bytes_to_str
+from common import datetime_to_bytes
+from common import float_to_bytes
+from common import str_to_bytes
 
 class ElementParser(Element, metaclass=ABCMeta):
     """Construct a Element Parser base class.
@@ -47,3 +54,76 @@ class ElementParser(Element, metaclass=ABCMeta):
     @abstractmethod
     def key(cls):
         pass
+
+    @property
+    @classmethod
+    @abstractmethod
+    def parser(cls):
+        pass
+
+    def __repr__(self):
+        """Return as-code string used to re-create the object."""
+        return '{}({})'.format(self.name, bytes(self.value))
+
+
+class BaseValue(metaclass=ABCMeta):
+    """Abstract base class (superclass) used to insure internal interfaces are maintained."""
+    @abstractmethod
+    def __bytes__(self):
+        """Required by element.Element"""
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        """Required by element.Element"""
+        pass
+
+
+class BytesValue(BaseValue):
+    def __init__(self, value):
+        self.value = value
+
+    def __bytes__(self):
+        return bytes(self.value)
+
+    def __str__(self):
+        return bytes_to_hexstr(self.value, start='0x', sep='')
+
+
+class DateTimeValue(BaseValue):
+    def __init__(self, value):
+        self.value = bytes_to_datetime(value)
+
+    def __bytes__(self):
+        return datetime_to_bytes(self.value)
+
+    def __str__(self):
+        return self.value.isoformat(sep=' ')
+
+
+class StringValue(BaseValue):
+    def __init__(self, value):
+        self.value = bytes_to_str(value)
+
+    def __bytes__(self):
+        return str_to_bytes(self.value)
+
+    def __str__(self):
+        return str(self.value)
+
+
+class MappedValue(BaseValue):
+    def __init__(self, value, _domain, _range):
+        self._domain = _domain
+        self._range = _range
+        self.value = bytes_to_float(value, self._domain, self._range)
+
+    def __bytes__(self):
+        return float_to_bytes(self.value, self._domain, self._range)
+
+    def __str__(self):
+        return format(self.value)
+
+
+
+

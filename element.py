@@ -22,10 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from abc import ABCMeta
+from abc import abstractmethod
 from common import ber_encode
 
-
-class Element:
+# Proposed alternate names, "BaseElement" of modules "bases".
+class Element(metaclass=ABCMeta):
     """Construct a key, length, value tuplet.
 
     Elements provide the basic mechanisms to constitute the basic encoding
@@ -36,6 +38,10 @@ class Element:
     Attributes:
         key
         value
+
+    Properties:
+        name: If name is set return name, else return class name.
+        length: Length is calculated based off value.
     """
 
     def __init__(self, key, value):
@@ -43,6 +49,10 @@ class Element:
         self.value = value
 
         self.items = None
+
+    @property
+    def name(self):
+        return self.__class__.__name__
 
     @property
     def length(self):
@@ -57,10 +67,23 @@ class Element:
         """Return the byte length of self.value."""
         return len(bytes(self.value))
 
+    @abstractmethod
     def __repr__(self):
+        pass
+
+    def __str__(self):
+        # What Would this look like if printed like hex editor? 16 bytes per line
+        # left and UTF-8 decode right?
+        return "{}: ({}, {}, {})".format(self.name, self.key, len(self), self.value)
+
+
+class UnknownElement(Element):
+    def __repr__(self):
+        pass
         """Return as-code string used to re-create the object."""
         args = ', '.join(map(repr, (bytes(self.key), bytes(self.value))))
-        return '{}({})'.format(self.__class__.__name__, args)
+        return '{}({})'.format(object.__name__, args)
+
 
 
 

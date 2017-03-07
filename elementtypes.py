@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import datetime
+from common import bytes_to_str
+from common import str_to_bytes
 
-class datetime(datetime.datetime):
-    pass

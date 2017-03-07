@@ -67,6 +67,7 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(ST0601(value).value, value)
         self.assertEquals(bytes(ST0601(value)), klv)
 
+        # print(ST0601(value))
     def test_st0601_2(self):
         # This test vector is hand generated, containing the MISB ST0601 16 byte key and the
         # MISB ST0102 nested security metadata local set from MISB ST0902.5
@@ -102,6 +103,47 @@ class ParserSingleShort(unittest.TestCase):
         # Check __str__
         self.assertEquals(str(PrecisionTimeStamp(value)), 'PrecisionTimeStamp: 2009-01-12 22:08:22+00:00')
 
+    def test_st0601_mission(self):
+        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+            klv = f.read()
+
+        key = klv[0:16]
+        assert len(key) == 16
+        length = klv[16:18]
+        assert len(length) == 2
+        value = klv[18:]
+
+        from misb0601 import ST0601
+
+        print(ST0601(value)[b'\x03'])
 
 if __name__ == '__main__':
     unittest.main()
+
+#
+# class ParserSingleShort(unittest.TestCase):
+#     def setUp(self):
+#         self.key = b'\x02'
+#         self.length = b'\x08'
+#         self.value = b'\x00\x04\x60\x50\x58\x4E\x01\x80'
+#
+#         self.packet = self.key + self.length + self.value
+#
+#         from misb0601 import PrecisionTimeStamp
+#         self.element = PrecisionTimeStamp(self.value)
+#
+#     def test_ber_length(self):
+#         from common import ber_decode
+#         from common import ber_encode
+#         self.assertEquals(ber_encode(ber_decode(self.length)), self.length)
+#
+#     def test_modify_value(self):
+#         from datetime import datetime
+#         from struct import pack
+#
+#         time = pack('>Q', int(datetime.utcnow().timestamp()*1e6))
+#
+#         self.packet = self.key + self.length + time
+#         self.element.value = time
+#
+#         self.assertEquals(bytes(self.element), self.packet)
