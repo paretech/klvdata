@@ -47,7 +47,7 @@ class ElementParser(Element, metaclass=ABCMeta):
     """
 
     def __init__(self, value):
-        super().__init__(self.key, value )
+        super().__init__(self.key, value)
 
     @property
     @classmethod
