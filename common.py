@@ -32,24 +32,6 @@ def datetime_to_bytes(value):
     """Return bytes representing UTC time in microseconds."""
     return pack('>Q', int(value.timestamp() * 1e6))
 
-# ################################################################################
-# # This is probably the ugliest thing possible. Thou will likely be greatly
-# # punished for thou sins. But for the short term this seemed most in the
-# # spirit of this application as having objects behave the way they are
-# # intended. Since this will potentially effect all uses of datetime once
-# # imported, this sin is being placed at the top and in the open of common.
-# #
-# # Sins inspired by http://stackoverflow.com/questions/3318348
-# ################################################################################
-# import ctypes as c
-#
-# _get_dict = c.pythonapi._PyObject_GetDictPtr
-# _get_dict.restype = c.POINTER(c.py_object)
-# _get_dict.argtypes = [c.py_object]
-#
-# _get_dict(datetime)[0]['__bytes__'] = datetime_to_bytes
-# ################################################################################
-
 
 def bytes_to_datetime(value):
     """Return datetime from microsecond bytes."""
