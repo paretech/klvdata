@@ -70,8 +70,6 @@ class Element(metaclass=ABCMeta):
         pass
 
     def __str__(self):
-        # What Would this look like if printed like hex editor? 16 bytes per line
-        # left and UTF-8 decode right?
         return "{}: ({}, {}, {})".format(self.name, self.key, len(self), self.value)
 
 

@@ -57,7 +57,6 @@ class ElementParser(Element, metaclass=ABCMeta):
 
     def __repr__(self):
         """Return as-code string used to re-create the object."""
-        print(self.key)
         return '{}({})'.format(self.name, bytes(self.value))
 
 

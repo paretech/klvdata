@@ -34,7 +34,7 @@ class ParserSingleLong(unittest.TestCase):
         from streamparser import StreamParser
 
         for packet in StreamParser(packet):
-            pass
+            print(packet.items)
 
 
 if __name__ == "__main__":
