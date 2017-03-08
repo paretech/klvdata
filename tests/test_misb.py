@@ -101,21 +101,21 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEquals(bytes(PrecisionTimeStamp(value)), klv)
 
         # Check __str__
-        self.assertEquals(str(PrecisionTimeStamp(value)), 'PrecisionTimeStamp: 2009-01-12 22:08:22+00:00')
+        self.assertEquals(str(PrecisionTimeStamp(value)), "PrecisionTimeStamp: (b'\\x02', 8, 2009-01-12 22:08:22+00:00)")
 
-    def test_st0601_mission(self):
-        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-            klv = f.read()
-
-        key = klv[0:16]
-        assert len(key) == 16
-        length = klv[16:18]
-        assert len(length) == 2
-        value = klv[18:]
-
-        from misb0601 import ST0601
-
-        print(ST0601(value)[b'\x03'])
+    # def test_st0601_mission(self):
+    #     with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+    #         klv = f.read()
+    #
+    #     key = klv[0:16]
+    #     assert len(key) == 16
+    #     length = klv[16:18]
+    #     assert len(length) == 2
+    #     value = klv[18:]
+    #
+    #     from misb0601 import ST0601
+    #
+    #     # print(ST0601(value).items)
 
 if __name__ == '__main__':
     unittest.main()

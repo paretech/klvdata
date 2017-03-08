@@ -37,8 +37,8 @@ class ElementShort(ElementTestCase):
 
         self.packet = self.key + self.length + self.value
 
-        from element import Element
-        self.element = Element(self.key, self.value)
+        from element import UnknownElement
+        self.element = UnknownElement(self.key, self.value)
 
     def test_key(self):
         self.assertEquals(self.element.key, self.key)
@@ -87,8 +87,8 @@ class ElementLong(ElementTestCase):
         assert len(self.length) == 2
         self.value = self.packet[18:]
 
-        from element import Element
-        self.element = Element(self.key, self.value)
+        from element import UnknownElement
+        self.element = UnknownElement(self.key, self.value)
 
     def test_key(self):
         self.assertEquals(self.element.key, self.key)

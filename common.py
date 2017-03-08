@@ -109,7 +109,7 @@ def float_to_bytes(value, _domain, _range):
     y = value
 
     # Return x given y
-    return int_to_bytes((1 / m) * (y - y1) + x1, length=int((x2-x1-1).bit_length()/8))
+    return int_to_bytes((1 / m) * (y - y1) + x1, length=int((x2-x1-1).bit_length()/8), signed=any((i < 0 for i in _range)))
 
 
 def packet_checksum(data):

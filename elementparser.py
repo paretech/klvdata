@@ -55,14 +55,9 @@ class ElementParser(Element, metaclass=ABCMeta):
     def key(cls):
         pass
 
-    @property
-    @classmethod
-    @abstractmethod
-    def parser(cls):
-        pass
-
     def __repr__(self):
         """Return as-code string used to re-create the object."""
+        print(self.key)
         return '{}({})'.format(self.name, bytes(self.value))
 
 
@@ -79,6 +74,11 @@ class BaseValue(metaclass=ABCMeta):
         pass
 
 
+class BytesElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(BytesValue(value))
+
+
 class BytesValue(BaseValue):
     def __init__(self, value):
         self.value = value
@@ -88,6 +88,11 @@ class BytesValue(BaseValue):
 
     def __str__(self):
         return bytes_to_hexstr(self.value, start='0x', sep='')
+
+
+class DateTimeElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(DateTimeValue(value))
 
 
 class DateTimeValue(BaseValue):
@@ -101,6 +106,11 @@ class DateTimeValue(BaseValue):
         return self.value.isoformat(sep=' ')
 
 
+class StringElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(StringValue(value))
+
+
 class StringValue(BaseValue):
     def __init__(self, value):
         self.value = bytes_to_str(value)
@@ -111,6 +121,22 @@ class StringValue(BaseValue):
     def __str__(self):
         return str(self.value)
 
+
+class MappedElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(MappedValue(value, self._domain, self._range))
+
+    @property
+    @classmethod
+    @abstractmethod
+    def _domain(cls):
+        pass
+
+    @property
+    @classmethod
+    @abstractmethod
+    def _range(cls):
+        pass
 
 class MappedValue(BaseValue):
     def __init__(self, value, _domain, _range):
@@ -123,6 +149,9 @@ class MappedValue(BaseValue):
 
     def __str__(self):
         return format(self.value)
+
+    def __float__(self):
+        return self.value
 
 
 

@@ -22,18 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from common import bytes_to_datetime
-from common import bytes_to_str
 from common import hexstr_to_bytes
 
-from elementparser import ElementParser
 from setparser import SetParser
 from streamparser import StreamParser
-
-from elementparser import BytesValue
-from elementparser import DateTimeValue
-from elementparser import MappedValue
-from elementparser import StringValue
+from elementparser import BytesElementParser
+from elementparser import DateTimeElementParser
+from elementparser import MappedElementParser
+from elementparser import StringElementParser
 
 
 @StreamParser.add_parser
@@ -47,7 +43,7 @@ class ST0601(SetParser):
 
 
 @ST0601.add_parser
-class Checksum(ElementParser):
+class Checksum(BytesElementParser):
     """Checksum used to detect errors within a UAV Local Set packet.
 
     Checksum formed as lower 16-bits of summation performed on entire
@@ -56,14 +52,10 @@ class Checksum(ElementParser):
     Initialized from bytes value as BytesValue.
     """
     key = b'\x01'
-    parser = BytesValue
-
-    def __init__(self, value):
-        super().__init__(BytesValue(value))
 
 
 @ST0601.add_parser
-class PrecisionTimeStamp(ElementParser):
+class PrecisionTimeStamp(DateTimeElementParser):
     """Precision Timestamp represented in microseconds.
 
     Precision Timestamp represented in the number of microseconds elapsed
@@ -72,236 +64,224 @@ class PrecisionTimeStamp(ElementParser):
     See MISB ST 0603 for additional details.
     """
     key = b'\x02'
-    parser = DateTimeValue
-
-    def __init__(self, value):
-        super().__init__(DateTimeValue(value))
 
 
 @ST0601.add_parser
-class MissionID(ElementParser):
+class MissionID(StringElementParser):
     """Mission ID is the descriptive mission identifier.
 
     Mission ID value field free text with maximum of 127 characters
     describing the event.
     """
     key = b'\x03'
-    parser = StringValue
-
-    def __init__(self, value):
-        super().__init__(StringValue(value))
 
 
 @ST0601.add_parser
-class PlatformTailNumber(ElementParser):
+class PlatformTailNumber(StringElementParser):
     key = b'\x04'
-    parser = StringValue
-
-    def __init__(self, value):
-        super().__init__(StringValue(value))
 
 
 @ST0601.add_parser
-class PlatformHeadingAngle(ElementParser):
+class PlatformHeadingAngle(MappedElementParser):
     key = b'\x05'
-    units = "Degrees"
     _domain = (0, 2**16-1)
     _range = (0, 360)
-    parser = MappedValue
-
-    from element import Element
-    def __init__(self, value):
-        super().__init__(MappedValue(value, self._domain, self._range))
 
 
-# @ST0601.add_parser
-# class PlatformPitchAngle(ElementParser):
-#     tag, name = 6, "Platform Pitch Angle"
-#     min_value, max_value, units = -20, +20, 'degrees'
-#     min_length, max_length, signed = 2, 2, True
-#
-#
-# @ST0601.add_parser
-# class PlatformRollAngle(ElementParser):
-#     tag, name = 7, "Platform Roll Angle"
-#     min_value, max_value, units = -50, +50, 'degrees'
-#     min_length, max_length, signed = 2, 2, True
-#
-#
-# @ST0601.add_parser
-# class PlatformTrueAirspeed(ElementParser):
-#     tag, name = 8, "Platform True Airspeed"
-#     min_value, max_value, units = 0, +255, 'meters/second'
-#     min_length, max_length, signed = 1, 1, False
-#
-#
-# @ST0601.add_parser
-# class PlatformTrueAirspeed(ElementParser):
-#     tag, name = 9, "Platform Indicated Airspeed"
-#     min_value, max_value, units = 0, +255, 'meters/second'
-#     min_length, max_length, signed = 1, 1, False
-#
-#
-# @ST0601.add_parser
-# class PlatformDesignation(ElementParser):
-#     tag, name = 10, "Platform Designation"
-#     min_length, max_length = 0, 127
-#
-#
-# @ST0601.add_parser
-# class ImageSourceSensor(ElementParser):
-#     tag, name = 11, "Image Source Sensor"
-#     min_length, max_length = 0, 127
-#
-#
-# @ST0601.add_parser
-# class ImageCoordinateSystem(ElementParser):
-#     tag, name = 12, "Image Coordinate System"
-#     min_length, max_length = 0, 127
-#
-#
-# @ST0601.add_parser
-# class SensorLatitude(ElementParser):
-#     tag, name = 13, "Sensor Latitude"
-#     min_value, max_value, units = -90, +90, 'degrees'
-#     min_length, max_length, signed = 4, 4, True
-#
-#
-# @ST0601.add_parser
-# class SensorLongitude(ElementParser):
-#     tag, name = 14, "Sensor Longitude"
-#     min_value, max_value, units = -180, +180, 'degrees'
-#     min_length, max_length, signed = 4, 4, True
-#
-#
-# @ST0601.add_parser
-# class SensorTrueAltitude(ElementParser):
-#     tag, name = 15, "Sensor True Altitude"
-#     min_value, max_value, units = -900, +19e3, 'meters'
-#     min_length, max_length, signed = 2, 2, False
-#
+@ST0601.add_parser
+class PlatformPitchAngle(MappedElementParser):
+    key = b'\x06'
+    _domain = (-(2**15-1), 2**15-1)
+    _range = (-20, 20)
+
+
+@ST0601.add_parser
+class PlatformRollAngle(MappedElementParser):
+    key = b'\x07'
+    _domain = (-(2**15-1), 2**15-1)
+    _range = (-50, 50)
+    units = 'degrees'
+
+
+@ST0601.add_parser
+class PlatformTrueAirspeed(MappedElementParser):
+    key = b'\x08'
+    _domain = (0, 2**8-1)
+    _range = (0, 255)
+    # units = 'meters/second'
+
+
+@ST0601.add_parser
+class PlatformIndicatedAirspeed(MappedElementParser):
+    key = b'\x09'
+    _domain = (0, 2**8-1)
+    _range = (0, 255)
+    # units = 'meters/second'
+
+
+@ST0601.add_parser
+class PlatformDesignation(StringElementParser):
+    key = b'\x0A'
+    # min_length, max_length = 0, 127
+
+
+@ST0601.add_parser
+class ImageSourceSensor(StringElementParser):
+    key = b'\x0B'
+    # min_length, max_length = 0, 127
+
+
+@ST0601.add_parser
+class ImageCoordinateSystem(StringElementParser):
+    key = b'\x0C'
+    # min_length, max_length = 0, 127
+
+
+@ST0601.add_parser
+class SensorLatitude(MappedElementParser):
+    key = b'\x0D'
+    _domain = (-(2**31-1), 2**31-1)
+    _range = (-90, 90)
+    units = 'degrees'
+
+
+@ST0601.add_parser
+class SensorLongitude(MappedElementParser):
+    key = b'\x0E'
+    _domain = (-(2**31-1), 2**31-1)
+    _range = (-180, 180)
+    units = 'degrees'
+
 #
 # @ST0601.add_parser
-# class SensorHorizontalFieldOfView(ElementParser):
+# class SensorTrueAltitude(MappedElementParser):
+#     key = b'\x0F'
+#     _domain = (0, 2**8-1)
+#     _range = (-900, +19e3)
+#     units = 'meters'
+
+
+# @ST0601.add_parser
+# class SensorHorizontalFieldOfView(MappedElementParser):
 #     tag, name = 16, "Sensor Horizontal Field of View"
 #     min_value, max_value, units = 0, +180, 'degrees'
 #     min_length, max_length, signed = 2, 2, False
 #
 #
 # @ST0601.add_parser
-# class SensorVerticalFieldOfView(ElementParser):
+# class SensorVerticalFieldOfView(MappedElementParser):
 #     tag, name = 17, "Sensor Vertical Field of View"
 #     min_value, max_value, units = 0, +180, 'degrees'
 #     min_length, max_length, signed = 2, 2, False
 #
 #
 # @ST0601.add_parser
-# class SensorRelativeAzimuthAngle(ElementParser):
+# class SensorRelativeAzimuthAngle(MappedElementParser):
 #     tag, name = 18, "Sensor Relative Azimuth Angle"
 #     min_value, max_value, units = 0, +360, 'degrees'
 #     min_length, max_length, signed = 4, 4, False
 #
 #
 # @ST0601.add_parser
-# class SensorRelativeElevationAngle(ElementParser):
+# class SensorRelativeElevationAngle(MappedElementParser):
 #     tag, name = 19, "Sensor Relative Elevation Angle"
 #     min_value, max_value, units = -180, +180, 'degrees'
 #     min_length, max_length, signed = 4, 4, True
 #
 #
 # @ST0601.add_parser
-# class SensorRelativeRollAngle(ElementParser):
+# class SensorRelativeRollAngle(MappedElementParser):
 #     tag, name = 20, "Sensor Relative Roll Angle"
 #     min_value, max_value, units = 0, +360, 'degrees'
 #     min_length, max_length, signed = 4, 4, False
 #
 #
 # @ST0601.add_parser
-# class SlantRange(ElementParser):
+# class SlantRange(MappedElementParser):
 #     tag, name = 21, "Slant Range"
 #     min_value, max_value, units = 0, +5e6, 'meters'
 #     min_length, max_length, signed = 4, 4, False
 #
 #
 # @ST0601.add_parser
-# class TargetWidth(ElementParser):
+# class TargetWidth(MappedElementParser):
 #     tag, name = 22, "Target Width"
 #     min_value, max_value, units = 0, +10e3, 'meters'
 #     min_length, max_length, signed = 2, 2, False
 #
 #
 # @ST0601.add_parser
-# class FrameCenterLatitude(ElementParser):
+# class FrameCenterLatitude(MappedElementParser):
 #     tag, name = 23, "Frame Center Latitude"
 #     min_value, max_value, units = -90, +90, 'degrees'
 #     min_length, max_length, signed = 4, 4, True
 #
 #
 # @ST0601.add_parser
-# class FrameCenterLongitude(ElementParser):
+# class FrameCenterLongitude(MappedElementParser):
 #     tag, name = 24, "Frame Center Longitude"
 #     min_value, max_value, units = -180, +180, 'degrees'
 #     min_length, max_length, signed = 4, 4, True
 #
 #
 # @ST0601.add_parser
-# class FrameCenterElevation(ElementParser):
+# class FrameCenterElevation(MappedElementParser):
 #     tag, name = 25, "Frame Center Elevation"
 #     min_value, max_value, units = -900, +19e3, "meters"
 #     min_length, max_length, signed = 2, 2, False
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLatitudePoint1(ElementParser):
+# class OffsetCornerLatitudePoint1(MappedElementParser):
 #     tag, name = 26, "Offset Corner Latitude Point 1"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLongitudePoint1(ElementParser):
+# class OffsetCornerLongitudePoint1(MappedElementParser):
 #     tag, name = 27, "Offset Corner Longitude Point 1"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLatitudePoint2(ElementParser):
+# class OffsetCornerLatitudePoint2(MappedElementParser):
 #     tag, name = 28, "Offset Corner Latitude Point 2"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLongitudePoint2(ElementParser):
+# class OffsetCornerLongitudePoint2(MappedElementParser):
 #     tag, name = 29, "Offset Corner Longitude Point 2"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLatitudePoint3(ElementParser):
+# class OffsetCornerLatitudePoint3(MappedElementParser):
 #     tag, name = 30, "Offset Corner Latitude Point 3"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLongitudePoint3(ElementParser):
+# class OffsetCornerLongitudePoint3(MappedElementParser):
 #     tag, name = 31, "Offset Corner Longitude Point 3"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLatitudePoint4(ElementParser):
+# class OffsetCornerLatitudePoint4(MappedElementParser):
 #     tag, name = 32, "Offset Corner Latitude Point 4"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
 #
 #
 # @ST0601.add_parser
-# class OffsetCornerLongitudePoint4(ElementParser):
+# class OffsetCornerLongitudePoint4(MappedElementParser):
 #     tag, name = 33, "Offset Corner Longitude Point 4"
 #     min_value, max_value, units = -0.075, +0.075, 'degrees'
 #     min_length, max_length, signed = 2, 2, True
@@ -310,21 +290,21 @@ class PlatformHeadingAngle(ElementParser):
 # # Tags 34-39 "Atmospheric Conditions"
 #
 # @ST0601.add_parser
-# class TargetLocationLatitude(ElementParser):
+# class TargetLocationLatitude(MappedElementParser):
 #     tag, name = 40, "Target Location latitude"
 #     min_value, max_value, units = -90, +90, 'degrees'
 #     min_length, max_length, signed = 4, 4, True
 #
 #
 # @ST0601.add_parser
-# class TargetLocationLongitude(ElementParser):
+# class TargetLocationLongitude(MappedElementParser):
 #     tag, name = 41, "Target Location Longitude"
 #     min_value, max_value, units = -180, +180, 'degrees'
 #     min_length, max_length, signed = 4, 4, True
 #
 #
 # @ST0601.add_parser
-# class TargetLocationElevation(ElementParser):
+# class TargetLocationElevation(MappedElementParser):
 #     tag, name = 42, "Target Location Elevation"
 #     min_value, max_value, units = -900, +19e3, "meters"
 #     min_length, max_length, signed = 2, 2, False

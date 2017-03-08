@@ -87,13 +87,30 @@ class ParserSingleShort(unittest.TestCase):
     def test_PlatformHeadingAngle(self):
 
         # From MISB ST0601.9
-        interpretation = "159.974 Degrees"
+        # @TODO: Limit display precision and add units as per example.
+        interpretation = "159.97436484321355"
         tlv_hex_bytes = hexstr_to_bytes("05 02 71 C2")
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PlatformHeadingAngle
         self.assertEquals(str(PlatformHeadingAngle(value).value), interpretation)
         self.assertEquals(bytes(PlatformHeadingAngle(value)), tlv_hex_bytes)
+        self.assertAlmostEquals(float(PlatformHeadingAngle(value).value), 159.974, 3)
+
+    def test_PlatformPitchAngle(self):
+
+        # From MISB ST0601.9
+        # @TODO: Limit display precision and add units as per example.
+        interpretation = "-0.4315317239905987"
+        tlv_hex_bytes = hexstr_to_bytes("06 02 FD 3D")
+        value = tlv_hex_bytes[2:]
+
+        from misb0601 import PlatformPitchAngle
+        self.assertEquals(str(PlatformPitchAngle(value).value), interpretation)
+        self.assertEquals(bytes(PlatformPitchAngle(value)), tlv_hex_bytes)
+        self.assertAlmostEquals(float(PlatformPitchAngle(value).value), -0.4315, 4)
+
+
 
 if __name__ == '__main__':
     unittest.main()

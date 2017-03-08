@@ -48,8 +48,6 @@ class Element(metaclass=ABCMeta):
         self.key = key
         self.value = value
 
-        self.items = None
-
     @property
     def name(self):
         return self.__class__.__name__
@@ -79,10 +77,9 @@ class Element(metaclass=ABCMeta):
 
 class UnknownElement(Element):
     def __repr__(self):
-        pass
         """Return as-code string used to re-create the object."""
         args = ', '.join(map(repr, (bytes(self.key), bytes(self.value))))
-        return '{}({})'.format(object.__name__, args)
+        return '{}({})'.format(self.__class__.__name__, args)
 
 
 
