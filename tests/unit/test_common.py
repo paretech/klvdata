@@ -51,6 +51,7 @@ class BERLength(unittest.TestCase):
     def test_ber_encode_decode(self):
         from common import ber_decode
         from common import ber_encode
+
         self.assertEquals(ber_decode(ber_encode(0)), 0)
         self.assertEquals(ber_decode(ber_encode(1)), 1)
         self.assertEquals(ber_decode(ber_encode(8)), 8)
@@ -81,4 +82,70 @@ class BERLength(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             ber_decode(b'\x82\xFF')
+
+
+class FixedPoint(unittest.TestCase):
+    def test_unsigned_bytes(self):
+        from common import bytes_to_float
+        self.assertAlmostEquals(
+            bytes_to_float(b'\x00\x00', _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            0.0)
+
+        self.assertAlmostEquals(
+            bytes_to_float(b'\x71\xC2', _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            159.974, 3)
+
+        self.assertAlmostEquals(
+            bytes_to_float(b'\xFF\xFF', _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            360.0)
+
+    def test_signed_bytes(self):
+        from common import bytes_to_float
+        self.assertAlmostEquals(
+            bytes_to_float(b'\x80\x01', _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            -20.0)
+
+        self.assertAlmostEquals(
+            bytes_to_float(b'\x00\x00', _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            0.0)
+
+        self.assertAlmostEquals(
+            bytes_to_float(b'\xFD\x3D', _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)), -0.4315,
+            3)
+
+        self.assertAlmostEquals(
+            bytes_to_float(b'\x7F\xFF', _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            20.0, 7)
+
+    def test_unsigned_float(self):
+        from common import float_to_bytes
+        self.assertEquals(
+            float_to_bytes(0.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            b'\x00\x00')
+
+        self.assertEquals(
+            float_to_bytes(159.974, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            b'\x71\xC2')
+
+        self.assertEquals(
+            float_to_bytes(360.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+            b'\xFF\xFF')
+
+    def test_signed_float(self):
+        from common import float_to_bytes
+        self.assertEquals(
+            float_to_bytes(-20, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            b'\x80\x01')
+
+        self.assertEquals(
+            float_to_bytes(0.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            b'\x00\x00')
+
+        self.assertEquals(
+            float_to_bytes(-0.4315, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            b'\xFD\x3D')
+
+        self.assertEquals(
+            float_to_bytes(20.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+            b'\x7F\xFF')
 
