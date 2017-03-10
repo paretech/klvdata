@@ -66,11 +66,3 @@ class KLVParser(object):
         else:
             raise StopIteration
 
-
-if __name__ == "__main__":
-    from element import Element
-
-    with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-        for packet in KLVParser(f, key_length=16):
-            for tag in KLVParser(Element(*packet).value, key_length=1):
-                print(Element(*tag))
