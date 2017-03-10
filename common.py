@@ -48,26 +48,32 @@ def int_to_bytes(value, length=1, signed=False):
     return int(value).to_bytes(length, byteorder='big', signed=signed)
 
 
-def ber_decode(length):
+def ber_decode(value):
     """Return decoded BER length as integer given bytes."""
-    if bytes_to_int(length) < 128:
-        # BER Short Form
-        return bytes_to_int(length)
+    if bytes_to_int(value) < 128:
+        if len(value) > 1:
+            raise ValueError
+
+        # Return BER Short Form
+        return bytes_to_int(value)
     else:
-        # BER Long Form
-        return bytes_to_int(length[1:])
+        if len(value) != (value[0] - 127):
+            raise ValueError
+
+        # Return BER Long Form
+        return bytes_to_int(value[1:])
 
 
-def ber_encode(length):
+def ber_encode(value):
     """Return encoded BER length as bytes given integer."""
-    if length < 128:
+    if value < 128:
         # BER Short Form
-        return int_to_bytes(length)
+        return int_to_bytes(value)
     else:
         # BER Long Form
-        byte_length = ((length.bit_length() - 1) // 8) + 1
+        byte_length = ((value.bit_length() - 1) // 8) + 1
 
-        return int_to_bytes(byte_length + 128) + int_to_bytes(length, length=byte_length)
+        return int_to_bytes(byte_length + 128) + int_to_bytes(value, length=byte_length)
 
 
 def bytes_to_str(value):
