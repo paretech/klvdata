@@ -26,14 +26,19 @@ from common import hexstr_to_bytes
 
 from setparser import SetParser
 from streamparser import StreamParser
+from element import UnknownElement
 from elementparser import BytesElementParser
 from elementparser import DateTimeElementParser
 from elementparser import MappedElementParser
 from elementparser import StringElementParser
 
 
+class UnknownElement(UnknownElement):
+    pass
+
+
 @StreamParser.add_parser
-class ST0601(SetParser):
+class UASLocalMetadataSet(SetParser):
     """MISB ST0601 UAS Local Metadata Set
     """
     key = hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')
@@ -41,8 +46,11 @@ class ST0601(SetParser):
 
     parsers = {}
 
+    _unknown_element = UnknownElement
 
-@ST0601.add_parser
+
+
+@UASLocalMetadataSet.add_parser
 class Checksum(BytesElementParser):
     """Checksum used to detect errors within a UAV Local Set packet.
 
@@ -54,7 +62,7 @@ class Checksum(BytesElementParser):
     key = b'\x01'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PrecisionTimeStamp(DateTimeElementParser):
     """Precision Timestamp represented in microseconds.
 
@@ -66,7 +74,7 @@ class PrecisionTimeStamp(DateTimeElementParser):
     key = b'\x02'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class MissionID(StringElementParser):
     """Mission ID is the descriptive mission identifier.
 
@@ -76,26 +84,26 @@ class MissionID(StringElementParser):
     key = b'\x03'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformTailNumber(StringElementParser):
     key = b'\x04'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformHeadingAngle(MappedElementParser):
     key = b'\x05'
     _domain = (0, 2**16-1)
     _range = (0, 360)
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformPitchAngle(MappedElementParser):
     key = b'\x06'
     _domain = (-(2**15-1), 2**15-1)
     _range = (-20, 20)
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformRollAngle(MappedElementParser):
     key = b'\x07'
     _domain = (-(2**15-1), 2**15-1)
@@ -103,7 +111,7 @@ class PlatformRollAngle(MappedElementParser):
     units = 'degrees'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformTrueAirspeed(MappedElementParser):
     key = b'\x08'
     _domain = (0, 2**8-1)
@@ -111,7 +119,7 @@ class PlatformTrueAirspeed(MappedElementParser):
     # units = 'meters/second'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformIndicatedAirspeed(MappedElementParser):
     key = b'\x09'
     _domain = (0, 2**8-1)
@@ -119,25 +127,25 @@ class PlatformIndicatedAirspeed(MappedElementParser):
     # units = 'meters/second'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class PlatformDesignation(StringElementParser):
     key = b'\x0A'
     # min_length, max_length = 0, 127
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class ImageSourceSensor(StringElementParser):
     key = b'\x0B'
     # min_length, max_length = 0, 127
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class ImageCoordinateSystem(StringElementParser):
     key = b'\x0C'
     # min_length, max_length = 0, 127
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class SensorLatitude(MappedElementParser):
     key = b'\x0D'
     _domain = (-(2**31-1), 2**31-1)
@@ -145,7 +153,7 @@ class SensorLatitude(MappedElementParser):
     units = 'degrees'
 
 
-@ST0601.add_parser
+@UASLocalMetadataSet.add_parser
 class SensorLongitude(MappedElementParser):
     key = b'\x0E'
     _domain = (-(2**31-1), 2**31-1)

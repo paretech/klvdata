@@ -23,8 +23,9 @@
 # SOFTWARE.
 
 from setparser import SetParser
-from elementparser import ElementParser
-from misb0601 import ST0601
+from misb0601 import UASLocalMetadataSet
+from elementparser import BytesElementParser
+from element import UnknownElement
 
 _classifying_country_coding = {
     b'\x01': 'ISO-3166 Two Letter',
@@ -66,8 +67,12 @@ _object_country_coding = {
 }
 
 
-@ST0601.add_parser
-class ST0102(SetParser):
+class UnknownElement(UnknownElement):
+    pass
+
+
+@UASLocalMetadataSet.add_parser
+class SecurityLocalMetadataSet(SetParser):
     """MISB ST0102 Security Metadata nested local set parser.
 
     The Security Metdata set comprise information needed to
@@ -79,16 +84,18 @@ class ST0102(SetParser):
     key, name = b'\x30', "Security Local Metadata Set"
     parsers = {}
 
+    _unknown_element = UnknownElement
 
-@ST0102.add_parser
-class SecurityClassification(ElementParser):
+
+@SecurityLocalMetadataSet.add_parser
+class SecurityClassification(BytesElementParser):
     """MISB ST0102 Security Classification value interpretation parser.
 
     The Security Classification metadata element contains a value
     representing the entire security classification of the file in
     accordance with U.S. and NATO classification guidance.
     """
-    key, name = b'\x01', 'Security Classification'
+    key = b'\x01'
 
     _classification = {
         b'\x01': 'UNCLASSIFIED',
@@ -97,6 +104,3 @@ class SecurityClassification(ElementParser):
         b'\x04': 'SECRET',
         b'\x05': 'TOP SECRET',
     }
-
-    def __str__(self):
-        return str(self._classification[self.value])
