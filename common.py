@@ -99,8 +99,14 @@ def bytes_to_hexstr(value, start='', sep=' '):
 def bytes_to_float(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
     x1, x2 = _domain
+
+    length = int((x2 - x1 - 1).bit_length() / 8)
+    if length != len(value):
+        raise ValueError
+
     y1, y2 = _range
     m = (y2 - y1) / (x2 - x1)
+
     x = bytes_to_int(value, signed=any((i < 0 for i in _range)))
 
     # Return y given x
@@ -114,8 +120,12 @@ def float_to_bytes(value, _domain, _range):
     m = (y2 - y1) / (x2 - x1)
     y = value
 
+    length = int((x2 - x1 - 1).bit_length() / 8)
+    signed = any((i < 0 for i in _range))
+    x = round((1 / m) * (y - y1) + x1)
+
     # Return x given y
-    return int_to_bytes((1 / m) * (y - y1) + x1, length=int((x2-x1-1).bit_length()/8), signed=any((i < 0 for i in _range)))
+    return int_to_bytes(x, length, signed)
 
 
 def packet_checksum(data):

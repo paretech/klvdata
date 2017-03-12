@@ -119,33 +119,42 @@ class FixedPoint(unittest.TestCase):
 
     def test_unsigned_float(self):
         from common import float_to_bytes
-        self.assertEquals(
-            float_to_bytes(0.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
-            b'\x00\x00')
 
-        self.assertEquals(
-            float_to_bytes(159.974, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
-            b'\x71\xC2')
+        with self.subTest("Unsigned 0.0"):
+            self.assertEquals(
+                float_to_bytes(0.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+                b'\x00\x00')
 
-        self.assertEquals(
-            float_to_bytes(360.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
-            b'\xFF\xFF')
+        with self.subTest("Unsigned 159.974"):
+            self.assertEquals(
+                float_to_bytes(159.974, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+                b'\x71\xC2')
+
+        with self.subTest("Unsigned 360.0"):
+            self.assertEquals(
+                float_to_bytes(360.0, _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
+                b'\xFF\xFF')
 
     def test_signed_float(self):
         from common import float_to_bytes
-        self.assertEquals(
-            float_to_bytes(-20, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
-            b'\x80\x01')
 
-        self.assertEquals(
-            float_to_bytes(0.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
-            b'\x00\x00')
+        with self.subTest("Signed -20.0"):
+            self.assertEquals(
+                float_to_bytes(-20.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+                b'\x80\x01')
 
-        self.assertEquals(
-            float_to_bytes(-0.4315, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
-            b'\xFD\x3D')
+        with self.subTest("Signed 0.0"):
+            self.assertEquals(
+                float_to_bytes(0.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+                b'\x00\x00')
 
-        self.assertEquals(
-            float_to_bytes(20.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
-            b'\x7F\xFF')
+        with self.subTest("Signed -0.4315"):
+            self.assertEquals(
+                float_to_bytes(-0.4315, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+                b'\xFD\x3D')
+
+        with self.subTest("Signed 20.0"):
+            self.assertEquals(
+                float_to_bytes(20.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
+                b'\x7F\xFF')
 
