@@ -113,6 +113,10 @@ class HexStrings(unittest.TestCase):
             hexstr_to_bytes(bytes_to_hexstr(b'\x50\x72\x65\x64\x61\x74\x6F\x72')),
             b'\x50\x72\x65\x64\x61\x74\x6F\x72')
 
+        self.assertEqual(
+            bytes_to_hexstr(hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')),
+            '06 0E 2B 34 02 0B 01 01 0E 01 03 01 01 00 00 00')
+
 
 class FixedPoint(unittest.TestCase):
     def test_bytes_unsigned(self):
