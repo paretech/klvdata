@@ -26,6 +26,7 @@ from abc import ABCMeta
 from abc import abstractmethod
 from common import ber_encode
 
+
 # Proposed alternate names, "BaseElement" of modules "bases".
 class Element(metaclass=ABCMeta):
     """Construct a key, length, value tuplet.
