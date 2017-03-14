@@ -22,156 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import klvparser
-import io
-
-from collections import OrderedDict
 from datetime import datetime, timedelta
 
+import io
+from collections import OrderedDict
 
-class UASLSParser(object):
-    converters = {}
-
-    def __init__(self, source):
-        if not hasattr(source, "read"):
-            source = open(source, "rb")
-
-        self.packet = klvparser.KLVParser(source, key_length=16)
-
-    def __next__(self):
-        self._tags = OrderedDict()
-        next(self.packet)
-        self.parse_tags()
-
-        return self
-
-    def __iter__(self):
-        return self
-
-    def parse_tags(self):
-        for tag in klvparser.KLVParser(io.BytesIO(self.packet.value), key_length=1):
-            self._tags[tag.key] = fo
-
-
-def register(obj):
-    UASLSParser.converters[obj.tag] = obj
-    return obj
-
-
-class ConverterElement(object):
-    def __init__(self, element):
-        assert self.tag == element.key
-        # Perhaps someone want to initialize this converter with a diff tag
-        self.tag = element.key
-
-        self._length = element.length
-        assert self.min_length <= element.length <= self.max_length
-
-        self._value = element.value
-        if hasattr(self, 'min_value'):
-            assert self.min_value <= self.value <= self.max_value
-
-    class Value(object):
-        def __set__(self, instance, value):
-            instance._value = value
-
-        def __get__(self, instance, owner):
-            return instance._value
-
-    value = Value()
-
-    def __str__(self):
-        return "{:02}: {:32} {:4} bytes {}".format(self.tag, self.name, self._length, self.value)
-
-        # TODO: When assign to base assign to value
-        # def __call__(self):
-
-
-class StringConverterElement(ConverterElement):
-    min_value, max_value, units = 0x00, 0x7F, 'string'
-
-    def __init__(self, element):
-        assert self.tag == element.key
-
-        assert self.min_length <= element.length <= self.max_length
-        self._length = element.length
-
-        for character in element.value:
-            # import pdb; pdb.set_trace()
-            assert self.min_value <= character <= self.max_value
-
-        self._value = element.value
-
-    class Value(object):
-        def __set__(self, instance, value):
-            instance._value = klvparser.str_to_bytes(value)
-
-        def __get__(self, instance, owner):
-            return klvparser.bytes_to_str(instance._value)
-
-    value = Value()
-
-
-class MappedConverterElement(ConverterElement):
-    def __init__(self, element):
-        assert self.tag == element.key
-
-        assert self.min_length <= element.length <= self.max_length
-        self._length = element.length
-
-        self._value = element.value
-        assert self.min_value <= self.value <= self.max_value
-
-    class Value():
-        def __get__(self, instance, owner):
-            return klvparser.bytes_to_float(
-                instance._value,
-                instance.min_value,
-                instance.max_value,
-                instance.signed)
-
-        def __set__(self, instance, value):
-            instance._value = klvparser.float_to_bytes(
-                value, instance._length,
-                instance.min_value,
-                instance.max_value,
-                instance.signed)
-
-    value = Value()
-
-
-class DateConverterElement(ConverterElement):
-    def __init__(self, element):
-        assert self.tag == element.key
-
-        self._length = element.length
-        assert self.min_length <= self._length <= self.max_length
-
-        self._value = element.value
-
-    class Value(object):
-        def __set__(self, instance, value):
-            # TODO: Getting and setting value results in 1 us diff.
-            #  Python 2.5 compatibility
-            timestamp = (value - datetime(1970, 1, 1)) / timedelta(microseconds=1)
-
-            # TODO Refactor to use IntConverterElement
-            instance._value = klvparser.int_to_bytes(int(timestamp), 8)
-
-        def __get__(self, instance, owner):
-            date
-
-    value = Value()
-
-
-class UnsupportedTag(ConverterElement):
-    name = "Unsupported Tag"
-
-    def __init__(self, element):
-        # No validation
-        self.tag = element.key
-        self._length = element.length
-        self._value = element.value
+import klvparser
 
 
 @register
@@ -478,7 +334,6 @@ class MIISCoreIdentifier(object):
 
 if __name__ == '__main__':
     import sys
-    from pprint import pprint
 
     if len(sys.argv) > 1:
         readfile = sys.argv[1]
