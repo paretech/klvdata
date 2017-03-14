@@ -331,15 +331,3 @@ class MIISCoreIdentifier(object):
 
 
 # Tags 95 - 96
-
-if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) > 1:
-        readfile = sys.argv[1]
-    else:
-        readfile = 'DynamicConstantMISMMSPacketData.bin'
-
-    for packet in UASLSParser(readfile):
-        for tag in packet._tags.values():
-            print(tag)
