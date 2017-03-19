@@ -33,6 +33,7 @@ from common import datetime_to_bytes
 from common import float_to_bytes
 from common import str_to_bytes
 
+
 class ElementParser(Element, metaclass=ABCMeta):
     """Construct a Element Parser base class.
 

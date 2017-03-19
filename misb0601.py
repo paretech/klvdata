@@ -23,14 +23,13 @@
 # SOFTWARE.
 
 from common import hexstr_to_bytes
-
-from setparser import SetParser
-from streamparser import StreamParser
 from element import UnknownElement
 from elementparser import BytesElementParser
 from elementparser import DateTimeElementParser
 from elementparser import MappedElementParser
 from elementparser import StringElementParser
+from setparser import SetParser
+from streamparser import StreamParser
 
 
 class UnknownElement(UnknownElement):

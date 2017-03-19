@@ -22,17 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from pprint import pformat
 from abc import ABCMeta
 from abc import abstractmethod
 from collections import OrderedDict
-from pprint import pformat
-from klvparser import KLVParser
 from element import Element
 from element import UnknownElement
+from klvparser import KLVParser
 
 
 class SetParser(Element, metaclass=ABCMeta):
     """Parsable Element. Not intended to be used directly. Always as super class."""
+    _unknown_element = UnknownElement
 
     def __init__(self, value, key_length=1):
         """All parser needs is the value, no other information"""
@@ -59,7 +60,7 @@ class SetParser(Element, metaclass=ABCMeta):
             try:
                 self.items[key] = self.parsers[key](value)
             except KeyError:
-                self.items[key] = UnknownElement(key, value)
+                self.items[key] = self._unknown_element(key, value)
 
     @classmethod
     def add_parser(cls, obj):
@@ -93,3 +94,32 @@ class SetParser(Element, metaclass=ABCMeta):
 
     def __repr__(self):
         return pformat(self.items, indent=1)
+
+    def __str__(self):
+        return str_dict(self.items)
+
+    def structure(self):
+        print(str(type(self)))
+
+        def repeat(items, indent=1):
+            for item in items:
+                print(indent * "\t" + str(type(item)))
+                if hasattr(item, 'items'):
+                    repeat(item.items.values(), indent+1)
+
+        repeat(self.items.values())
+
+
+def str_dict(values):
+    out = []
+
+    def per_item(value, indent=0):
+        for item in value:
+            if isinstance(item, self):
+                out.append(indent * "\t" + str(item))
+            else:
+                out.append(indent * "\t" + str(item))
+
+    per_item(values)
+
+    return '\n'.join(out)
