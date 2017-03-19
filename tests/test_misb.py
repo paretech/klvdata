@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import unittest
+
 from common import bytes_to_hexstr
 
 
@@ -33,23 +34,23 @@ class ParserSingleShort(unittest.TestCase):
         value = b'\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
         klv = key + length + value
 
-        from misb0102 import ST0102
+        from misb0102 import SecurityLocalMetadataSet
 
         # Basic Properties
-        self.assertEquals(ST0102(value).key, key)
-        self.assertEquals(ST0102(value).length, length)
-        self.assertEquals(ST0102(value).value, value)
-        self.assertEquals(bytes(ST0102(value)), klv)
+        self.assertEquals(SecurityLocalMetadataSet(value).key, key)
+        self.assertEquals(SecurityLocalMetadataSet(value).length, length)
+        self.assertEquals(SecurityLocalMetadataSet(value).value, value)
+        self.assertEquals(bytes(SecurityLocalMetadataSet(value)), klv)
 
         # Specific to value under test
-        self.assertEquals(len(ST0102(value).items), 6)
+        self.assertEquals(len(SecurityLocalMetadataSet(value).items), 6)
 
     def test_st0601_1(self):
         # This test vector from MISB ST0902.5. Some errors may have been hand corrected.
         # Annex C for "Dynamic and Constant" MISMMS Packet Data.  Sample data from MISB ST 0902.5
         klv = bytes()
 
-        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+        with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             klv = f.read()
 
         key = klv[0:16]
@@ -58,14 +59,14 @@ class ParserSingleShort(unittest.TestCase):
         assert len(length) == 2
         value = klv[18:]
 
-        from misb0601 import ST0601
+        from misb0601 import UASLocalMetadataSet
         # from misb0102 import ST0102
 
         # Basic Properties
-        self.assertEquals(ST0601(value).key, key)
-        self.assertEquals(ST0601(value).length, length)
-        self.assertEquals(ST0601(value).value, value)
-        self.assertEquals(bytes(ST0601(value)), klv)
+        self.assertEquals(UASLocalMetadataSet(value).key, key)
+        self.assertEquals(UASLocalMetadataSet(value).length, length)
+        self.assertEquals(UASLocalMetadataSet(value).value, value)
+        self.assertEquals(bytes(UASLocalMetadataSet(value)), klv)
 
         # print(ST0601(value))
     def test_st0601_2(self):
@@ -77,14 +78,14 @@ class ParserSingleShort(unittest.TestCase):
         value = b'0\x1c\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
         klv = key + length + value
 
-        from misb0601 import ST0601
+        from misb0601 import UASLocalMetadataSet
         # from misb0102 import ST0102
 
         # Basic Properties
-        self.assertEquals(ST0601(value).key, key)
-        self.assertEquals(ST0601(value).length, length)
-        self.assertEquals(ST0601(value).value, value)
-        self.assertEquals(bytes(ST0601(value)), klv)
+        self.assertEquals(UASLocalMetadataSet(value).key, key)
+        self.assertEquals(UASLocalMetadataSet(value).length, length)
+        self.assertEquals(UASLocalMetadataSet(value).value, value)
+        self.assertEquals(bytes(UASLocalMetadataSet(value)), klv)
 
     def test_st0601_timestamp(self):
         key = b'\x02'

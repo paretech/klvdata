@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import unittest
+
 from common import hexstr_to_bytes
 
 
@@ -33,8 +34,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import Checksum
-        self.assertEquals(str(Checksum(value).value), interpretation)
-        self.assertEquals(bytes(Checksum(value)), tlv_hex_bytes)
+        self.assertEqual(str(Checksum(value).value), interpretation)
+        self.assertEqual(bytes(Checksum(value)), tlv_hex_bytes)
 
     def test_precisiontimestamp(self):
         # From MISB ST0902.5
@@ -43,8 +44,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PrecisionTimeStamp
-        self.assertEquals(str(PrecisionTimeStamp(value).value), interpretation)
-        self.assertEquals(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
+        self.assertEqual(str(PrecisionTimeStamp(value).value), interpretation)
+        self.assertEqual(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
 
         # From MISB ST0601.9
         interpretation = "2008-10-24 00:13:29.913000+00:00"
@@ -52,8 +53,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PrecisionTimeStamp
-        self.assertEquals(str(PrecisionTimeStamp(value).value), interpretation)
-        self.assertEquals(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
+        self.assertEqual(str(PrecisionTimeStamp(value).value), interpretation)
+        self.assertEqual(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
 
     def test_MissionID(self):
         # From MISB ST0902.5
@@ -62,8 +63,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import MissionID
-        self.assertEquals(str(MissionID(value).value), interpretation)
-        self.assertEquals(bytes(MissionID(value)), tlv_hex_bytes)
+        self.assertEqual(str(MissionID(value).value), interpretation)
+        self.assertEqual(bytes(MissionID(value)), tlv_hex_bytes)
 
         # From MISB ST0601.9
         interpretation = "MISSION01"
@@ -71,8 +72,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import MissionID
-        self.assertEquals(str(MissionID(value).value), interpretation)
-        self.assertEquals(bytes(MissionID(value)), tlv_hex_bytes)
+        self.assertEqual(str(MissionID(value).value), interpretation)
+        self.assertEqual(bytes(MissionID(value)), tlv_hex_bytes)
 
     def test_PlatformTailNumber(self):
         # From MISB ST0601.9
@@ -81,8 +82,8 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PlatformTailNumber
-        self.assertEquals(str(PlatformTailNumber(value).value), interpretation)
-        self.assertEquals(bytes(PlatformTailNumber(value)), tlv_hex_bytes)
+        self.assertEqual(str(PlatformTailNumber(value).value), interpretation)
+        self.assertEqual(bytes(PlatformTailNumber(value)), tlv_hex_bytes)
 
     def test_PlatformHeadingAngle(self):
 
@@ -93,12 +94,11 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PlatformHeadingAngle
-        self.assertEquals(str(PlatformHeadingAngle(value).value), interpretation)
-        self.assertEquals(bytes(PlatformHeadingAngle(value)), tlv_hex_bytes)
-        self.assertAlmostEquals(float(PlatformHeadingAngle(value).value), 159.974, 3)
+        self.assertEqual(str(PlatformHeadingAngle(value).value), interpretation)
+        self.assertEqual(bytes(PlatformHeadingAngle(value)), tlv_hex_bytes)
+        self.assertAlmostEqual(float(PlatformHeadingAngle(value).value), 159.974, 3)
 
     def test_PlatformPitchAngle(self):
-
         # From MISB ST0601.9
         # @TODO: Limit display precision and add units as per example.
         interpretation = "-0.4315317239905987"
@@ -106,9 +106,9 @@ class ParserSingleShort(unittest.TestCase):
         value = tlv_hex_bytes[2:]
 
         from misb0601 import PlatformPitchAngle
-        self.assertEquals(str(PlatformPitchAngle(value).value), interpretation)
-        self.assertEquals(bytes(PlatformPitchAngle(value)), tlv_hex_bytes)
-        self.assertAlmostEquals(float(PlatformPitchAngle(value).value), -0.4315, 4)
+        self.assertEqual(str(PlatformPitchAngle(value).value), interpretation)
+        self.assertEqual(bytes(PlatformPitchAngle(value)), tlv_hex_bytes)
+        self.assertAlmostEqual(float(PlatformPitchAngle(value).value), -0.4315, 4)
 
 
 

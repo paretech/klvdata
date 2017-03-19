@@ -28,13 +28,13 @@ class ParserSingleLong(unittest.TestCase):
     def test_singlepacket(self):
 
         # Example from MISB ST 0902.5
-        with open('./samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+        with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             packet = f.read()
 
         from streamparser import StreamParser
 
         for packet in StreamParser(packet):
-            print(packet.items)
+            packet.structure()
 
 
 if __name__ == "__main__":
