@@ -4,6 +4,10 @@ python:
 # Command to install dependencies
 install:
   - pip install -r requirements/ci.pip
+  - pip install coveralls
+
 # Command to run tests
 script:
-  - python -m unittest discover --start-directory tests/
+  - coverage run -m unittest discover --start-directory tests/
+after_success:
+  coveralls
