@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.5"
+# Command to install dependencies
+install:
+  - pip install -r requirements/ci.pip
+# Command to run tests
+script:
+  - python -m unittest discover --start-directory tests/
