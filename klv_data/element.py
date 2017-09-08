@@ -24,7 +24,7 @@
 
 from abc import ABCMeta
 from abc import abstractmethod
-from common import ber_encode
+from klv_data.common import ber_encode
 
 
 # Proposed alternate names, "BaseElement" of modules "bases".

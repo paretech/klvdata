@@ -36,7 +36,7 @@ class ParserSingleShort(ParserTestCase):
 
         self.packet = self.key + self.length + self.value
 
-        from klvparser import KLVParser
+        from klv_data.klvparser import KLVParser
         self.parser = KLVParser(self.packet, key_length=1)
 
     def test_key(self):
@@ -53,7 +53,7 @@ class ParserSingleLong(ParserTestCase):
         self.packet = bytes()
 
         # Sample data from MISB ST 0902.5
-        with open('./tests/samples/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+        with open('./data/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             self.packet = f.read()
 
         self.key = self.packet[0:16]
@@ -62,7 +62,7 @@ class ParserSingleLong(ParserTestCase):
         assert len(self.length) == 2
         self.value = self.packet[18:]
 
-        from klvparser import KLVParser
+        from klv_data.klvparser import KLVParser
         self.parser = KLVParser(self.packet, key_length=16)
 
     def test_key(self):

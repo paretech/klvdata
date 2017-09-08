@@ -24,7 +24,7 @@
 
 from io import BytesIO
 from io import IOBase
-from common import bytes_to_int
+from klv_data.common import bytes_to_int
 
 
 class KLVParser(object):

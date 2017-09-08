@@ -27,44 +27,44 @@ import unittest
 
 class ElementTLV(unittest.TestCase):
     def test_key(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertEqual(
             UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80').key,
             b'\x02')
 
     def test_length(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertEqual(
             UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80').length,
             b'\x08')
 
     def test_value(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertEqual(
             UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80').value,
             b'\x00\x04\x60\x50\x58\x4E\x01\x80')
 
     def test_packet(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertEqual(
             bytes(UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80')),
             b'\x02\x08\x00\x04\x60\x50\x58\x4E\x01\x80')
 
     def test_name(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertEqual(
             UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80').name,
             "UnknownElement")
 
     def test_str(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
 
         self.assertEqual(
             str(UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80')),
             "UnknownElement: (b'\\x02', 8, b'\\x00\\x04`PXN\\x01\\x80')")
 
     def test_repr(self):
-        from element import UnknownElement
+        from klv_data.element import UnknownElement
         self.assertIsInstance(
             eval(repr(UnknownElement(b'\x02', b'\x00\x04\x60\x50\x58\x4E\x01\x80'))),
             UnknownElement)
