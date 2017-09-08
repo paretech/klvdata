@@ -1,5 +1,8 @@
 .. image:: https://travis-ci.org/paretech/klv_data.svg?branch=master
-    :target: https://travis-ci.org/paretech/klv_data
+:target: https://travis-ci.org/paretech/klv_data
+
+.. image:: https://coveralls.io/repos/github/paretech/klv_data/badge.svg?branch=master
+:target: https://coveralls.io/github/paretech/klv_data?branch=master
 
 What?
 -----
