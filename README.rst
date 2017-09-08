@@ -16,15 +16,13 @@ Not many opensource options available.
 
 Features
 --------
-- Parses KLV metadata streams
+- Parses KLV metadata streams.
 - Supports `MISB ST`_ 0601 UAV Datalink Local Set.
 - Supports `MISB ST`_ 0102 Security Metadata field definitions.
-- Built for Python 3.5, 3.6
+- Built for Python 3.5, 3.6.
+- Requires no external Python dependencies.
 
 .. _MISB ST: http://www.gwg.nga.mil/misb/st_pubs.html
-
-Quick Start
------------
 
 Contributing
 ------------
