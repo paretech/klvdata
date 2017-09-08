@@ -23,7 +23,7 @@
 
 import unittest
 
-from klv_data.common import hexstr_to_bytes
+from common import hexstr_to_bytes
 
 
 class ParserSingleShort(unittest.TestCase):
