@@ -10,7 +10,7 @@ Welcome to klv-data's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   klv_data
 
 Indices and tables
 ==================
