@@ -9,5 +9,10 @@ install:
 # Command to run tests
 script:
   - coverage run -m unittest discover --start-directory tests/
+  - set -e
+  - cd docs
+  - make html
+  - cd ..
+  - doctr deploy --built-docs docs/_build/html .
 after_success:
   coveralls
