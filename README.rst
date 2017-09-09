@@ -6,7 +6,7 @@
 
 What?
 -----
-KLV Data is a Python library for parsing Key Length Value (KLV_) formatted binary streams. Common uses of the library would be parsing and displaying `MISB ST`_ 0601 UAS metadata from `STANAG 4609`_ compliant `MPEG-2 Transport Streams (TS) (MPEG-TS)`_. Note that this library alone cannot de-mux an MPEG-TS, but programs like FFmpeg_ and GStreamer_ can be used in the workflow to perform the function.
+KLV_Data is a Python library for parsing and constructing Key Length Value (KLV_) formatted binary streams. Common uses of the library would be parsing and displaying `MISB ST`_ 0601 Unmanned Air System (UAS) metadata from `STANAG 4609`_ compliant `MPEG-2 Transport Streams (TS) (MPEG-TS)`_. Note that KLV_Data alone cannot de-mux KLV data from an MPEG-2 TS, but programs like FFmpeg_ and GStreamer_ can be used with KLV_Data in the workflow to perform the function.
 
 .. _KLV: https://en.wikipedia.org/wiki/KLV
 .. _STANAG 4609: http://www.gwg.nga.mil/misb/docs/nato_docs/STANAG_4609_Ed3.pdf
@@ -23,8 +23,8 @@ Not many opensource options available.
 Features
 --------
 - Parses KLV metadata streams.
-- Supports `MISB ST`_ 0601 UAV Datalink Local Set.
-- Supports `MISB ST`_ 0102 Security Metadata field definitions.
+- Supports `MISB ST`_ 0601 UAS Datalink Local Set.
+- Supports `MISB ST`_ 0102 Security Metadata Local Set.
 - Built for Python 3.5, 3.6.
 - Requires no external Python dependencies.
 
