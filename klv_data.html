@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>klv_data package &mdash; klv-data  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="klv-data  documentation" href="index.html"/>
+        <link rel="prev" title="Welcome to klv-data’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> klv-data
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">klv_data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.common">klv_data.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.element">klv_data.element module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.elementparser">klv_data.elementparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.klvparser">klv_data.klvparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.misb0102">klv_data.misb0102 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.misb0601">klv_data.misb0601 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.setparser">klv_data.setparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data.streamparser">klv_data.streamparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-klv_data">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">klv-data</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>klv_data package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/klv_data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="klv-data-package">
+<h1>klv_data package<a class="headerlink" href="#klv-data-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-klv_data.common">
+<span id="klv-data-common-module"></span><h2>klv_data.common module<a class="headerlink" href="#module-klv_data.common" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="klv_data.common.ber_decode">
+<code class="descclassname">klv_data.common.</code><code class="descname">ber_decode</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.ber_decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return decoded BER length as integer given bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.ber_encode">
+<code class="descclassname">klv_data.common.</code><code class="descname">ber_encode</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.ber_encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return encoded BER length as bytes given integer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.bytes_to_datetime">
+<code class="descclassname">klv_data.common.</code><code class="descname">bytes_to_datetime</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.bytes_to_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return datetime from microsecond bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.bytes_to_float">
+<code class="descclassname">klv_data.common.</code><code class="descname">bytes_to_float</code><span class="sig-paren">(</span><em>value</em>, <em>_domain</em>, <em>_range</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.bytes_to_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the fixed point value self.value to a floating point value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.bytes_to_hexstr">
+<code class="descclassname">klv_data.common.</code><code class="descname">bytes_to_hexstr</code><span class="sig-paren">(</span><em>value</em>, <em>start=''</em>, <em>sep=' '</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.bytes_to_hexstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return string of hexadecimal numbers separated by spaces from a bytes object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.bytes_to_int">
+<code class="descclassname">klv_data.common.</code><code class="descname">bytes_to_int</code><span class="sig-paren">(</span><em>value</em>, <em>signed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.bytes_to_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer given bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.bytes_to_str">
+<code class="descclassname">klv_data.common.</code><code class="descname">bytes_to_str</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.bytes_to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return UTF-8 formatted string from bytes object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.datetime_to_bytes">
+<code class="descclassname">klv_data.common.</code><code class="descname">datetime_to_bytes</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.datetime_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return bytes representing UTC time in microseconds.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.float_to_bytes">
+<code class="descclassname">klv_data.common.</code><code class="descname">float_to_bytes</code><span class="sig-paren">(</span><em>value</em>, <em>_domain</em>, <em>_range</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.float_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the fixed point value self.value to a floating point value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.hexstr_to_bytes">
+<code class="descclassname">klv_data.common.</code><code class="descname">hexstr_to_bytes</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.hexstr_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return bytes object and filter out formatting characters from a string of hexadecimal numbers.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.int_to_bytes">
+<code class="descclassname">klv_data.common.</code><code class="descname">int_to_bytes</code><span class="sig-paren">(</span><em>value</em>, <em>length=1</em>, <em>signed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.int_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return bytes given integer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.packet_checksum">
+<code class="descclassname">klv_data.common.</code><code class="descname">packet_checksum</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.packet_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return two byte checksum from a SMPTE ST 336 KLV structured bytes object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.common.str_to_bytes">
+<code class="descclassname">klv_data.common.</code><code class="descname">str_to_bytes</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.common.str_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return bytes object from UTF-8 formatted string.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.element">
+<span id="klv-data-element-module"></span><h2>klv_data.element module<a class="headerlink" href="#module-klv_data.element" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.element.Element">
+<em class="property">class </em><code class="descclassname">klv_data.element.</code><code class="descname">Element</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.element.Element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Construct a key, length, value tuplet.</p>
+<p>Elements provide the basic mechanisms to constitute the basic encoding
+requirements of key, length, value tuplet as specified by STMPE 336.</p>
+<p>The length is dynamically calculated based off the value.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>key
+value</dd>
+<dt>Properties:</dt>
+<dd>name: If name is set return name, else return class name.
+length: Length is calculated based off value.</dd>
+</dl>
+<dl class="attribute">
+<dt id="klv_data.element.Element.length">
+<code class="descname">length</code><a class="headerlink" href="#klv_data.element.Element.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>bytes: Return the BER encoded byte length of self.value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.element.Element.name">
+<code class="descname">name</code><a class="headerlink" href="#klv_data.element.Element.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.element.UnknownElement">
+<em class="property">class </em><code class="descclassname">klv_data.element.</code><code class="descname">UnknownElement</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.element.UnknownElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.element.Element" title="klv_data.element.Element"><code class="xref py py-class docutils literal"><span class="pre">klv_data.element.Element</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.elementparser">
+<span id="klv-data-elementparser-module"></span><h2>klv_data.elementparser module<a class="headerlink" href="#module-klv_data.elementparser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.elementparser.BaseValue">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">BaseValue</code><a class="headerlink" href="#klv_data.elementparser.BaseValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Abstract base class (superclass) used to insure internal interfaces are maintained.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.BytesElementParser">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">BytesElementParser</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.BytesElementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.ElementParser" title="klv_data.elementparser.ElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.ElementParser</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.BytesValue">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">BytesValue</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.BytesValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BaseValue" title="klv_data.elementparser.BaseValue"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BaseValue</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.DateTimeElementParser">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">DateTimeElementParser</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.DateTimeElementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.ElementParser" title="klv_data.elementparser.ElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.ElementParser</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.DateTimeValue">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">DateTimeValue</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.DateTimeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BaseValue" title="klv_data.elementparser.BaseValue"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BaseValue</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.ElementParser">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">ElementParser</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.ElementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.element.Element" title="klv_data.element.Element"><code class="xref py py-class docutils literal"><span class="pre">klv_data.element.Element</span></code></a></p>
+<p>Construct a Element Parser base class.</p>
+<p>Element Parsers are used to enforce the convention that all Element Parsers
+already know the key of the element they are constructing.</p>
+<p>Element Parser is a helper class that simplifies known element definition
+and makes a layer of abstraction for functionality that all known elements
+can share. The parsing interfaces are cleaner and require less coding as
+their definitions (subclasses of Element Parser) do not need to call init
+on super with class key and instance value.</p>
+<dl class="attribute">
+<dt id="klv_data.elementparser.ElementParser.key">
+<code class="descname">key</code><a class="headerlink" href="#klv_data.elementparser.ElementParser.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>classmethod(function) -&gt; method</p>
+<p>Convert a function to be a class method.</p>
+<p>A class method receives the class as implicit first argument,
+just like an instance method receives the instance.
+To declare a class method, use this idiom:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>class C:</dt>
+<dd><p class="first">&#64;classmethod
+def f(cls, arg1, arg2, …):</p>
+<blockquote class="last">
+<div>…</div></blockquote>
+</dd>
+</dl>
+</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.
+If a class method is called for a derived class, the derived class
+object is passed as the implied first argument.</p>
+<p>Class methods are different than C++ or Java static methods.
+If you want those, see the staticmethod builtin.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.MappedElementParser">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">MappedElementParser</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.MappedElementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.ElementParser" title="klv_data.elementparser.ElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.ElementParser</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.MappedValue">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">MappedValue</code><span class="sig-paren">(</span><em>value</em>, <em>_domain</em>, <em>_range</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.MappedValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BaseValue" title="klv_data.elementparser.BaseValue"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BaseValue</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.StringElementParser">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">StringElementParser</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.StringElementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.ElementParser" title="klv_data.elementparser.ElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.ElementParser</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.elementparser.StringValue">
+<em class="property">class </em><code class="descclassname">klv_data.elementparser.</code><code class="descname">StringValue</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.elementparser.StringValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BaseValue" title="klv_data.elementparser.BaseValue"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BaseValue</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.klvparser">
+<span id="klv-data-klvparser-module"></span><h2>klv_data.klvparser module<a class="headerlink" href="#module-klv_data.klvparser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.klvparser.KLVParser">
+<em class="property">class </em><code class="descclassname">klv_data.klvparser.</code><code class="descname">KLVParser</code><span class="sig-paren">(</span><em>source</em>, <em>key_length</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.klvparser.KLVParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Return key, value pairs parsed from an SMPTE ST 336 source.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.misb0102">
+<span id="klv-data-misb0102-module"></span><h2>klv_data.misb0102 module<a class="headerlink" href="#module-klv_data.misb0102" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.misb0102.SecurityClassification">
+<em class="property">class </em><code class="descclassname">klv_data.misb0102.</code><code class="descname">SecurityClassification</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0102.SecurityClassification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BytesElementParser" title="klv_data.elementparser.BytesElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BytesElementParser</span></code></a></p>
+<p>MISB ST0102 Security Classification value interpretation parser.</p>
+<p>The Security Classification metadata element contains a value
+representing the entire security classification of the file in
+accordance with U.S. and NATO classification guidance.</p>
+<dl class="attribute">
+<dt id="klv_data.misb0102.SecurityClassification.key">
+<code class="descname">key</code><em class="property"> = b'\x01'</em><a class="headerlink" href="#klv_data.misb0102.SecurityClassification.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0102.SecurityLocalMetadataSet">
+<em class="property">class </em><code class="descclassname">klv_data.misb0102.</code><code class="descname">SecurityLocalMetadataSet</code><span class="sig-paren">(</span><em>value</em>, <em>key_length=1</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0102.SecurityLocalMetadataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.setparser.SetParser" title="klv_data.setparser.SetParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.setparser.SetParser</span></code></a></p>
+<p>MISB ST0102 Security Metadata nested local set parser.</p>
+<p>The Security Metdata set comprise information needed to
+comply with CAPCO, DoD Information Security Program and
+other normatively referenced security directives.</p>
+<p>Must be a subclass of Element or duck type Element.</p>
+<dl class="attribute">
+<dt id="klv_data.misb0102.SecurityLocalMetadataSet.key">
+<code class="descname">key</code><em class="property"> = b'0'</em><a class="headerlink" href="#klv_data.misb0102.SecurityLocalMetadataSet.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0102.SecurityLocalMetadataSet.name">
+<code class="descname">name</code><em class="property"> = 'Security Local Metadata Set'</em><a class="headerlink" href="#klv_data.misb0102.SecurityLocalMetadataSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0102.SecurityLocalMetadataSet.parsers">
+<code class="descname">parsers</code><em class="property"> = {b'\x01': &lt;class 'klv_data.misb0102.SecurityClassification'&gt;}</em><a class="headerlink" href="#klv_data.misb0102.SecurityLocalMetadataSet.parsers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0102.UnknownElement">
+<em class="property">class </em><code class="descclassname">klv_data.misb0102.</code><code class="descname">UnknownElement</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0102.UnknownElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.element.UnknownElement" title="klv_data.element.UnknownElement"><code class="xref py py-class docutils literal"><span class="pre">klv_data.element.UnknownElement</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.misb0601">
+<span id="klv-data-misb0601-module"></span><h2>klv_data.misb0601 module<a class="headerlink" href="#module-klv_data.misb0601" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.misb0601.Checksum">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">Checksum</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.Checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.BytesElementParser" title="klv_data.elementparser.BytesElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.BytesElementParser</span></code></a></p>
+<p>Checksum used to detect errors within a UAV Local Set packet.</p>
+<p>Checksum formed as lower 16-bits of summation performed on entire
+LS packet, including 16-byte US key and 1-byte checksum length.</p>
+<p>Initialized from bytes value as BytesValue.</p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.Checksum.key">
+<code class="descname">key</code><em class="property"> = b'\x01'</em><a class="headerlink" href="#klv_data.misb0601.Checksum.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.ImageCoordinateSystem">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">ImageCoordinateSystem</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.ImageCoordinateSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.StringElementParser" title="klv_data.elementparser.StringElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.StringElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.ImageCoordinateSystem.key">
+<code class="descname">key</code><em class="property"> = b'\x0c'</em><a class="headerlink" href="#klv_data.misb0601.ImageCoordinateSystem.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.ImageSourceSensor">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">ImageSourceSensor</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.ImageSourceSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.StringElementParser" title="klv_data.elementparser.StringElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.StringElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.ImageSourceSensor.key">
+<code class="descname">key</code><em class="property"> = b'\x0b'</em><a class="headerlink" href="#klv_data.misb0601.ImageSourceSensor.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.MissionID">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">MissionID</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.MissionID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.StringElementParser" title="klv_data.elementparser.StringElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.StringElementParser</span></code></a></p>
+<p>Mission ID is the descriptive mission identifier.</p>
+<p>Mission ID value field free text with maximum of 127 characters
+describing the event.</p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.MissionID.key">
+<code class="descname">key</code><em class="property"> = b'\x03'</em><a class="headerlink" href="#klv_data.misb0601.MissionID.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformDesignation">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformDesignation</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformDesignation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.StringElementParser" title="klv_data.elementparser.StringElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.StringElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformDesignation.key">
+<code class="descname">key</code><em class="property"> = b'\n'</em><a class="headerlink" href="#klv_data.misb0601.PlatformDesignation.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformHeadingAngle">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformHeadingAngle</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformHeadingAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformHeadingAngle.key">
+<code class="descname">key</code><em class="property"> = b'\x05'</em><a class="headerlink" href="#klv_data.misb0601.PlatformHeadingAngle.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformIndicatedAirspeed">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformIndicatedAirspeed</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformIndicatedAirspeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformIndicatedAirspeed.key">
+<code class="descname">key</code><em class="property"> = b'\t'</em><a class="headerlink" href="#klv_data.misb0601.PlatformIndicatedAirspeed.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformPitchAngle">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformPitchAngle</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformPitchAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformPitchAngle.key">
+<code class="descname">key</code><em class="property"> = b'\x06'</em><a class="headerlink" href="#klv_data.misb0601.PlatformPitchAngle.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformRollAngle">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformRollAngle</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformRollAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformRollAngle.key">
+<code class="descname">key</code><em class="property"> = b'\x07'</em><a class="headerlink" href="#klv_data.misb0601.PlatformRollAngle.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformRollAngle.units">
+<code class="descname">units</code><em class="property"> = 'degrees'</em><a class="headerlink" href="#klv_data.misb0601.PlatformRollAngle.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformTailNumber">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformTailNumber</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformTailNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.StringElementParser" title="klv_data.elementparser.StringElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.StringElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformTailNumber.key">
+<code class="descname">key</code><em class="property"> = b'\x04'</em><a class="headerlink" href="#klv_data.misb0601.PlatformTailNumber.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PlatformTrueAirspeed">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PlatformTrueAirspeed</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PlatformTrueAirspeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PlatformTrueAirspeed.key">
+<code class="descname">key</code><em class="property"> = b'\x08'</em><a class="headerlink" href="#klv_data.misb0601.PlatformTrueAirspeed.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.PrecisionTimeStamp">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">PrecisionTimeStamp</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.PrecisionTimeStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.DateTimeElementParser" title="klv_data.elementparser.DateTimeElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.DateTimeElementParser</span></code></a></p>
+<p>Precision Timestamp represented in microseconds.</p>
+<p>Precision Timestamp represented in the number of microseconds elapsed
+since midnight (00:00:00), January 1, 1970 not including leap seconds.</p>
+<p>See MISB ST 0603 for additional details.</p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.PrecisionTimeStamp.key">
+<code class="descname">key</code><em class="property"> = b'\x02'</em><a class="headerlink" href="#klv_data.misb0601.PrecisionTimeStamp.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.SensorLatitude">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">SensorLatitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.SensorLatitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.SensorLatitude.key">
+<code class="descname">key</code><em class="property"> = b'\r'</em><a class="headerlink" href="#klv_data.misb0601.SensorLatitude.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0601.SensorLatitude.units">
+<code class="descname">units</code><em class="property"> = 'degrees'</em><a class="headerlink" href="#klv_data.misb0601.SensorLatitude.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.SensorLongitude">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">SensorLongitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.SensorLongitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.elementparser.MappedElementParser" title="klv_data.elementparser.MappedElementParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.elementparser.MappedElementParser</span></code></a></p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.SensorLongitude.key">
+<code class="descname">key</code><em class="property"> = b'\x0e'</em><a class="headerlink" href="#klv_data.misb0601.SensorLongitude.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0601.SensorLongitude.units">
+<code class="descname">units</code><em class="property"> = 'degrees'</em><a class="headerlink" href="#klv_data.misb0601.SensorLongitude.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.UASLocalMetadataSet">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">UASLocalMetadataSet</code><span class="sig-paren">(</span><em>value</em>, <em>key_length=1</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.UASLocalMetadataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.setparser.SetParser" title="klv_data.setparser.SetParser"><code class="xref py py-class docutils literal"><span class="pre">klv_data.setparser.SetParser</span></code></a></p>
+<p>MISB ST0601 UAS Local Metadata Set</p>
+<dl class="attribute">
+<dt id="klv_data.misb0601.UASLocalMetadataSet.key">
+<code class="descname">key</code><em class="property"> = b'\x06\x0e+4\x02\x0b\x01\x01\x0e\x01\x03\x01\x01\x00\x00\x00'</em><a class="headerlink" href="#klv_data.misb0601.UASLocalMetadataSet.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0601.UASLocalMetadataSet.name">
+<code class="descname">name</code><em class="property"> = 'UAS Datalink Local Set'</em><a class="headerlink" href="#klv_data.misb0601.UASLocalMetadataSet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.misb0601.UASLocalMetadataSet.parsers">
+<code class="descname">parsers</code><em class="property"> = {b'\x07': &lt;class 'klv_data.misb0601.PlatformRollAngle'&gt;, b'0': &lt;class 'klv_data.misb0102.SecurityLocalMetadataSet'&gt;, b'\n': &lt;class 'klv_data.misb0601.PlatformDesignation'&gt;, b'\x0b': &lt;class 'klv_data.misb0601.ImageSourceSensor'&gt;, b'\x0e': &lt;class 'klv_data.misb0601.SensorLongitude'&gt;, b'\r': &lt;class 'klv_data.misb0601.SensorLatitude'&gt;, b'\x02': &lt;class 'klv_data.misb0601.PrecisionTimeStamp'&gt;, b'\x05': &lt;class 'klv_data.misb0601.PlatformHeadingAngle'&gt;, b'\x08': &lt;class 'klv_data.misb0601.PlatformTrueAirspeed'&gt;, b'\x01': &lt;class 'klv_data.misb0601.Checksum'&gt;, b'\t': &lt;class 'klv_data.misb0601.PlatformIndicatedAirspeed'&gt;, b'\x03': &lt;class 'klv_data.misb0601.MissionID'&gt;, b'\x0c': &lt;class 'klv_data.misb0601.ImageCoordinateSystem'&gt;, b'\x04': &lt;class 'klv_data.misb0601.PlatformTailNumber'&gt;, b'\x06': &lt;class 'klv_data.misb0601.PlatformPitchAngle'&gt;}</em><a class="headerlink" href="#klv_data.misb0601.UASLocalMetadataSet.parsers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="klv_data.misb0601.UnknownElement">
+<em class="property">class </em><code class="descclassname">klv_data.misb0601.</code><code class="descname">UnknownElement</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.misb0601.UnknownElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.element.UnknownElement" title="klv_data.element.UnknownElement"><code class="xref py py-class docutils literal"><span class="pre">klv_data.element.UnknownElement</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.setparser">
+<span id="klv-data-setparser-module"></span><h2>klv_data.setparser module<a class="headerlink" href="#module-klv_data.setparser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.setparser.SetParser">
+<em class="property">class </em><code class="descclassname">klv_data.setparser.</code><code class="descname">SetParser</code><span class="sig-paren">(</span><em>value</em>, <em>key_length=1</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.setparser.SetParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#klv_data.element.Element" title="klv_data.element.Element"><code class="xref py py-class docutils literal"><span class="pre">klv_data.element.Element</span></code></a></p>
+<p>Parsable Element. Not intended to be used directly. Always as super class.</p>
+<dl class="classmethod">
+<dt id="klv_data.setparser.SetParser.add_parser">
+<em class="property">classmethod </em><code class="descname">add_parser</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.setparser.SetParser.add_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator method used to register a parser to the class parsing repertoire.</p>
+<p>obj is required to implement key attribute supporting bytes as returned by KLVParser key.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="klv_data.setparser.SetParser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.setparser.SetParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the parent into items. Called on init and modification of parent value.</p>
+<p>If a known parser is not available for key, parse as generic KLV element.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.setparser.SetParser.parsers">
+<code class="descname">parsers</code><a class="headerlink" href="#klv_data.setparser.SetParser.parsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>classmethod(function) -&gt; method</p>
+<p>Convert a function to be a class method.</p>
+<p>A class method receives the class as implicit first argument,
+just like an instance method receives the instance.
+To declare a class method, use this idiom:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>class C:</dt>
+<dd><p class="first">&#64;classmethod
+def f(cls, arg1, arg2, …):</p>
+<blockquote class="last">
+<div>…</div></blockquote>
+</dd>
+</dl>
+</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.
+If a class method is called for a derived class, the derived class
+object is passed as the implied first argument.</p>
+<p>Class methods are different than C++ or Java static methods.
+If you want those, see the staticmethod builtin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="klv_data.setparser.SetParser.structure">
+<code class="descname">structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.setparser.SetParser.structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="klv_data.setparser.str_dict">
+<code class="descclassname">klv_data.setparser.</code><code class="descname">str_dict</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.setparser.str_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-klv_data.streamparser">
+<span id="klv-data-streamparser-module"></span><h2>klv_data.streamparser module<a class="headerlink" href="#module-klv_data.streamparser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="klv_data.streamparser.StreamParser">
+<em class="property">class </em><code class="descclassname">klv_data.streamparser.</code><code class="descname">StreamParser</code><span class="sig-paren">(</span><em>source</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.streamparser.StreamParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="klv_data.streamparser.StreamParser.add_parser">
+<em class="property">classmethod </em><code class="descname">add_parser</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#klv_data.streamparser.StreamParser.add_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator method used to register a parser to the class parsing repertoire.</p>
+<p>obj is required to implement key attribute supporting bytes as returned by KLVParser key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="klv_data.streamparser.StreamParser.parsers">
+<code class="descname">parsers</code><em class="property"> = {b'\x06\x0e+4\x02\x0b\x01\x01\x0e\x01\x03\x01\x01\x00\x00\x00': &lt;class 'klv_data.misb0601.UASLocalMetadataSet'&gt;}</em><a class="headerlink" href="#klv_data.streamparser.StreamParser.parsers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-klv_data">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-klv_data" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to klv-data’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Matthew Pare.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
