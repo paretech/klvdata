@@ -23,7 +23,7 @@
 
 import unittest
 
-from klv_data.common import hexstr_to_bytes
+from klvdata.common import hexstr_to_bytes
 
 
 class ParserSingleShort(unittest.TestCase):
@@ -33,7 +33,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("01 02 AA 43")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import Checksum
+        from klvdata.misb0601 import Checksum
         self.assertEqual(str(Checksum(value).value), interpretation)
         self.assertEqual(bytes(Checksum(value)), tlv_hex_bytes)
 
@@ -43,7 +43,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("02 08 00 04 60 50 58 4E 01 80")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import PrecisionTimeStamp
+        from klvdata.misb0601 import PrecisionTimeStamp
         self.assertEqual(str(PrecisionTimeStamp(value).value), interpretation)
         self.assertEqual(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
 
@@ -52,7 +52,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("02 08 00 04 59 F4 A6 AA 4A A8")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import PrecisionTimeStamp
+        from klvdata.misb0601 import PrecisionTimeStamp
         self.assertEqual(str(PrecisionTimeStamp(value).value), interpretation)
         self.assertEqual(bytes(PrecisionTimeStamp(value)), tlv_hex_bytes)
 
@@ -62,7 +62,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("03 0A 4D 69 73 73 69 6F 6E 20 31 32")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import MissionID
+        from klvdata.misb0601 import MissionID
         self.assertEqual(str(MissionID(value).value), interpretation)
         self.assertEqual(bytes(MissionID(value)), tlv_hex_bytes)
 
@@ -71,7 +71,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("03 09 4D 49 53 53 49 4F 4E 30 31]")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import MissionID
+        from klvdata.misb0601 import MissionID
         self.assertEqual(str(MissionID(value).value), interpretation)
         self.assertEqual(bytes(MissionID(value)), tlv_hex_bytes)
 
@@ -81,7 +81,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("04 06 41 46 2D 31 30 31")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import PlatformTailNumber
+        from klvdata.misb0601 import PlatformTailNumber
         self.assertEqual(str(PlatformTailNumber(value).value), interpretation)
         self.assertEqual(bytes(PlatformTailNumber(value)), tlv_hex_bytes)
 
@@ -93,7 +93,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("05 02 71 C2")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import PlatformHeadingAngle
+        from klvdata.misb0601 import PlatformHeadingAngle
         self.assertEqual(str(PlatformHeadingAngle(value).value), interpretation)
         self.assertEqual(bytes(PlatformHeadingAngle(value)), tlv_hex_bytes)
         self.assertAlmostEqual(float(PlatformHeadingAngle(value).value), 159.974, 3)
@@ -105,7 +105,7 @@ class ParserSingleShort(unittest.TestCase):
         tlv_hex_bytes = hexstr_to_bytes("06 02 FD 3D")
         value = tlv_hex_bytes[2:]
 
-        from klv_data.misb0601 import PlatformPitchAngle
+        from klvdata.misb0601 import PlatformPitchAngle
         self.assertEqual(str(PlatformPitchAngle(value).value), interpretation)
         self.assertEqual(bytes(PlatformPitchAngle(value)), tlv_hex_bytes)
         self.assertAlmostEqual(float(PlatformPitchAngle(value).value), -0.4315, 4)

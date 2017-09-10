@@ -27,8 +27,8 @@ import unittest
 
 class DateTime(unittest.TestCase):
     def test_datetime_decode_encode(self):
-        from klv_data.common import datetime_to_bytes
-        from klv_data.common import bytes_to_datetime
+        from klvdata.common import datetime_to_bytes
+        from klvdata.common import bytes_to_datetime
 
         self.assertEqual(
             datetime_to_bytes(bytes_to_datetime(b'\x00\x04\x60\x50\x58\x4E\x01\x80')),
@@ -37,8 +37,8 @@ class DateTime(unittest.TestCase):
 
 class BERLength(unittest.TestCase):
     def test_ber_decode_encode(self):
-        from klv_data.common import ber_decode
-        from klv_data.common import ber_encode
+        from klvdata.common import ber_decode
+        from klvdata.common import ber_encode
 
         # BER Short Form
         self.assertEqual(ber_encode(ber_decode(b'\x00')), b'\x00')
@@ -59,8 +59,8 @@ class BERLength(unittest.TestCase):
         self.assertEqual(ber_encode(ber_decode(b'\x81\x7F')), b'\x7F')
 
     def test_ber_encode_decode(self):
-        from klv_data.common import ber_decode
-        from klv_data.common import ber_encode
+        from klvdata.common import ber_decode
+        from klvdata.common import ber_encode
 
         self.assertEqual(ber_decode(ber_encode(0)), 0)
         self.assertEqual(ber_decode(ber_encode(1)), 1)
@@ -76,7 +76,7 @@ class BERLength(unittest.TestCase):
         self.assertEqual(ber_decode(ber_encode(900000)), 900000)
 
     def test_ber_decode_error(self):
-        from klv_data.common import ber_decode
+        from klvdata.common import ber_decode
 
         with self.assertRaises(ValueError):
             ber_decode(b'\x00\x00')
@@ -96,8 +96,8 @@ class BERLength(unittest.TestCase):
 
 class Strings(unittest.TestCase):
     def test_string_decode_encode(self):
-        from klv_data.common import bytes_to_str
-        from klv_data.common import str_to_bytes
+        from klvdata.common import bytes_to_str
+        from klvdata.common import str_to_bytes
 
         self.assertEqual(
             str_to_bytes(bytes_to_str(b'\x50\x72\x65\x64\x61\x74\x6F\x72')),
@@ -106,8 +106,8 @@ class Strings(unittest.TestCase):
 
 class HexStrings(unittest.TestCase):
     def test_string_decode_encode(self):
-        from klv_data.common import bytes_to_hexstr
-        from klv_data.common import hexstr_to_bytes
+        from klvdata.common import bytes_to_hexstr
+        from klvdata.common import hexstr_to_bytes
 
         self.assertEqual(
             hexstr_to_bytes(bytes_to_hexstr(b'\x50\x72\x65\x64\x61\x74\x6F\x72')),
@@ -120,7 +120,7 @@ class HexStrings(unittest.TestCase):
 
 class FixedPoint(unittest.TestCase):
     def test_bytes_unsigned(self):
-        from klv_data.common import bytes_to_float
+        from klvdata.common import bytes_to_float
         self.assertAlmostEqual(
             bytes_to_float(b'\x00\x00', _domain=(0, 2 ** 16 - 1), _range=(0, 360)),
             0.0)
@@ -134,7 +134,7 @@ class FixedPoint(unittest.TestCase):
             360.0)
 
     def test_bytes_signed(self):
-        from klv_data.common import bytes_to_float
+        from klvdata.common import bytes_to_float
         self.assertAlmostEqual(
             bytes_to_float(b'\x80\x01', _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
             -20.0)
@@ -152,13 +152,13 @@ class FixedPoint(unittest.TestCase):
             20.0, 7)
 
     def test_bytes_error(self):
-        from klv_data.common import bytes_to_float
+        from klvdata.common import bytes_to_float
 
         with self.assertRaises(ValueError):
             bytes_to_float(b'\x7F\xFF\xFF', _domain=(-(2 ** 15 - 1), 2 ** 15 - 1), _range=(-20, 20))
 
     def test_float_unsigned(self):
-        from klv_data.common import float_to_bytes
+        from klvdata.common import float_to_bytes
 
         with self.subTest("Unsigned 0.0"):
             self.assertEqual(
@@ -176,7 +176,7 @@ class FixedPoint(unittest.TestCase):
                 b'\xFF\xFF')
 
     def test_float_signed(self):
-        from klv_data.common import float_to_bytes
+        from klvdata.common import float_to_bytes
 
         with self.subTest("Signed -20.0"):
             self.assertEqual(
@@ -208,7 +208,7 @@ class Checksum(unittest.TestCase):
         with open('./data/DynamicOnlyMISMMSPacketData.bin', 'rb') as f:
             packet = f.read()
 
-        from klv_data.common import packet_checksum
+        from klvdata.common import packet_checksum
         self.assertEqual(packet_checksum(packet), b'\xC8\x50')
 
     def test_basic2(self):
@@ -217,7 +217,7 @@ class Checksum(unittest.TestCase):
         with open('./data/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             packet = f.read()
 
-        from klv_data.common import packet_checksum
+        from klvdata.common import packet_checksum
         self.assertEqual(packet_checksum(packet), b'\x3E\x1e')
 
 

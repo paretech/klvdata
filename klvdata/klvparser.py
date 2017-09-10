@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2017 Matthew Pare (paretech@gmail.com)
+# Copyright (c) 2016 Matthew Pare (paretech@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,47 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from klv_data.element import UnknownElement
+from io import BytesIO
+from io import IOBase
+from klvdata.common import bytes_to_int
 
-from klv_data.klvparser import KLVParser
 
+class KLVParser(object):
+    """Return key, value pairs parsed from an SMPTE ST 336 source."""
+    def __init__(self, source, key_length):
+        if isinstance(source, IOBase):
+            self.source = source
+        else:
+            self.source = BytesIO(source)
 
-class StreamParser:
-    parsers = {}
-
-    def __init__(self, source):
-        self.source = source
-
-        # All keys in parser are expected to be 16 bytes long.
-        self.iter_stream = KLVParser(self.source, key_length=16)
+        self.key_length = key_length
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        key, value = next(self.iter_stream)
+        key = self.__read(self.key_length)
 
-        if key in self.parsers:
-            return self.parsers[key](value)
+        byte_length = bytes_to_int(self.__read(1))
+
+        if byte_length < 128:
+            # BER Short Form
+            length = byte_length
         else:
-            # Even if KLV is not known, make best effort to parse and preserve.
-            # Element is an abastract super class, do not create instances on Element.
-            return UnknownElement(key, value)
+            # BER Long Form
+            length = bytes_to_int(self.__read(byte_length - 128))
 
-    @classmethod
-    def add_parser(cls, obj):
-        """Decorator method used to register a parser to the class parsing repertoire.
+        value = self.__read(length)
 
-        obj is required to implement key attribute supporting bytes as returned by KLVParser key.
-        """
+        return key, value
 
-        cls.parsers[bytes(obj.key)] = obj
+    def __read(self, size):
+        assert size > 0
 
-        return obj
+        data = self.source.read(size)
+
+        if data:
+            return data
+        else:
+            raise StopIteration
+

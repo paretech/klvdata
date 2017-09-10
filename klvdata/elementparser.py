@@ -24,14 +24,14 @@
 
 from abc import ABCMeta
 from abc import abstractmethod
-from klv_data.element import Element
-from klv_data.common import bytes_to_datetime
-from klv_data.common import bytes_to_float
-from klv_data.common import bytes_to_hexstr
-from klv_data.common import bytes_to_str
-from klv_data.common import datetime_to_bytes
-from klv_data.common import float_to_bytes
-from klv_data.common import str_to_bytes
+from klvdata.element import Element
+from klvdata.common import bytes_to_datetime
+from klvdata.common import bytes_to_float
+from klvdata.common import bytes_to_hexstr
+from klvdata.common import bytes_to_str
+from klvdata.common import datetime_to_bytes
+from klvdata.common import float_to_bytes
+from klvdata.common import str_to_bytes
 
 
 class ElementParser(Element, metaclass=ABCMeta):

@@ -22,10 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from klv_data.element import UnknownElement
-from klv_data.elementparser import BytesElementParser
-from klv_data.misb0601 import UASLocalMetadataSet
-from klv_data.setparser import SetParser
+from klvdata.element import UnknownElement
+from klvdata.elementparser import BytesElementParser
+from klvdata.misb0601 import UASLocalMetadataSet
+from klvdata.setparser import SetParser
 
 _classifying_country_coding = {
     b'\x01': 'ISO-3166 Two Letter',

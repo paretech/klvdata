@@ -22,14 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from klv_data.common import hexstr_to_bytes
-from klv_data.element import UnknownElement
-from klv_data.elementparser import BytesElementParser
-from klv_data.elementparser import DateTimeElementParser
-from klv_data.elementparser import MappedElementParser
-from klv_data.elementparser import StringElementParser
-from klv_data.setparser import SetParser
-from klv_data.streamparser import StreamParser
+from klvdata.common import hexstr_to_bytes
+from klvdata.element import UnknownElement
+from klvdata.elementparser import BytesElementParser
+from klvdata.elementparser import DateTimeElementParser
+from klvdata.elementparser import MappedElementParser
+from klvdata.elementparser import StringElementParser
+from klvdata.setparser import SetParser
+from klvdata.streamparser import StreamParser
 
 
 class UnknownElement(UnknownElement):
