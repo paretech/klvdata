@@ -1,69 +1,69 @@
-klv\_data package
+klvdata package
 =================
 
 Submodules
 ----------
 
-klv\_data\.common module
+klvdata\.common module
 ------------------------
 
-.. automodule:: klv_data.common
+.. automodule:: klvdata.common
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.element module
+klvdata\.element module
 -------------------------
 
-.. automodule:: klv_data.element
+.. automodule:: klvdata.element
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.elementparser module
+klvdata\.elementparser module
 -------------------------------
 
-.. automodule:: klv_data.elementparser
+.. automodule:: klvdata.elementparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.klvparser module
+klvdata\.klvparser module
 ---------------------------
 
-.. automodule:: klv_data.klvparser
+.. automodule:: klvdata.klvparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.misb0102 module
+klvdata\.misb0102 module
 --------------------------
 
-.. automodule:: klv_data.misb0102
+.. automodule:: klvdata.misb0102
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.misb0601 module
+klvdata\.misb0601 module
 --------------------------
 
-.. automodule:: klv_data.misb0601
+.. automodule:: klvdata.misb0601
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.setparser module
+klvdata\.setparser module
 ---------------------------
 
-.. automodule:: klv_data.setparser
+.. automodule:: klvdata.setparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klv\_data\.streamparser module
+klvdata\.streamparser module
 ------------------------------
 
-.. automodule:: klv_data.streamparser
+.. automodule:: klvdata.streamparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -72,7 +72,7 @@ klv\_data\.streamparser module
 Module contents
 ---------------
 
-.. automodule:: klv_data
+.. automodule:: klvdata
     :members:
     :undoc-members:
     :show-inheritance:
