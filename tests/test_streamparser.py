@@ -32,6 +32,8 @@ class ParserSingleLong(unittest.TestCase):
             packet = f.read()
 
         from klv_data.streamparser import StreamParser
+        from klv_data import misb0601
+        from klv_data import misb0102
 
         for packet in StreamParser(packet):
             packet.structure()
