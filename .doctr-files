@@ -1,5 +1,5 @@
 ./_sources/index.rst.txt
-./_sources/klv_data.rst.txt
+./_sources/klvdata.rst.txt
 ./_static/ajax-loader.gif
 ./_static/basic.css
 ./_static/comment-bright.png
@@ -36,7 +36,8 @@
 ./_static/websupport.js
 ./genindex.html
 ./index.html
-./klv_data.html
+./klvdata.html
 ./objects.inv
+./py-modindex.html
 ./search.html
 ./searchindex.js
