@@ -38,7 +38,6 @@ First:
 
     $ pip install klvdata
     $ wget https://raw.githubusercontent.com/paretech/klvdata/master/data/DynamicConstantMISMMSPacketData.bin
-
 	$ cat << EOF > klvdata_test.py
 	#!/usr/bin/env python
 	import sys, klvdata;
