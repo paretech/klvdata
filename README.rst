@@ -39,10 +39,10 @@ First:
     $ pip install klvdata
     $ wget https://raw.githubusercontent.com/paretech/klvdata/master/data/DynamicConstantMISMMSPacketData.bin
     $ cat << EOF > klvdata_test.py
-    #!/usr/bin/env python
-    import sys, klvdata;
-    for packet in klvdata.StreamParser(sys.stdin.buffer.read()): packet.structure()
-    EOF
+	    #!/usr/bin/env python
+	    import sys, klvdata;
+	    for packet in klvdata.StreamParser(sys.stdin.buffer.read()): packet.structure()
+	    EOF
 
 And then:
 
@@ -50,38 +50,38 @@ And then:
 
 	$ ./klvdata_test.py < DynamicConstantMISMMSPacketData.bin
 
-	<class 'klvdata.misb0601.UASLocalMetadataSet'>
-	    <class 'klvdata.misb0601.PrecisionTimeStamp'>
-	    <class 'klvdata.misb0601.MissionID'>
-	    <class 'klvdata.misb0601.PlatformHeadingAngle'>
-	    <class 'klvdata.misb0601.PlatformPitchAngle'>
-	    <class 'klvdata.misb0601.PlatformRollAngle'>
-	    <class 'klvdata.misb0601.PlatformDesignation'>
-	    <class 'klvdata.misb0601.ImageSourceSensor'>
-	    <class 'klvdata.misb0601.ImageCoordinateSystem'>
-	    <class 'klvdata.misb0601.SensorLatitude'>
-	    <class 'klvdata.misb0601.SensorLongitude'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0102.SecurityLocalMetadataSet'>
-	            <class 'klvdata.misb0102.SecurityClassification'>
-	            <class 'klvdata.misb0102.UnknownElement'>
-	            <class 'klvdata.misb0102.UnknownElement'>
-	            <class 'klvdata.misb0102.UnknownElement'>
-	            <class 'klvdata.misb0102.UnknownElement'>
-	            <class 'klvdata.misb0102.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.UnknownElement'>
-	    <class 'klvdata.misb0601.Checksum'>
+		<class 'klvdata.misb0601.UASLocalMetadataSet'>
+		    <class 'klvdata.misb0601.PrecisionTimeStamp'>
+		    <class 'klvdata.misb0601.MissionID'>
+		    <class 'klvdata.misb0601.PlatformHeadingAngle'>
+		    <class 'klvdata.misb0601.PlatformPitchAngle'>
+		    <class 'klvdata.misb0601.PlatformRollAngle'>
+		    <class 'klvdata.misb0601.PlatformDesignation'>
+		    <class 'klvdata.misb0601.ImageSourceSensor'>
+		    <class 'klvdata.misb0601.ImageCoordinateSystem'>
+		    <class 'klvdata.misb0601.SensorLatitude'>
+		    <class 'klvdata.misb0601.SensorLongitude'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0102.SecurityLocalMetadataSet'>
+		            <class 'klvdata.misb0102.SecurityClassification'>
+		            <class 'klvdata.misb0102.UnknownElement'>
+		            <class 'klvdata.misb0102.UnknownElement'>
+		            <class 'klvdata.misb0102.UnknownElement'>
+		            <class 'klvdata.misb0102.UnknownElement'>
+		            <class 'klvdata.misb0102.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.UnknownElement'>
+		    <class 'klvdata.misb0601.Checksum'>
 
 If you have FFmpeg installed, want to try it on real video, and have some bandwidth to spare (~97 MB):
 
@@ -90,35 +90,35 @@ If you have FFmpeg installed, want to try it on real video, and have some bandwi
     $ wget http://samples.ffmpeg.org/MPEG2/mpegts-klv/Day%20Flight.mpg
     $ ffmpeg -i data/Day\ Flight.mpg -map data-re -codec copy -f data - | ./klvdata_test.py
 
-    <class 'klvdata.misb0601.UASLocalMetadataSet'>
-        <class 'klvdata.misb0601.PrecisionTimeStamp'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.PlatformHeadingAngle'>
-        <class 'klvdata.misb0601.PlatformPitchAngle'>
-        <class 'klvdata.misb0601.PlatformRollAngle'>
-        <class 'klvdata.misb0601.ImageSourceSensor'>
-        <class 'klvdata.misb0601.ImageCoordinateSystem'>
-        <class 'klvdata.misb0601.SensorLatitude'>
-        <class 'klvdata.misb0601.SensorLongitude'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.UnknownElement'>
-        <class 'klvdata.misb0601.Checksum'>
+	    <class 'klvdata.misb0601.UASLocalMetadataSet'>
+	        <class 'klvdata.misb0601.PrecisionTimeStamp'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.PlatformHeadingAngle'>
+	        <class 'klvdata.misb0601.PlatformPitchAngle'>
+	        <class 'klvdata.misb0601.PlatformRollAngle'>
+	        <class 'klvdata.misb0601.ImageSourceSensor'>
+	        <class 'klvdata.misb0601.ImageCoordinateSystem'>
+	        <class 'klvdata.misb0601.SensorLatitude'>
+	        <class 'klvdata.misb0601.SensorLongitude'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.UnknownElement'>
+	        <class 'klvdata.misb0601.Checksum'>
 
-       [...]
+	       [...]
 	
 Contributing
 ------------
