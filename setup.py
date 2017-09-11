@@ -32,7 +32,7 @@ setup(
     url='https://github.com/paretech/klvdata/',
 
     # Author details
-    author='Matthew Pare',
+    author='paretech',
     author_email="paretech@gmail.com",
     
     # License details
