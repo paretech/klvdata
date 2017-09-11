@@ -1,8 +1,5 @@
 #!/usr/bin/env python
+import sys, klvdata;
+for packet in klvdata.StreamParser(sys.stdin.buffer.read()): packet.structure()
 
-import sys
-import klvdata
-
-if __name__ == "__main__":
-	for packet in klvdata.StreamParser(sys.stdin.buffer.read()):
-		packet.structure()
+# python -c "import sys; import klvdata; for packet in klvdata.StreamParser(sys.stdin.buffer.read()): packet.structure()"
