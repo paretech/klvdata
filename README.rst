@@ -85,7 +85,7 @@ And then:
 	    <class 'klvdata.misb0601.UnknownElement'>
 	    <class 'klvdata.misb0601.Checksum'>
 
-If you have FFmpeg installed, want to try it on real video, and have some bandwidth to spare (~97 MB):
+If you have FFmpeg installed and want to try it on real video from a drone with embedded KLV metadata (~97 MB Download):
 
 .. code-block:: console
 
