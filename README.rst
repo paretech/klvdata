@@ -28,7 +28,7 @@ Features
 - Built for Python 3.5, 3.6.
 - Requires no external Python dependencies.
 
-.. _MISB ST: http://www.gwg.nga.mil/misb/st_pubs.htmlrm
+.. _MISB ST: http://www.gwg.nga.mil/misb/st_pubs.html
 
 Quick Start
 -----------
