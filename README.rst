@@ -1,3 +1,5 @@
+klvdata
+=======
 .. image:: https://travis-ci.org/paretech/klvdata.svg?branch=master
     :target: https://travis-ci.org/paretech/klvdata
 
@@ -5,7 +7,7 @@
     :target: https://coveralls.io/github/paretech/klvdata?branch=master
 
 .. image:: https://img.shields.io/pypi/v/klvdata.svg
-    :target: https://pypi.org/project/klvdata/
+        :target: https://pypi.org/project/klvdata/
 
 What?
 -----
