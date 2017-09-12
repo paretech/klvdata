@@ -4,9 +4,12 @@
 .. image:: https://coveralls.io/repos/github/paretech/klvdata/badge.svg?branch=master
     :target: https://coveralls.io/github/paretech/klvdata?branch=master
 
+.. image:: https://img.shields.io/pypi/v/klvdata.svg
+    :target: https://pypi.org/project/klvdata/
+
 What?
 -----
-KLV_Data is a Python library for parsing and constructing Key Length Value (KLV_) formatted binary streams. Common uses of the library would be parsing and displaying `MISB ST`_ 0601 Unmanned Air System (UAS) metadata from `STANAG 4609`_ compliant `MPEG-2 Transport Streams (TS) (MPEG-TS)`_. Note that KLV_Data alone cannot de-mux KLV data from an MPEG-2 TS, but programs like FFmpeg_ and GStreamer_ can be used with KLV_Data in the workflow to perform the function.
+Klvdata is a Python library for parsing and constructing Key Length Value (KLV_) formatted binary streams. Common uses of the library would be parsing and displaying `MISB ST`_ 0601 Unmanned Air System (UAS) metadata from `STANAG 4609`_ compliant `MPEG-2 Transport Streams (TS) (MPEG-TS)`_. Note that klvdata alone cannot de-mux KLV data from an MPEG-2 TS, but programs like FFmpeg_ and GStreamer_ can be used with klvdata in the workflow to perform the function.
 
 .. _KLV: https://en.wikipedia.org/wiki/KLV
 .. _STANAG 4609: http://www.gwg.nga.mil/misb/docs/nato_docs/STANAG_4609_Ed3.pdf
@@ -124,7 +127,11 @@ If you have FFmpeg installed and want to try it on real video from a drone with 
 	        <class 'klvdata.misb0601.Checksum'>
 
 	       [...]
-	
+
+Documentation
+-------------
+Documentation is available at https://paretech.github.io/klvdata.
+
 Contributing
 ------------
 Contributions are welcome!
