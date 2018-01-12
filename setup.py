@@ -70,7 +70,7 @@ setup(
     keywords='STANAG 4609, MISB, KLV, Metadata, Video',
 
     packages=['klvdata'],
-    test_suite="tests",
+    test_suite="test",
 
     python_requires='>=3.5',
 )
