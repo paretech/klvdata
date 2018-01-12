@@ -113,7 +113,10 @@ class StringElementParser(ElementParser, metaclass=ABCMeta):
 
 class StringValue(BaseValue):
     def __init__(self, value):
-        self.value = bytes_to_str(value)
+        try:
+            self.value = bytes_to_str(value)
+        except TypeError:
+            self.value = value
 
     def __bytes__(self):
         return str_to_bytes(self.value)
@@ -142,7 +145,11 @@ class MappedValue(BaseValue):
     def __init__(self, value, _domain, _range):
         self._domain = _domain
         self._range = _range
-        self.value = bytes_to_float(value, self._domain, self._range)
+
+        try:
+            self.value = bytes_to_float(value, self._domain, self._range)
+        except TypeError:
+            self.value = value
 
     def __bytes__(self):
         return float_to_bytes(self.value, self._domain, self._range)
