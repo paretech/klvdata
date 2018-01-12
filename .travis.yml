@@ -8,7 +8,7 @@ install:
 
 # Command to run tests
 script:
-  - coverage run -m unittest discover --start-directory tests/
+  - coverage run -m unittest discover --start-directory test/
   - set -e
   - cd docs
   - make html
