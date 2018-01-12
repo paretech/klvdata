@@ -46,7 +46,7 @@ class StreamParser:
             return self.parsers[key](value)
         else:
             # Even if KLV is not known, make best effort to parse and preserve.
-            # Element is an abastract super class, do not create instances on Element.
+            # Element is an abstract super class, do not create instances on Element.
             return UnknownElement(key, value)
 
     @classmethod
