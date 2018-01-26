@@ -320,7 +320,63 @@ class UASLSVersionNumber(ConverterElement):
     min_length, max_length, signed = 1, 1, False
 
 
-# Tags 66 - 93
+# Tags 66 - 81
+
+@register
+class CornerLatitudePoint1Full(MappedConverterElement):
+    tag, name = 82, "Corner Latitude Point 1 (Full)"
+    min_value, max_value, units = -90, +90, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+@register
+class CornerLongitudePoint1Full(MappedConverterElement):
+    tag, name = 83, "Corner Longitude Point 1 (Full)"
+    min_value, max_value, units = -180, +180, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+@register
+class CornerLatitudePoint2Full(MappedConverterElement):
+    tag, name = 84, "Corner Latitude Point 2 (Full)"
+    min_value, max_value, units = -90, +90, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+@register
+class CornerLongitudePoint2Full(MappedConverterElement):
+    tag, name = 85, "Corner Longitude Point 2 (Full)"
+    min_value, max_value, units = -180, +180, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+@register
+class CornerLatitudePoint3Full(MappedConverterElement):
+    tag, name = 86, "Corner Latitude Point 3 (Full)"
+    min_value, max_value, units = -90, +90, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+@register
+class CornerLongitudePoint3Full(MappedConverterElement):
+    tag, name = 87, "Corner Longitude Point 3 (Full)"
+    min_value, max_value, units = -180, +180, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+@register
+class CornerLatitudePoint4Full(MappedConverterElement):
+    tag, name = 88, "Corner Latitude Point 4 (Full)"
+    min_value, max_value, units = -90, +90, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+@register
+class CornerLongitudePoint4Full(MappedConverterElement):
+    tag, name = 89, "Corner Longitude Point 4 (Full)"
+    min_value, max_value, units = -180, +180, 'degrees'
+    min_length, max_length, signed = 4, 4, True
+
+
+# Tags 90 - 93
 
 # @register
 class MIISCoreIdentifier(object):
