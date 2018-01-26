@@ -196,23 +196,23 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEqual(bytes(SensorTrueAltitude(example_value)), example_ls_packet)
         self.assertEqual(bytes(SensorTrueAltitude(example_ls_packet[2:])), example_ls_packet)
 
-    def test_SensorHorizontalFOV(self):
+    def test_SensorHorizontalFieldOfView(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 144.5713
         example_ls_packet = hexstr_to_bytes("10 02 cd 9c")
 
-        from klvdata.misb0601 import SensorHorizontalFOV
-        self.assertEqual(bytes(SensorHorizontalFOV(example_value)), example_ls_packet)
-        self.assertEqual(bytes(SensorHorizontalFOV(example_ls_packet[2:])), example_ls_packet)
+        from klvdata.misb0601 import SensorHorizontalFieldOfView
+        self.assertEqual(bytes(SensorHorizontalFieldOfView(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorHorizontalFieldOfView(example_ls_packet[2:])), example_ls_packet)
 
-    def test_SensorVerticalFOV(self):
+    def test_SensorVerticalFieldOfView(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 152.6436
         example_ls_packet = hexstr_to_bytes("11 02 d9 17")
 
-        from klvdata.misb0601 import SensorVerticalFOV
-        self.assertEqual(bytes(SensorVerticalFOV(example_value)), example_ls_packet)
-        self.assertEqual(bytes(SensorVerticalFOV(example_ls_packet[2:])), example_ls_packet)
+        from klvdata.misb0601 import SensorVerticalFieldOfView
+        self.assertEqual(bytes(SensorVerticalFieldOfView(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorVerticalFieldOfView(example_ls_packet[2:])), example_ls_packet)
 
     def test_SensorRelativeAzimuthAngle(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
