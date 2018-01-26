@@ -187,5 +187,178 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEqual(bytes(SensorLongitude(example_ls_packet[2:])), example_ls_packet)
         self.assertEqual(str(SensorLongitude(example_ls_packet[2:]).value), interpretation_string)
 
+    def test_SensorTrueAltitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 14190.72
+        example_ls_packet = hexstr_to_bytes("0F 02 c2 21")
+
+        from klvdata.misb0601 import SensorTrueAltitude
+        self.assertEqual(bytes(SensorTrueAltitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorTrueAltitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorHorizontalFOV(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 144.5713
+        example_ls_packet = hexstr_to_bytes("10 02 cd 9c")
+
+        from klvdata.misb0601 import SensorHorizontalFOV
+        self.assertEqual(bytes(SensorHorizontalFOV(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorHorizontalFOV(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorVerticalFOV(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 152.6436
+        example_ls_packet = hexstr_to_bytes("11 02 d9 17")
+
+        from klvdata.misb0601 import SensorVerticalFOV
+        self.assertEqual(bytes(SensorVerticalFOV(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorVerticalFOV(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorRelativeAzimuthAngle(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 160.719211474396
+        example_ls_packet = hexstr_to_bytes("12 04 72 4a 0a 20")
+
+        from klvdata.misb0601 import SensorRelativeAzimuthAngle
+        self.assertEqual(bytes(SensorRelativeAzimuthAngle(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorRelativeAzimuthAngle(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorRelativeElevationAngle(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -168.792324833941
+        example_ls_packet = hexstr_to_bytes("13 04 87 f8 4b 86")
+
+        from klvdata.misb0601 import SensorRelativeElevationAngle
+        self.assertEqual(bytes(SensorRelativeElevationAngle(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorRelativeElevationAngle(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorRelativeRollAngle(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 176.865437690572
+        example_ls_packet = hexstr_to_bytes("14 04 7d c5 5e ce")
+
+        from klvdata.misb0601 import SensorRelativeRollAngle
+        self.assertEqual(bytes(SensorRelativeRollAngle(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorRelativeRollAngle(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SlantRange(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 68590.98
+        example_ls_packet = hexstr_to_bytes("15 04 03 83 09 26")
+
+        from klvdata.misb0601 import SlantRange
+        self.assertEqual(bytes(SlantRange(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SlantRange(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetWidth(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 722.8199
+        example_ls_packet = hexstr_to_bytes("16 02 12 81")
+
+        from klvdata.misb0601 import TargetWidth
+        self.assertEqual(bytes(TargetWidth(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetWidth(example_ls_packet[2:])), example_ls_packet)
+
+    def test_FrameCenterLatitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -10.5423886331461
+        example_ls_packet = hexstr_to_bytes("17 04 f1 01 a2 29")
+
+        from klvdata.misb0601 import FrameCenterLatitude
+        self.assertEqual(bytes(FrameCenterLatitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(FrameCenterLatitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_FrameCenterLongitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 29.157890122923
+        example_ls_packet = hexstr_to_bytes("18 04 14 bc 08 2b")
+
+        from klvdata.misb0601 import FrameCenterLongitude
+        self.assertEqual(bytes(FrameCenterLongitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(FrameCenterLongitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_FrameCenterElevation(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 3216.037
+        example_ls_packet = hexstr_to_bytes("19 02 34 f3")
+
+        from klvdata.misb0601 import FrameCenterElevation
+        self.assertEqual(bytes(FrameCenterElevation(example_value)), example_ls_packet)
+        self.assertEqual(bytes(FrameCenterElevation(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLatitudeP1(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -10.579637999887
+        example_ls_packet = hexstr_to_bytes("1a 02 c0 6e")
+
+        from klvdata.misb0601 import OffsetCornerLatitudeP1
+        self.assertEqual(bytes(OffsetCornerLatitudeP1(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLatitudeP1(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLongitudeP1(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 29.1273677986333
+        example_ls_packet = hexstr_to_bytes("1b 02 cb e9")
+
+        from klvdata.misb0601 import OffsetCornerLongitudeP1
+        self.assertEqual(bytes(OffsetCornerLongitudeP1(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLongitudeP1(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLatitudeP2(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -10.5661816260963
+        example_ls_packet = hexstr_to_bytes("1c 02 d7 65")
+
+        from klvdata.misb0601 import OffsetCornerLatitudeP2
+        self.assertEqual(bytes(OffsetCornerLatitudeP2(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLatitudeP2(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLongitudeP2(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 29.140824172424
+        example_ls_packet = hexstr_to_bytes("1d 02 e2 e0")
+
+        from klvdata.misb0601 import OffsetCornerLongitudeP2
+        self.assertEqual(bytes(OffsetCornerLongitudeP2(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLongitudeP2(example_ls_packet[2:])), example_ls_packet)
+
+
+    def test_OffsetCornerLatitudeP3(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -10.5527275411938
+        example_ls_packet = hexstr_to_bytes("1e 02 ee 5b")
+
+        from klvdata.misb0601 import OffsetCornerLatitudeP3
+        self.assertEqual(bytes(OffsetCornerLatitudeP3(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLatitudeP3(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLongitudeP3(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 29.1542782573265
+        example_ls_packet = hexstr_to_bytes("1f 02 f9 d6")
+
+        from klvdata.misb0601 import OffsetCornerLongitudeP3
+        self.assertEqual(bytes(OffsetCornerLongitudeP3(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLongitudeP3(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLatitudeP4(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -10.5392711674031
+        example_ls_packet = hexstr_to_bytes("20 02 05 52")
+
+        from klvdata.misb0601 import OffsetCornerLatitudeP4
+        self.assertEqual(bytes(OffsetCornerLatitudeP4(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLatitudeP4(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OffsetCornerLongitudeP4(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 29.1677346311172
+        example_ls_packet = hexstr_to_bytes("21 02 10 cd")
+
+        from klvdata.misb0601 import OffsetCornerLongitudeP4
+        self.assertEqual(bytes(OffsetCornerLongitudeP4(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OffsetCornerLongitudeP4(example_ls_packet[2:])), example_ls_packet)
+
+
 if __name__ == '__main__':
     unittest.main()
