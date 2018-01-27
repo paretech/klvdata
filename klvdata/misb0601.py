@@ -159,184 +159,164 @@ class SensorLongitude(MappedElementParser):
     _range = (-180, 180)
     units = 'degrees'
 
-
-@UASLocalMetadataSet.add_parser
-class SensorTrueAltitude(MappedElementParser):
-    key = b'\x0F'
-    _domain = (0, 2**16-1)
-    _range = (-900, 19000)
-    units = 'meters'
-
-
-@UASLocalMetadataSet.add_parser
-class SensorHorizontalFieldOfView(MappedElementParser):
-    key = b'\x10'
-    _domain = (0, 2**16-1)
-    _range = (0, 180)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class SensorVerticalFieldOfView(MappedElementParser):
-    key = b'\x11'
-    _domain = (0, 2**16-1)
-    _range = (0, 180)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class SensorRelativeAzimuthAngle(MappedElementParser):
-    key = b'\x12'
-    _domain = (0, 2**32-1)
-    _range = (0, 360)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class SensorRelativeElevationAngle(MappedElementParser):
-    key = b'\x13'
-    _domain = (-(2**31 - 1), 2**31 - 1)
-    _range = (-180, 180)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class SensorRelativeRollAngle(MappedElementParser):
-    key = b'\x14'
-    _domain = (0, 2**32-1)
-    _range = (0, 360)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class SlantRange(MappedElementParser):
-    key = b'\x15'
-    _domain = (0, 2**32-1)
-    _range = (0, +5e6)
-    units = 'meters'
-
-
-# @UASLocalMetadataSet.add_parser
-# class TargetWidth(MappedElementParser):
-#     key = b'\x16'
-#     _domain = (0, 2**16-1)
-#     _range = (0, +10e3)
+#
+# @ST0601.add_parser
+# class SensorTrueAltitude(MappedElementParser):
+#     key = b'\x0F'
+#     _domain = (0, 2**8-1)
+#     _range = (-900, +19e3)
 #     units = 'meters'
 
 
-@UASLocalMetadataSet.add_parser
-class FrameCenterLatitude(MappedElementParser):
-    key = b'\x17'
-    _domain = (-(2**31 - 1), 2**31 - 1)
-    _range = (-90, 90)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class FrameCenterLongitude(MappedElementParser):
-    key = b'\x18'
-    _domain = (-(2**31 - 1), 2**31 - 1)
-    _range = (-180, 180)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class FrameCenterElevation(MappedElementParser):
-    key = b'\x19'
-    _domain = (0, 2**16-1)
-    _range = (-900, +19e3)
-    units = 'meters'
-
- 
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLatitudePoint1(MappedElementParser):
-    key = b'\x1A'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, +0.075)
-    units = 'degrees'
- 
- 
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLongitudePoint1(MappedElementParser):
-    key = b'\x1B'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLatitudePoint2(MappedElementParser):
-    key = b'\x1C'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLongitudePoint2(MappedElementParser):
-    key = b'\x1D'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLatitudePoint3(MappedElementParser):
-    key = b'\x1E'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLongitudePoint3(MappedElementParser):
-    key = b'\x1F'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLatitudePoint4(MappedElementParser):
-    key = b'\x20'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class OffsetCornerLongitudePoint4(MappedElementParser):
-    key = b'\x21'
-    _domain = (-(2**15 - 1), 2**15 - 1)
-    _range = (-0.075, 0.075)
-    units = 'degrees'
-
-
+# @ST0601.add_parser
+# class SensorHorizontalFieldOfView(MappedElementParser):
+#     tag, name = 16, "Sensor Horizontal Field of View"
+#     min_value, max_value, units = 0, +180, 'degrees'
+#     min_length, max_length, signed = 2, 2, False
+#
+#
+# @ST0601.add_parser
+# class SensorVerticalFieldOfView(MappedElementParser):
+#     tag, name = 17, "Sensor Vertical Field of View"
+#     min_value, max_value, units = 0, +180, 'degrees'
+#     min_length, max_length, signed = 2, 2, False
+#
+#
+# @ST0601.add_parser
+# class SensorRelativeAzimuthAngle(MappedElementParser):
+#     tag, name = 18, "Sensor Relative Azimuth Angle"
+#     min_value, max_value, units = 0, +360, 'degrees'
+#     min_length, max_length, signed = 4, 4, False
+#
+#
+# @ST0601.add_parser
+# class SensorRelativeElevationAngle(MappedElementParser):
+#     tag, name = 19, "Sensor Relative Elevation Angle"
+#     min_value, max_value, units = -180, +180, 'degrees'
+#     min_length, max_length, signed = 4, 4, True
+#
+#
+# @ST0601.add_parser
+# class SensorRelativeRollAngle(MappedElementParser):
+#     tag, name = 20, "Sensor Relative Roll Angle"
+#     min_value, max_value, units = 0, +360, 'degrees'
+#     min_length, max_length, signed = 4, 4, False
+#
+#
+# @ST0601.add_parser
+# class SlantRange(MappedElementParser):
+#     tag, name = 21, "Slant Range"
+#     min_value, max_value, units = 0, +5e6, 'meters'
+#     min_length, max_length, signed = 4, 4, False
+#
+#
+# @ST0601.add_parser
+# class TargetWidth(MappedElementParser):
+#     tag, name = 22, "Target Width"
+#     min_value, max_value, units = 0, +10e3, 'meters'
+#     min_length, max_length, signed = 2, 2, False
+#
+#
+# @ST0601.add_parser
+# class FrameCenterLatitude(MappedElementParser):
+#     tag, name = 23, "Frame Center Latitude"
+#     min_value, max_value, units = -90, +90, 'degrees'
+#     min_length, max_length, signed = 4, 4, True
+#
+#
+# @ST0601.add_parser
+# class FrameCenterLongitude(MappedElementParser):
+#     tag, name = 24, "Frame Center Longitude"
+#     min_value, max_value, units = -180, +180, 'degrees'
+#     min_length, max_length, signed = 4, 4, True
+#
+#
+# @ST0601.add_parser
+# class FrameCenterElevation(MappedElementParser):
+#     tag, name = 25, "Frame Center Elevation"
+#     min_value, max_value, units = -900, +19e3, "meters"
+#     min_length, max_length, signed = 2, 2, False
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLatitudePoint1(MappedElementParser):
+#     tag, name = 26, "Offset Corner Latitude Point 1"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLongitudePoint1(MappedElementParser):
+#     tag, name = 27, "Offset Corner Longitude Point 1"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLatitudePoint2(MappedElementParser):
+#     tag, name = 28, "Offset Corner Latitude Point 2"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLongitudePoint2(MappedElementParser):
+#     tag, name = 29, "Offset Corner Longitude Point 2"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLatitudePoint3(MappedElementParser):
+#     tag, name = 30, "Offset Corner Latitude Point 3"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLongitudePoint3(MappedElementParser):
+#     tag, name = 31, "Offset Corner Longitude Point 3"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLatitudePoint4(MappedElementParser):
+#     tag, name = 32, "Offset Corner Latitude Point 4"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
+# @ST0601.add_parser
+# class OffsetCornerLongitudePoint4(MappedElementParser):
+#     tag, name = 33, "Offset Corner Longitude Point 4"
+#     min_value, max_value, units = -0.075, +0.075, 'degrees'
+#     min_length, max_length, signed = 2, 2, True
+#
+#
 # # Tags 34-39 "Atmospheric Conditions"
-
-@UASLocalMetadataSet.add_parser
-class TargetLocationLatitude(MappedElementParser):
-    key = b'\x28'
-    _domain = (-(2**31 - 1), 2**31 - 1)
-    _range = (-90, 90)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class TargetLocationLongitude(MappedElementParser):
-    key = b'\x29'
-    _domain = (-(2**31 - 1), 2**31 - 1)
-    _range = (-180, 180)
-    units = 'degrees'
-
-
-@UASLocalMetadataSet.add_parser
-class TargetLocationElevation(MappedElementParser):
-    key = b'\x2A'
-    _domain = (0, 2**16-1)
-    _range = (-900, 19000)
-    units = 'meters'
-
-# # # Tags 43 - 46 "Target Information"
-# #
-# # # Tag 47 "Generic Flag"
+#
+# @ST0601.add_parser
+# class TargetLocationLatitude(MappedElementParser):
+#     tag, name = 40, "Target Location latitude"
+#     min_value, max_value, units = -90, +90, 'degrees'
+#     min_length, max_length, signed = 4, 4, True
+#
+#
+# @ST0601.add_parser
+# class TargetLocationLongitude(MappedElementParser):
+#     tag, name = 41, "Target Location Longitude"
+#     min_value, max_value, units = -180, +180, 'degrees'
+#     min_length, max_length, signed = 4, 4, True
+#
+#
+# @ST0601.add_parser
+# class TargetLocationElevation(MappedElementParser):
+#     tag, name = 42, "Target Location Elevation"
+#     min_value, max_value, units = -900, +19e3, "meters"
+#     min_length, max_length, signed = 2, 2, False
+#
+#
+# # Tags 43 - 46 "Target Information"
+#
+# # Tag 47 "Generic Flag"
