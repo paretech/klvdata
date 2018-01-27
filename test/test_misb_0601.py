@@ -359,6 +359,188 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEqual(bytes(OffsetCornerLongitudePoint4(example_value)), example_ls_packet)
         self.assertEqual(bytes(OffsetCornerLongitudePoint4(example_ls_packet[2:])), example_ls_packet)
 
+    def test_IcingDetected(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 0x9b
+        example_ls_packet = hexstr_to_bytes("22 01 9b")
+
+        from klvdata.misb0601 import IcingDetected
+        self.assertEqual(bytes(IcingDetected(example_value)), example_ls_packet)
+        self.assertEqual(bytes(IcingDetected(example_ls_packet[2:])), example_ls_packet)
+
+    def test_WindDirection(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 235.924
+        example_ls_packet = hexstr_to_bytes("23 02 a7 c4")
+
+        from klvdata.misb0601 import WindDirection
+        self.assertEqual(bytes(WindDirection(example_value)), example_ls_packet)
+        self.assertEqual(bytes(WindDirection(example_ls_packet[2:])), example_ls_packet)
+
+    def test_WindSpeed(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 69.80392
+        example_ls_packet = hexstr_to_bytes("24 01 b2")
+
+        from klvdata.misb0601 import WindSpeed
+        self.assertEqual(bytes(WindSpeed(example_value)), example_ls_packet)
+        self.assertEqual(bytes(WindSpeed(example_ls_packet[2:])), example_ls_packet)
+
+    def test_StaticPressure(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 3725.185
+        example_ls_packet = hexstr_to_bytes("25 02 be ba")
+
+        from klvdata.misb0601 import StaticPressure
+        self.assertEqual(bytes(StaticPressure(example_value)), example_ls_packet)
+        self.assertEqual(bytes(StaticPressure(example_ls_packet[2:])), example_ls_packet)
+
+    def test_DensityAltitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 14818.68
+        example_ls_packet = hexstr_to_bytes("26 02 ca 35")
+
+        from klvdata.misb0601 import DensityAltitude
+        self.assertEqual(bytes(DensityAltitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(DensityAltitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_OutsideAirTemperature(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 84
+        example_ls_packet = hexstr_to_bytes("27 01 54")
+
+        from klvdata.misb0601 import OutsideAirTemperature
+        self.assertEqual(bytes(OutsideAirTemperature(example_value)), example_ls_packet)
+        self.assertEqual(bytes(OutsideAirTemperature(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetLocationLatitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -79.1638500518929
+        example_ls_packet = hexstr_to_bytes("28 04 8F 69 52 62")
+
+        from klvdata.misb0601 import TargetLocationLatitude
+        self.assertEqual(bytes(TargetLocationLatitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetLocationLatitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetLocationLongitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 166.400812960416
+        example_ls_packet = hexstr_to_bytes("29 04 76 54 57 F2")
+
+        from klvdata.misb0601 import TargetLocationLongitude
+        self.assertEqual(bytes(TargetLocationLongitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetLocationLongitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetLocationElevation(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 18389.05
+        example_ls_packet = hexstr_to_bytes("2A 02 F8 23")
+
+        from klvdata.misb0601 import TargetLocationElevation
+        self.assertEqual(bytes(TargetLocationElevation(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetLocationElevation(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetTrackGateWidth(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 6
+        example_ls_packet = hexstr_to_bytes("2B 01 03")
+
+        from klvdata.misb0601 import TargetTrackGateWidth
+        self.assertEqual(bytes(TargetTrackGateWidth(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetTrackGateWidth(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetTrackGateHeight(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 30
+        example_ls_packet = hexstr_to_bytes("2C 01 0F")
+
+        from klvdata.misb0601 import TargetTrackGateHeight
+        self.assertEqual(bytes(TargetTrackGateHeight(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetTrackGateHeight(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetErrorEstimateCE90(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 425.319
+        example_ls_packet = hexstr_to_bytes("2D 02 1A 95")
+
+        from klvdata.misb0601 import TargetErrorEstimateCE90
+        self.assertEqual(bytes(TargetErrorEstimateCE90(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetErrorEstimateCE90(example_ls_packet[2:])), example_ls_packet)
+
+    def test_TargetErrorEstimateLE90(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 609.0718
+        example_ls_packet = hexstr_to_bytes("2E 02 26 11")
+
+        from klvdata.misb0601 import TargetErrorEstimateLE90
+        self.assertEqual(bytes(TargetErrorEstimateLE90(example_value)), example_ls_packet)
+        self.assertEqual(bytes(TargetErrorEstimateLE90(example_ls_packet[2:])), example_ls_packet)
+
+    def test_GenericFlagData01(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 49
+        example_ls_packet = hexstr_to_bytes("2F 01 31")
+
+        from klvdata.misb0601 import GenericFlagData01
+        self.assertEqual(bytes(GenericFlagData01(example_value)), example_ls_packet)
+        self.assertEqual(bytes(GenericFlagData01(example_ls_packet[2:])), example_ls_packet)
+
+    # Tag 48 (0x30) Security Local Set
+
+    def test_DifferentialPressure(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 1191.958
+        example_ls_packet = hexstr_to_bytes("31 02 3D 07")
+
+        from klvdata.misb0601 import DifferentialPressure
+        self.assertEqual(bytes(DifferentialPressure(example_value)), example_ls_packet)
+        self.assertEqual(bytes(DifferentialPressure(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformAngleOfAttack(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -8.670177
+        example_ls_packet = hexstr_to_bytes("32 02 C8 83")
+
+        from klvdata.misb0601 import PlatformAngleOfAttack
+        self.assertEqual(bytes(PlatformAngleOfAttack(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformAngleOfAttack(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformVerticalSpeed(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -61.88693
+        example_ls_packet = hexstr_to_bytes("33 02 D3 FE")
+
+        from klvdata.misb0601 import PlatformVerticalSpeed
+        self.assertEqual(bytes(PlatformVerticalSpeed(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformVerticalSpeed(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformSideslipAngle(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -5.082475
+        example_ls_packet = hexstr_to_bytes("34 02 DF 79")
+
+        from klvdata.misb0601 import PlatformSideslipAngle
+        self.assertEqual(bytes(PlatformSideslipAngle(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformSideslipAngle(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AirfieldBarometricPressure(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 2088.96
+        example_ls_packet = hexstr_to_bytes("35 02 6A F4")
+
+        from klvdata.misb0601 import AirfieldBarometricPressure
+        self.assertEqual(bytes(AirfieldBarometricPressure(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AirfieldBarometricPressure(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AirfieldElevation(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 8306.806
+        example_ls_packet = hexstr_to_bytes("36 02 76 70")
+
+        from klvdata.misb0601 import AirfieldElevation
+        self.assertEqual(bytes(AirfieldElevation(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AirfieldElevation(example_ls_packet[2:])), example_ls_packet)
+
 
 if __name__ == '__main__':
     unittest.main()
