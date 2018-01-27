@@ -541,6 +541,150 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEqual(bytes(AirfieldElevation(example_value)), example_ls_packet)
         self.assertEqual(bytes(AirfieldElevation(example_ls_packet[2:])), example_ls_packet)
 
+    def test_RelativeHumidity(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 50.58823
+        example_ls_packet = hexstr_to_bytes("37 01 81")
+
+        from klvdata.misb0601 import RelativeHumidity
+        self.assertEqual(bytes(RelativeHumidity(example_value)), example_ls_packet)
+        self.assertEqual(bytes(RelativeHumidity(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformGroundSpeed(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 140
+        example_ls_packet = hexstr_to_bytes("38 01 8C")
+
+        from klvdata.misb0601 import PlatformGroundSpeed
+        self.assertEqual(bytes(PlatformGroundSpeed(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformGroundSpeed(example_ls_packet[2:])), example_ls_packet)
+
+    def test_GroundRange(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 3506979
+        example_ls_packet = hexstr_to_bytes("39 04 b3 8e ac f1")
+
+        from klvdata.misb0601 import GroundRange
+        self.assertEqual(bytes(GroundRange(example_value)), example_ls_packet)
+        self.assertEqual(bytes(GroundRange(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformFuelRemaining(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 6420.539
+        example_ls_packet = hexstr_to_bytes("3A 02 A4 5D")
+
+        from klvdata.misb0601 import PlatformFuelRemaining
+        self.assertEqual(bytes(PlatformFuelRemaining(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformFuelRemaining(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformCallSign(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = "TOP GUN"
+        example_ls_packet = hexstr_to_bytes("3B 07 54 4F 50 20 47 55 4E")
+
+        from klvdata.misb0601 import PlatformCallSign
+        self.assertEqual(bytes(PlatformCallSign(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformCallSign(example_ls_packet[2:])), example_ls_packet)
+
+    def test_WeaponLoad(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 45016
+        example_ls_packet = hexstr_to_bytes("3C 02 AF D8")
+
+        from klvdata.misb0601 import WeaponLoad
+        self.assertEqual(bytes(WeaponLoad(example_value)), example_ls_packet)
+        self.assertEqual(bytes(WeaponLoad(example_ls_packet[2:])), example_ls_packet)
+
+    def test_WeaponFired(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 186
+        example_ls_packet = hexstr_to_bytes("3D 01 BA")
+
+        from klvdata.misb0601 import WeaponFired
+        self.assertEqual(bytes(WeaponFired(example_value)), example_ls_packet)
+        self.assertEqual(bytes(WeaponFired(example_ls_packet[2:])), example_ls_packet)
+
+    def test_LaserPRFCode(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 50895
+        example_ls_packet = hexstr_to_bytes("3E 02 C6 CF")
+
+        from klvdata.misb0601 import LaserPRFCode
+        self.assertEqual(bytes(LaserPRFCode(example_value)), example_ls_packet)
+        self.assertEqual(bytes(LaserPRFCode(example_ls_packet[2:])), example_ls_packet)
+
+    def test_SensorFieldOfViewName(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 209
+        example_ls_packet = hexstr_to_bytes("3F 01 D1")
+
+        from klvdata.misb0601 import SensorFieldOfViewName
+        self.assertEqual(bytes(SensorFieldOfViewName(example_value)), example_ls_packet)
+        self.assertEqual(bytes(SensorFieldOfViewName(example_ls_packet[2:])), example_ls_packet)
+
+    def test_PlatformMagneticHeading(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 311.8682
+        example_ls_packet = hexstr_to_bytes("40 02 DD C5")
+
+        from klvdata.misb0601 import PlatformMagneticHeading
+        self.assertEqual(bytes(PlatformMagneticHeading(example_value)), example_ls_packet)
+        self.assertEqual(bytes(PlatformMagneticHeading(example_ls_packet[2:])), example_ls_packet)
+
+    def test_UASDatalinkLSVersionNumber(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 232
+        example_ls_packet = hexstr_to_bytes("41 01 E8")
+
+        from klvdata.misb0601 import UASDatalinkLSVersionNumber
+        self.assertEqual(bytes(UASDatalinkLSVersionNumber(example_value)), example_ls_packet)
+        self.assertEqual(bytes(UASDatalinkLSVersionNumber(example_ls_packet[2:])), example_ls_packet)
+    #
+    # def test_TargetLocationCovarianceMatrix(self):
+    #     # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+    #     example_value = ''
+    #     example_ls_packet = hexstr_to_bytes("42")
+    #
+    #     from klvdata.misb0601 import TargetLocationCovarianceMatrix
+    #     self.assertEqual(bytes(TargetLocationCovarianceMatrix(example_value)), example_ls_packet)
+    #     self.assertEqual(bytes(TargetLocationCovarianceMatrix(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AlternatePlatformLatitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = -86.041207348947
+        example_ls_packet = hexstr_to_bytes("43 04 85 A1 5A 39")
+
+        from klvdata.misb0601 import AlternatePlatformLatitude
+        self.assertEqual(bytes(AlternatePlatformLatitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AlternatePlatformLatitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AlternatePlatformLongitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 0.155527554524842
+        example_ls_packet = hexstr_to_bytes("44 04 00 1C 50 1C")
+
+        from klvdata.misb0601 import AlternatePlatformLongitude
+        self.assertEqual(bytes(AlternatePlatformLongitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AlternatePlatformLongitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AlternatePlatformAltitude(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 9.445334
+        example_ls_packet = hexstr_to_bytes("45 02 0B B3")
+
+        from klvdata.misb0601 import AlternatePlatformAltitude
+        self.assertEqual(bytes(AlternatePlatformAltitude(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AlternatePlatformAltitude(example_ls_packet[2:])), example_ls_packet)
+
+    def test_AlternatePlatformName(self):
+        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+        example_value = 'APACHE'
+        example_ls_packet = hexstr_to_bytes("46 06 41 50 41 43 48 45")
+
+        from klvdata.misb0601 import AlternatePlatformName
+        self.assertEqual(bytes(AlternatePlatformName(example_value)), example_ls_packet)
+        self.assertEqual(bytes(AlternatePlatformName(example_ls_packet[2:])), example_ls_packet)
+
 
 if __name__ == '__main__':
     unittest.main()
