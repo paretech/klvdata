@@ -137,3 +137,7 @@ Documentation is available at https://paretech.github.io/klvdata.
 Contributing
 ------------
 Contributions are welcome!
+
+Contributors List:
+
+- [Fran Raga](https://github.com/All4Gis)
