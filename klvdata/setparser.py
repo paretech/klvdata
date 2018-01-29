@@ -98,6 +98,21 @@ class SetParser(Element, metaclass=ABCMeta):
     def __str__(self):
         return str_dict(self.items)
 
+    def MetadataList(self):
+        ''' Return metadata dictionary'''
+        metadata = {}
+
+        def repeat(items, indent=1):
+            for item in items:
+                try:
+                    metadata[item.name] = item.value.value
+                except:
+                    None
+                if hasattr(item, 'items'):
+                    repeat(item.items.values(), indent + 1)
+        repeat(self.items.values())
+        return metadata
+
     def structure(self):
         print(str(type(self)))
 
