@@ -26,7 +26,7 @@ from struct import pack
 from struct import unpack
 from datetime import datetime
 from datetime import timezone
-
+from binascii import hexlify, unhexlify
 
 def datetime_to_bytes(value):
     """Return bytes representing UTC time in microseconds."""

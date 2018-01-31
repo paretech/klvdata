@@ -130,7 +130,7 @@ def str_dict(values):
 
     def per_item(value, indent=0):
         for item in value:
-            if isinstance(item, self):
+            if isinstance(item):
                 out.append(indent * "\t" + str(item))
             else:
                 out.append(indent * "\t" + str(item))
