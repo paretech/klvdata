@@ -8,3 +8,4 @@ if __name__ == "__main__":
 		for packet in klvdata.StreamParser(f):
 			metadata=packet.MetadataList()
 			pprint.pprint(metadata)
+			break #Print only first packet
