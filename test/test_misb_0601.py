@@ -607,7 +607,7 @@ class ParserSingleShort(unittest.TestCase):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 50895
         example_ls_packet = hexstr_to_bytes('3E 02 C6 CF')
- 
+
         from klvdata.misb0601 import LaserPRFCode
         self.assertEqual(bytes(LaserPRFCode(example_value)), example_ls_packet)
         self.assertEqual(bytes(LaserPRFCode(example_ls_packet[2:])), example_ls_packet)
@@ -629,6 +629,7 @@ class ParserSingleShort(unittest.TestCase):
         from klvdata.misb0601 import PlatformMagneticHeading
         self.assertEqual(bytes(PlatformMagneticHeading(example_value)), example_ls_packet)
         self.assertEqual(bytes(PlatformMagneticHeading(example_ls_packet[2:])), example_ls_packet)
+
 
     def test_UASLSVersionNumber(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
@@ -721,7 +722,7 @@ class ParserSingleShort(unittest.TestCase):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = "Other"
         example_ls_packet = hexstr_to_bytes('4D 01 00')
- 
+
         from klvdata.misb0601 import OperationalMode
         self.assertEqual(bytes(OperationalMode(example_value)), example_ls_packet)
         self.assertEqual(bytes(OperationalMode(example_ls_packet[2:])), example_ls_packet)
@@ -892,7 +893,7 @@ class ParserSingleShort(unittest.TestCase):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 23_456.24
         example_ls_packet = hexstr_to_bytes('67 03 2F 92 1E')
- 
+
         from klvdata.misb0601 import DensityAltitudeExtended
         self.assertEqual(bytes(DensityAltitudeExtended(example_value)), example_ls_packet)
         self.assertEqual(bytes(DensityAltitudeExtended(example_ls_packet[2:])), example_ls_packet)
@@ -901,7 +902,7 @@ class ParserSingleShort(unittest.TestCase):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 23_456.24
         example_ls_packet = hexstr_to_bytes('68 03 2F 92 1E')
- 
+
         from klvdata.misb0601 import SensorEllipsoidHeightExtended
         self.assertEqual(bytes(SensorEllipsoidHeightExtended(example_value)), example_ls_packet)
         self.assertEqual(bytes(SensorEllipsoidHeightExtended(example_ls_packet[2:])), example_ls_packet)
@@ -910,7 +911,7 @@ class ParserSingleShort(unittest.TestCase):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = 23_456.24
         example_ls_packet = hexstr_to_bytes('69 03 2F 92 1E')
- 
+
         from klvdata.misb0601 import AlternatePlatformEllipsoidHeightExtended
         self.assertEqual(bytes(AlternatePlatformEllipsoidHeightExtended(example_value)), example_ls_packet)
         self.assertEqual(bytes(AlternatePlatformEllipsoidHeightExtended(example_ls_packet[2:])), example_ls_packet)
