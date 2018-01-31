@@ -92,7 +92,7 @@ class PlatformTrueAirspeed(MappedConverterElement):
 
 
 @register
-class PlatformTrueAirspeed(MappedConverterElement):
+class PlatformIndicatedAirspeed(MappedConverterElement):
     tag, name = 9, "Platform Indicated Airspeed"
     min_value, max_value, units = 0, +255, 'meters/second'
     min_length, max_length, signed = 1, 1, False
