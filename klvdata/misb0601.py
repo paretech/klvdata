@@ -603,7 +603,7 @@ class TargetTrackGateWidth(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class TargetTrackGateHeight(MappedElementParser):
+class TargetTrackGateHeight(StringElementParser):
     key = b'\x2C'
     TAG = 44
     UDSKey = "-"
@@ -614,7 +614,7 @@ class TargetTrackGateHeight(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class TargetErrorEstimateCE90(MappedElementParser):
+class TargetErrorEstimateCE90(StringElementParser):
     key = b'\x2D'
     TAG = 45
     UDSKey = "-"
@@ -625,7 +625,7 @@ class TargetErrorEstimateCE90(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class TargetErrorEstimateLE90(MappedElementParser):
+class TargetErrorEstimateLE90(StringElementParser):
     key = b'\x2E'
     TAG = 46
     UDSKey = "-"
@@ -796,7 +796,7 @@ class PlatformCallSign(StringElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class WeaponLoad(MappedElementParser):
+class WeaponLoad(StringElementParser):
     key = b'\x3C'
     TAG = 60
     UDSKey = "-"
@@ -806,7 +806,7 @@ class WeaponLoad(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class WeaponFired(MappedElementParser):
+class WeaponFired(StringElementParser):
     key = b'\x3D'
     TAG = 61
     UDSKey = "-"
@@ -816,7 +816,7 @@ class WeaponFired(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class LaserPRFCode(MappedElementParser):
+class LaserPRFCode(StringElementParser):
     key = b'\x3E'
     TAG = 62
     UDSKey = "-"
@@ -826,7 +826,7 @@ class LaserPRFCode(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class SensorFieldOfViewName(MappedElementParser):
+class SensorFieldOfViewName(StringElementParser):
     key = b'\x3F'
     TAG = 63
     UDSKey = "-"
@@ -846,6 +846,17 @@ class PlatformMagneticHeading(MappedElementParser):
     _domain = (0, 2**16-1)
     _range = (0, 360)
     units = 'degrees'
+
+
+@UASLocalMetadataSet.add_parser
+class UASLSVersionNumber(StringElementParser):
+    key = b'\x41'
+    TAG = 64
+    UDSKey = "-"
+    LDSName = "UAS Datalink LS Version Number"
+    ESDName = "ESD ICD Version"
+    UDSName = ""
+    units = 'number'
 
 
 @UASLocalMetadataSet.add_parser
@@ -1182,7 +1193,7 @@ class PlatformSideslipAngleFull(MappedElementParser):
 
 
 #@UASLocalMetadataSet.add_parser
-# class MIISCoreIdentifier(MappedElementParser):
+# class MIISCoreIdentifier(StringElementParser):
 #     key = b'\x5E'
 #     TAG = 94
 #     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
@@ -1192,7 +1203,7 @@ class PlatformSideslipAngleFull(MappedElementParser):
 
 
 #@UASLocalMetadataSet.add_parser
-# class SARMotionImageryLocalSet(MappedElementParser):
+# class SARMotionImageryLocalSet(StringElementParser):
 #     key = b'\x5F'
 #     TAG = 95
 #     UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00"
@@ -1202,26 +1213,26 @@ class PlatformSideslipAngleFull(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class TargetWidthExtended(MappedElementParser):
+class TargetWidthExtended(StringElementParser):
     key = b'\x60'
     TAG = 96
     UDSKey = "06 0E 2B 34 01 01 01 01 07 01 09 02 01 00 00 00"
     LDSName = "Target Width Extended"
     ESDName = "Target Width"
     UDSName = "Target Width"
-    _range = (0, +500000)
+    #_range = (0, +1500000)
     units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
-class DensityAltitudeExtended(MappedElementParser):
+class DensityAltitudeExtended(StringElementParser):
     key = b'\x67'
     TAG = 103
     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 01 01 10 00 00 00"
     LDSName = "Density Altitude Extended"
     ESDName = "Density Altitude"
     UDSName = ""
-
+    units = 'meters'
 
 @UASLocalMetadataSet.add_parser
 class SensorEllipsoidHeightExtended(StringElementParser):
@@ -1231,6 +1242,7 @@ class SensorEllipsoidHeightExtended(StringElementParser):
     LDSName = "Sensor Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
+    units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
@@ -1241,3 +1253,4 @@ class AlternatePlatformEllipsoidHeightExtended(StringElementParser):
     LDSName = " Alternate Platform Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
+    units = 'meters'
