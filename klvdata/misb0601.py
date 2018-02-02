@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # The MIT License (MIT)
 #
@@ -48,7 +49,6 @@ class UASLocalMetadataSet(SetParser):
     _unknown_element = UnknownElement
 
 
-
 @UASLocalMetadataSet.add_parser
 class Checksum(BytesElementParser):
     """Checksum used to detect errors within a UAV Local Set packet.
@@ -60,6 +60,7 @@ class Checksum(BytesElementParser):
     """
     key = b'\x01'
     TAG = 1
+    UDSKey = "-"
     LDSName = "Checksum"
     ESDName = ""
     UDSName = ""
@@ -72,10 +73,11 @@ class PrecisionTimeStamp(DateTimeElementParser):
     Precision Timestamp represented in the number of microseconds elapsed
     since midnight (00:00:00), January 1, 1970 not including leap seconds.
 
-    See MISB ST 0603 for additional details.
+    See MISB ST 0601.11 for additional details.
     """
     key = b'\x02'
     TAG = 2
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 02 01 01 01 05 00 00"
     LDSName = "Precision Time Stamp"
     ESDName = ""
     UDSName = "User Defined Time Stamp"
@@ -90,15 +92,18 @@ class MissionID(StringElementParser):
     """
     key = b'\x03'
     TAG = 3
+    UDSKey = "06 0E 2B 34 01 01 01 01 01 05 05 00 00 00 00 00"
     LDSName = "Mission ID"
     ESDName = "Mission Number"
     UDSName = "Episode Number"
     min_length, max_length = 0, 127
 
+
 @UASLocalMetadataSet.add_parser
 class PlatformTailNumber(StringElementParser):
     key = b'\x04'
     TAG = 4
+    UDSKey = "-"
     LDSName = "Platform Tail Number"
     ESDName = "Platform Tail Number"
     UDSName = ""
@@ -109,6 +114,7 @@ class PlatformTailNumber(StringElementParser):
 class PlatformHeadingAngle(MappedElementParser):
     key = b'\x05'
     TAG = 5
+    UDSKey = "06 0E 2B 34 01 01 01 07 07 01 10 01 06 00 00 00"
     LDSName = "Platform Heading Angle"
     ESDName = "UAV Heading (INS)"
     UDSName = "Platform Heading Angle"
@@ -120,6 +126,7 @@ class PlatformHeadingAngle(MappedElementParser):
 class PlatformPitchAngle(MappedElementParser):
     key = b'\x06'
     TAG = 6
+    UDSKey = "06 0E 2B 34 01 01 01 07 07 01 10 01 05 00 00 00"
     LDSName = "Platform Pitch Angle"
     ESDName = "UAV Pitch (INS)"
     UDSName = "Platform Pitch Angle"
@@ -131,6 +138,7 @@ class PlatformPitchAngle(MappedElementParser):
 class PlatformRollAngle(MappedElementParser):
     key = b'\x07'
     TAG = 7
+    UDSKey = " 06 0E 2B 34 01 01 01 07 07 01 10 01 04 00 00 00"
     LDSName = "Platform Roll Angle"
     ESDName = "UAV Roll (INS)"
     UDSName = "Platform Roll Angle"
@@ -143,6 +151,7 @@ class PlatformRollAngle(MappedElementParser):
 class PlatformTrueAirspeed(MappedElementParser):
     key = b'\x08'
     TAG = 8
+    UDSKey = "-"
     LDSName = "Platform True Airspeed"
     ESDName = "True Airspeed"
     UDSName = ""
@@ -155,6 +164,7 @@ class PlatformTrueAirspeed(MappedElementParser):
 class PlatformIndicatedAirspeed(MappedElementParser):
     key = b'\x09'
     TAG = 9
+    UDSKey = "-"
     LDSName = "Platform Indicated Airspeed"
     ESDName = "Indicated Airspeed"
     UDSName = ""
@@ -167,6 +177,7 @@ class PlatformIndicatedAirspeed(MappedElementParser):
 class PlatformDesignation(StringElementParser):
     key = b'\x0A'
     TAG = 10
+    UDSKey = "06 0E 2B 34 01 01 01 01 01 01 20 01 00 00 00 00"
     LDSName = "Platform Designation"
     ESDName = "Project ID Code"
     UDSName = "Device Designation"
@@ -177,6 +188,7 @@ class PlatformDesignation(StringElementParser):
 class ImageSourceSensor(StringElementParser):
     key = b'\x0B'
     TAG = 11
+    UDSKey = "06 0E 2B 34 01 01 01 01 04 20 01 02 01 01 00 00"
     LDSName = "Image Source Sensor"
     ESDName = "Sensor Name"
     UDSName = "Image Source Device"
@@ -187,6 +199,7 @@ class ImageSourceSensor(StringElementParser):
 class ImageCoordinateSystem(StringElementParser):
     key = b'\x0C'
     TAG = 12
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 01 01 00 00 00 00"
     LDSName = "Image Coordinate System"
     ESDName = "Image Coordinate System"
     UDSName = "Image Coordinate System"
@@ -197,6 +210,7 @@ class ImageCoordinateSystem(StringElementParser):
 class SensorLatitude(MappedElementParser):
     key = b'\x0D'
     TAG = 13
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 02 04 02 00"
     LDSName = "Sensor Latitude"
     ESDName = "Sensor Latitude"
     UDSName = "Device Latitude"
@@ -209,6 +223,7 @@ class SensorLatitude(MappedElementParser):
 class SensorLongitude(MappedElementParser):
     key = b'\x0E'
     TAG = 14
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 02 06 02 00"
     LDSName = "Sensor Longitude"
     ESDName = "Sensor Longitude"
     UDSName = "Device Longitude"
@@ -221,6 +236,7 @@ class SensorLongitude(MappedElementParser):
 class SensorTrueAltitude(MappedElementParser):
     key = b'\x0F'
     TAG = 15
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 02 01 02 02 00 00"
     LDSName = "Sensor True Altitude"
     ESDName = "Sensor Altitude"
     UDSName = "Device Altitude"
@@ -233,6 +249,7 @@ class SensorTrueAltitude(MappedElementParser):
 class SensorHorizontalFieldOfView(MappedElementParser):
     key = b'\x10'
     TAG = 16
+    UDSKey = "06 0E 2B 34 01 01 01 02 04 20 02 01 01 08 00 00"
     LDSName = "Sensor Horizontal Field of View"
     ESDName = "Field of View"
     UDSName = "Field of View (FOVHorizontal)"
@@ -245,6 +262,7 @@ class SensorHorizontalFieldOfView(MappedElementParser):
 class SensorVerticalFieldOfView(MappedElementParser):
     key = b'\x11'
     TAG = 17
+    UDSKey = "-"
     LDSName = "Sensor Vertical Field of View"
     ESDName = "Vertical Field of View"
     UDSName = ""
@@ -257,6 +275,7 @@ class SensorVerticalFieldOfView(MappedElementParser):
 class SensorRelativeAzimuthAngle(MappedElementParser):
     key = b'\x12'
     TAG = 18
+    UDSKey = "-"
     LDSName = "Sensor Relative Azimuth Angle"
     ESDName = "Sensor Relative Azimuth Angle"
     UDSName = ""
@@ -269,6 +288,7 @@ class SensorRelativeAzimuthAngle(MappedElementParser):
 class SensorRelativeElevationAngle(MappedElementParser):
     key = b'\x13'
     TAG = 19
+    UDSKey = "-"
     LDSName = "Sensor Relative Elevation Angle"
     ESDName = "Sensor Relative Elevation Angle"
     UDSName = ""
@@ -281,6 +301,7 @@ class SensorRelativeElevationAngle(MappedElementParser):
 class SensorRelativeRollAngle(MappedElementParser):
     key = b'\x14'
     TAG = 20
+    UDSKey = "-"
     LDSName = "Sensor Relative Roll Angle"
     ESDName = "Sensor Relative Roll Angle"
     UDSName = ""
@@ -293,6 +314,7 @@ class SensorRelativeRollAngle(MappedElementParser):
 class SlantRange(MappedElementParser):
     key = b'\x15'
     TAG = 21
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 08 01 01 00 00 00"
     LDSName = "Slant Range"
     ESDName = "Slant Range"
     UDSName = "Slant Range"
@@ -305,6 +327,7 @@ class SlantRange(MappedElementParser):
 class TargetWidth(MappedElementParser):
     key = b'\x16'
     TAG = 22
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 09 02 01 00 00 00"
     LDSName = "Target Width"
     ESDName = "Target Width"
     UDSName = "Target Width"
@@ -317,6 +340,7 @@ class TargetWidth(MappedElementParser):
 class FrameCenterLatitude(MappedElementParser):
     key = b'\x17'
     TAG = 23
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 02 01 03 02 00 00"
     LDSName = "Frame Center Latitude"
     ESDName = "Target Latitude"
     UDSName = "Frame Center Latitude"
@@ -329,6 +353,7 @@ class FrameCenterLatitude(MappedElementParser):
 class FrameCenterLongitude(MappedElementParser):
     key = b'\x18'
     TAG = 24
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 02 01 03 04 00 00"
     LDSName = "Frame Center Longitude"
     ESDName = "Target Longitude"
     UDSName = "Frame Center Longitude"
@@ -341,6 +366,7 @@ class FrameCenterLongitude(MappedElementParser):
 class FrameCenterElevation(MappedElementParser):
     key = b'\x19'
     TAG = 25
+    UDSKey = "-"
     LDSName = "Frame Center Elevation"
     ESDName = "Frame Center Elevation"
     UDSName = ""
@@ -348,11 +374,12 @@ class FrameCenterElevation(MappedElementParser):
     _range = (-900, +19e3)
     units = 'meters'
 
- 
+
 @UASLocalMetadataSet.add_parser
 class OffsetCornerLatitudePoint1(MappedElementParser):
     key = b'\x1A'
     TAG = 26
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 07 01 00"
     LDSName = "Offset Corner Latitude Point 1"
     ESDName = "SAR Latitude 4"
     UDSName = "Corner Latitude Point 1"
@@ -365,6 +392,7 @@ class OffsetCornerLatitudePoint1(MappedElementParser):
 class OffsetCornerLongitudePoint1(MappedElementParser):
     key = b'\x1B'
     TAG = 27
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0B 01 00"
     LDSName = "Offset Corner Longitude Point 1"
     ESDName = "SAR Longitude 4"
     UDSName = "Corner Longitude Point 1"
@@ -377,6 +405,7 @@ class OffsetCornerLongitudePoint1(MappedElementParser):
 class OffsetCornerLatitudePoint2(MappedElementParser):
     key = b'\x1C'
     TAG = 28
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 08 01 00"
     LDSName = "Offset Corner Latitude Point 2"
     ESDName = "SAR Latitude 1"
     UDSName = "Corner Latitude Point 2"
@@ -389,6 +418,7 @@ class OffsetCornerLatitudePoint2(MappedElementParser):
 class OffsetCornerLongitudePoint2(MappedElementParser):
     key = b'\x1D'
     TAG = 29
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0C 01 00"
     LDSName = "Offset Corner Longitude Point 2"
     ESDName = "SAR Longitude 1"
     UDSName = "Corner Longitude Point 2"
@@ -401,6 +431,7 @@ class OffsetCornerLongitudePoint2(MappedElementParser):
 class OffsetCornerLatitudePoint3(MappedElementParser):
     key = b'\x1E'
     TAG = 30
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 09 01 00"
     LDSName = "Offset Corner Latitude Point 3"
     ESDName = "SAR Latitude 2"
     UDSName = "Corner Latitude Point 3"
@@ -413,6 +444,7 @@ class OffsetCornerLatitudePoint3(MappedElementParser):
 class OffsetCornerLongitudePoint3(MappedElementParser):
     key = b'\x1F'
     TAG = 31
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0D 01 00"
     LDSName = "Offset Corner Longitude Point 3"
     ESDName = "SAR Longitude 2"
     UDSName = "Corner Longitude Point 3"
@@ -425,6 +457,7 @@ class OffsetCornerLongitudePoint3(MappedElementParser):
 class OffsetCornerLatitudePoint4(MappedElementParser):
     key = b'\x20'
     TAG = 32
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0A 01 00"
     LDSName = "Offset Corner Latitude Point 4"
     ESDName = "SAR Latitude 3"
     UDSName = "Corner Latitude Point 4"
@@ -437,6 +470,7 @@ class OffsetCornerLatitudePoint4(MappedElementParser):
 class OffsetCornerLongitudePoint4(MappedElementParser):
     key = b'\x21'
     TAG = 33
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0E 01 00"
     LDSName = "Offset Corner Longitude Point 4"
     ESDName = "SAR Longitude 3"
     UDSName = "Corner Longitude Point 4"
@@ -449,6 +483,7 @@ class OffsetCornerLongitudePoint4(MappedElementParser):
 class IcingDetected(StringElementParser):
     key = b'\x22'
     TAG = 34
+    UDSKey = ""
     LDSName = "Icing Detected"
     ESDName = "Icing Detected"
     UDSName = ""
@@ -459,6 +494,7 @@ class IcingDetected(StringElementParser):
 class WindDirection(MappedElementParser):
     key = b'\x23'
     TAG = 35
+    UDSKey = "-"
     LDSName = "Wind Direction"
     ESDName = "Wind Direction"
     UDSName = ""
@@ -471,6 +507,7 @@ class WindDirection(MappedElementParser):
 class WindSpeed(MappedElementParser):
     key = b'\x24'
     TAG = 36
+    UDSKey = "-"
     LDSName = "Wind Speed"
     ESDName = "Wind Speed"
     UDSName = ""
@@ -483,6 +520,7 @@ class WindSpeed(MappedElementParser):
 class StaticPressure(MappedElementParser):
     key = b'\x25'
     TAG = 37
+    UDSKey = "-"
     LDSName = "Static Pressure"
     ESDName = "Static Pressure"
     UDSName = ""
@@ -495,6 +533,7 @@ class StaticPressure(MappedElementParser):
 class DensityAltitude(MappedElementParser):
     key = b'\x26'
     TAG = 38
+    UDSKey = "-"
     LDSName = "Density Altitude"
     ESDName = "Density Altitude"
     UDSName = ""
@@ -507,6 +546,7 @@ class DensityAltitude(MappedElementParser):
 class OutsideAirTemperature(MappedElementParser):
     key = b'\x27'
     TAG = 39
+    UDSKey = "-"
     LDSName = "Outside Air Temperature"
     ESDName = "Air Temperature"
     UDSName = ""
@@ -516,6 +556,7 @@ class OutsideAirTemperature(MappedElementParser):
 class TargetLocationLatitude(MappedElementParser):
     key = b'\x28'
     TAG = 40
+    UDSKey = "-"
     LDSName = "Target Location Latitude"
     ESDName = ""
     UDSName = ""
@@ -528,6 +569,7 @@ class TargetLocationLatitude(MappedElementParser):
 class TargetLocationLongitude(MappedElementParser):
     key = b'\x29'
     TAG = 41
+    UDSKey = "-"
     LDSName = "Target Location Longitude"
     ESDName = ""
     UDSName = ""
@@ -540,6 +582,7 @@ class TargetLocationLongitude(MappedElementParser):
 class TargetLocationElevation(MappedElementParser):
     key = b'\x2A'
     TAG = 42
+    UDSKey = "-"
     LDSName = "Target Location Elevation"
     ESDName = ""
     UDSName = ""
@@ -552,6 +595,7 @@ class TargetLocationElevation(MappedElementParser):
 class TargetTrackGateWidth(MappedElementParser):
     key = b'\x2B'
     TAG = 43
+    UDSKey = "-"
     LDSName = "Target Track Gate Width"
     ESDName = ""
     UDSName = ""
@@ -562,6 +606,7 @@ class TargetTrackGateWidth(MappedElementParser):
 class TargetTrackGateHeight(MappedElementParser):
     key = b'\x2C'
     TAG = 44
+    UDSKey = "-"
     LDSName = "Target Track Gate Height"
     ESDName = ""
     UDSName = ""
@@ -572,6 +617,7 @@ class TargetTrackGateHeight(MappedElementParser):
 class TargetErrorEstimateCE90(MappedElementParser):
     key = b'\x2D'
     TAG = 45
+    UDSKey = "-"
     LDSName = "Target Error Estimate - CE90"
     ESDName = ""
     UDSName = ""
@@ -582,6 +628,7 @@ class TargetErrorEstimateCE90(MappedElementParser):
 class TargetErrorEstimateLE90(MappedElementParser):
     key = b'\x2E'
     TAG = 46
+    UDSKey = "-"
     LDSName = "Target Error Estimate - LE90"
     ESDName = ""
     UDSName = ""
@@ -592,6 +639,7 @@ class TargetErrorEstimateLE90(MappedElementParser):
 class GenericFlagData01(StringElementParser):
     key = b'\x2F'
     TAG = 47
+    UDSKey = "-"
     LDSName = "Generic Flag Data 01"
     ESDName = ""
     UDSName = ""
@@ -601,6 +649,7 @@ class GenericFlagData01(StringElementParser):
 # class SecurityLocalMetadataSet(MappedElementParser):
 #     key = b'\x30'
 #     TAG = 48
+#     UDSKey = "06 0E 2B 34 02 03 01 01 0E 01 03 03 02 00 00 00"
 #     LDSName = "Security Local Set"
 #     ESDName = ""
 #     UDSName = "Security Local Set"
@@ -610,6 +659,7 @@ class GenericFlagData01(StringElementParser):
 class DifferentialPressure(MappedElementParser):
     key = b'\x31'
     TAG = 49
+    UDSKey = "-"
     LDSName = "Differential Pressure"
     ESDName = ""
     UDSName = ""
@@ -622,6 +672,7 @@ class DifferentialPressure(MappedElementParser):
 class PlatformAngleOfAttack(MappedElementParser):
     key = b'\x32'
     TAG = 50
+    UDSKey = "-"
     LDSName = "Platform Angle of Attack"
     ESDName = ""
     UDSName = ""
@@ -634,6 +685,7 @@ class PlatformAngleOfAttack(MappedElementParser):
 class PlatformVerticalSpeed(MappedElementParser):
     key = b'\x33'
     TAG = 51
+    UDSKey = "-"
     LDSName = "Platform Vertical Speed"
     ESDName = ""
     UDSName = ""
@@ -646,6 +698,7 @@ class PlatformVerticalSpeed(MappedElementParser):
 class PlatformSideslipAngle(MappedElementParser):
     key = b'\x34'
     TAG = 52
+    UDSKey = "-"
     LDSName = "Platform Sideslip Angle"
     ESDName = ""
     UDSName = ""
@@ -658,6 +711,7 @@ class PlatformSideslipAngle(MappedElementParser):
 class AirfieldBarometricPressure(MappedElementParser):
     key = b'\x35'
     TAG = 53
+    UDSKey = "-"
     LDSName = "Airfield Barometric Pressure"
     ESDName = ""
     UDSName = ""
@@ -670,6 +724,7 @@ class AirfieldBarometricPressure(MappedElementParser):
 class AirfieldElevation(MappedElementParser):
     key = b'\x36'
     TAG = 54
+    UDSKey = "-"
     LDSName = "Airfield Elevation"
     ESDName = ""
     UDSName = ""
@@ -682,6 +737,7 @@ class AirfieldElevation(MappedElementParser):
 class RelativeHumidity(MappedElementParser):
     key = b'\x37'
     TAG = 55
+    UDSKey = "-"
     LDSName = "Relative Humidity"
     ESDName = ""
     UDSName = ""
@@ -694,6 +750,7 @@ class RelativeHumidity(MappedElementParser):
 class PlatformGroundSpeed(MappedElementParser):
     key = b'\x38'
     TAG = 56
+    UDSKey = "-"
     LDSName = "Platform Ground Speed"
     ESDName = "Platform Ground Speed"
     UDSName = ""
@@ -706,6 +763,7 @@ class PlatformGroundSpeed(MappedElementParser):
 class GroundRange(MappedElementParser):
     key = b'\x39'
     TAG = 57
+    UDSKey = "-"
     LDSName = "Ground Range"
     ESDName = "Ground Range"
     UDSName = ""
@@ -718,6 +776,7 @@ class GroundRange(MappedElementParser):
 class PlatformFuelRemaining(MappedElementParser):
     key = b'\x3A'
     TAG = 58
+    UDSKey = "-"
     LDSName = "Platform Fuel Remaining"
     ESDName = "Platform Fuel Remaining"
     UDSName = ""
@@ -730,6 +789,7 @@ class PlatformFuelRemaining(MappedElementParser):
 class PlatformCallSign(StringElementParser):
     key = b'\x3B'
     TAG = 59
+    UDSKey = "-"
     LDSName = "Platform Call Sign"
     ESDName = "Platform Call Sign"
     UDSName = ""
@@ -739,6 +799,7 @@ class PlatformCallSign(StringElementParser):
 class WeaponLoad(MappedElementParser):
     key = b'\x3C'
     TAG = 60
+    UDSKey = "-"
     LDSName = "Weapon Load"
     ESDName = "Weapon Load"
     UDSName = ""
@@ -748,14 +809,17 @@ class WeaponLoad(MappedElementParser):
 class WeaponFired(MappedElementParser):
     key = b'\x3D'
     TAG = 61
+    UDSKey = "-"
     LDSName = "Weapon Fired"
     ESDName = "Weapon Fired"
     UDSName = ""
+
 
 @UASLocalMetadataSet.add_parser
 class LaserPRFCode(MappedElementParser):
     key = b'\x3E'
     TAG = 62
+    UDSKey = "-"
     LDSName = "Laser PRF Code"
     ESDName = "Laser PRF Code"
     UDSName = ""
@@ -765,6 +829,7 @@ class LaserPRFCode(MappedElementParser):
 class SensorFieldOfViewName(MappedElementParser):
     key = b'\x3F'
     TAG = 63
+    UDSKey = "-"
     LDSName = "Sensor Field of View Name"
     ESDName = "Sensor Field of View Name"
     UDSName = ""
@@ -774,6 +839,7 @@ class SensorFieldOfViewName(MappedElementParser):
 class PlatformMagneticHeading(MappedElementParser):
     key = b'\x40'
     TAG = 64
+    UDSKey = "-"
     LDSName = "Platform Magnetic Heading"
     ESDName = "Platform Magnetic Heading"
     UDSName = ""
@@ -786,6 +852,7 @@ class PlatformMagneticHeading(MappedElementParser):
 class AlternatePlatformLatitude(MappedElementParser):
     key = b'\x43'
     TAG = 67
+    UDSKey = "-"
     LDSName = "Alternate Platform Latitude"
     ESDName = ""
     UDSName = ""
@@ -798,6 +865,7 @@ class AlternatePlatformLatitude(MappedElementParser):
 class AlternatePlatformLongitude(MappedElementParser):
     key = b'\x44'
     TAG = 68
+    UDSKey = "-"
     LDSName = "Alternate Platform Longitude"
     ESDName = ""
     UDSName = ""
@@ -810,6 +878,7 @@ class AlternatePlatformLongitude(MappedElementParser):
 class AlternatePlatformAltitude(MappedElementParser):
     key = b'\x45'
     TAG = 69
+    UDSKey = "-"
     LDSName = "Alternate Platform Altitude"
     ESDName = ""
     UDSName = ""
@@ -822,6 +891,7 @@ class AlternatePlatformAltitude(MappedElementParser):
 class AlternatePlatformName(StringElementParser):
     key = b'\x46'
     TAG = 70
+    UDSKey = "-"
     LDSName = "Alternate Platform Name"
     ESDName = ""
     UDSName = ""
@@ -832,6 +902,7 @@ class AlternatePlatformName(StringElementParser):
 class AlternatePlatformHeading(MappedElementParser):
     key = b'\x47'
     TAG = 71
+    UDSKey = "-"
     LDSName = "Alternate Platform Heading"
     ESDName = ""
     UDSName = ""
@@ -844,6 +915,7 @@ class AlternatePlatformHeading(MappedElementParser):
 class EventStartTime(DateTimeElementParser):
     key = b'\x48'
     TAG = 72
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 02 01 02 07 01 00 00"
     LDSName = "Event Start Time - UTC"
     ESDName = "Mission Start Time, Date, and Date of Collection"
     UDSName = "Event Start Date Time - UTC"
@@ -853,6 +925,7 @@ class EventStartTime(DateTimeElementParser):
 class RVTLocalSet(MappedElementParser):
     key = b'\x49'
     TAG = 73
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 02 01 02 07 01 00 00"
     LDSName = "RVT Local Data Set"
     ESDName = ""
     UDSName = "Remote Video Terminal Local Set"
@@ -862,16 +935,17 @@ class RVTLocalSet(MappedElementParser):
 class VMTILocalSet(MappedElementParser):
     key = b'\x4A'
     TAG = 74
+    UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 06 00 00 00"
     LDSName = "VMTI Local Set"
     ESDName = ""
     UDSName = "Video Moving Target Indicator Local Set"
-
 
 
 @UASLocalMetadataSet.add_parser
 class SensorEllipsoidHeightConversion(MappedElementParser):
     key = b'\x4B'
     TAG = 75
+    UDSKey = "-"
     LDSName = "Sensor Ellipsoid Height"
     ESDName = ""
     UDSName = ""
@@ -884,6 +958,7 @@ class SensorEllipsoidHeightConversion(MappedElementParser):
 class AlternatePlatformEllipsoidHeight(MappedElementParser):
     key = b'\x4C'
     TAG = 76
+    UDSKey = "-"
     LDSName = "Alternate Platform Ellipsoid Height"
     ESDName = ""
     UDSName = ""
@@ -896,16 +971,17 @@ class AlternatePlatformEllipsoidHeight(MappedElementParser):
 class OperationalMode(StringElementParser):
     key = b'\x4D'
     TAG = 77
+    UDSKey = "-"
     LDSName = "Operational Mode"
     ESDName = ""
     UDSName = ""
-
 
 
 @UASLocalMetadataSet.add_parser
 class FrameCenterHeightAboveEllipsoid(MappedElementParser):
     key = b'\x4E'
     TAG = 78
+    UDSKey = "-"
     LDSName = "Frame Center Height Above Ellipsoid"
     ESDName = ""
     UDSName = ""
@@ -918,6 +994,7 @@ class FrameCenterHeightAboveEllipsoid(MappedElementParser):
 class SensorNorthVelocity(MappedElementParser):
     key = b'\x4F'
     TAG = 79
+    UDSKey = "-"
     LDSName = "Sensor North Velocity"
     ESDName = ""
     UDSName = ""
@@ -930,6 +1007,7 @@ class SensorNorthVelocity(MappedElementParser):
 class SensorEastVelocity(MappedElementParser):
     key = b'\x50'
     TAG = 80
+    UDSKey = "-"
     LDSName = "Sensor East Velocity"
     ESDName = ""
     UDSName = ""
@@ -941,16 +1019,17 @@ class SensorEastVelocity(MappedElementParser):
 # class ImageHorizonPixelPack(MappedElementParser):
 #     key = b'\x51'
 #     TAG = 81
+#     UDSKey = "-"
 #     LDSName = "Image Horizon Pixel Pack"
 #     ESDName = ""
 #     UDSName = ""
-
 
 
 @UASLocalMetadataSet.add_parser
 class CornerLatitudePoint1Full(MappedElementParser):
     key = b'\x52'
     TAG = 82
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 07 01 00"
     LDSName = "Corner Latitude Point 1 (Full)"
     ESDName = "SAR Latitude 4"
     UDSName = "Corner Latitude Point 1 (Decimal Degrees)"
@@ -963,6 +1042,7 @@ class CornerLatitudePoint1Full(MappedElementParser):
 class CornerLongitudePoint1Full(MappedElementParser):
     key = b'\x53'
     TAG = 83
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0B 01 00"
     LDSName = "Corner Longitude Point 1 (Full)"
     ESDName = "SAR Longitude 4"
     UDSName = "Corner Longitude Point 1 (Decimal Degrees)"
@@ -975,6 +1055,7 @@ class CornerLongitudePoint1Full(MappedElementParser):
 class CornerLatitudePoint2Full(MappedElementParser):
     key = b'\x54'
     TAG = 84
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 08 01 00"
     LDSName = "Corner Latitude Point 2 (Full)"
     ESDName = "SAR Latitude 1"
     UDSName = "Corner Latitude Point 2 (Decimal Degrees)"
@@ -987,6 +1068,7 @@ class CornerLatitudePoint2Full(MappedElementParser):
 class CornerLongitudePoint2Full(MappedElementParser):
     key = b'\x55'
     TAG = 85
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0C 01 00"
     LDSName = "Corner Longitude Point 2 (Full)"
     ESDName = "SAR Longitude 1"
     UDSName = "Corner Longitude Point 2 (Decimal Degrees)"
@@ -999,6 +1081,7 @@ class CornerLongitudePoint2Full(MappedElementParser):
 class CornerLatitudePoint3Full(MappedElementParser):
     key = b'\x56'
     TAG = 86
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 09 01 00"
     LDSName = "Corner Latitude Point 3 (Full)"
     ESDName = "SAR Latitude 2"
     UDSName = "Corner Latitude Point 3 (Decimal Degrees)"
@@ -1011,6 +1094,7 @@ class CornerLatitudePoint3Full(MappedElementParser):
 class CornerLongitudePoint3Full(MappedElementParser):
     key = b'\x57'
     TAG = 87
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0D 01 00"
     LDSName = "Corner Longitude Point 3 (Full)"
     ESDName = "SAR Longitude 2"
     UDSName = "Corner Longitude Point 3 (Decimal Degrees)"
@@ -1023,6 +1107,7 @@ class CornerLongitudePoint3Full(MappedElementParser):
 class CornerLatitudePoint4Full(MappedElementParser):
     key = b'\x58'
     TAG = 88
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0A 01 00"
     LDSName = "Corner Latitude Point 4 (Full)"
     ESDName = "SAR Latitude 3"
     UDSName = "Corner Latitude Point 4 (Decimal Degrees)"
@@ -1035,6 +1120,7 @@ class CornerLatitudePoint4Full(MappedElementParser):
 class CornerLongitudePoint4Full(MappedElementParser):
     key = b'\x59'
     TAG = 89
+    UDSKey = "06 0E 2B 34 01 01 01 03 07 01 02 01 03 0E 01 00"
     LDSName = "Corner Longitude Point 4 (Full)"
     ESDName = "SAR Longitude 3"
     UDSName = "Corner Longitude Point 4 (Decimal Degrees)"
@@ -1047,6 +1133,7 @@ class CornerLongitudePoint4Full(MappedElementParser):
 class PlatformPitchAngleFull(MappedElementParser):
     key = b'\x5A'
     TAG = 90
+    UDSKey = "06 0E 2B 34 01 01 01 07 07 01 10 01 05 00 00 00"
     LDSName = "Platform Pitch Angle (Full)"
     ESDName = "UAV Pitch (INS)"
     UDSName = "Platform Pitch Angle"
@@ -1059,6 +1146,7 @@ class PlatformPitchAngleFull(MappedElementParser):
 class PlatformRollAngleFull(MappedElementParser):
     key = b'\x5B'
     TAG = 91
+    UDSKey = "06 0E 2B 34 01 01 01 07 07 01 10 01 04 00 00 00"
     LDSName = "Platform Roll Angle (Full)"
     ESDName = "UAV Roll (INS)"
     UDSName = "Platform Roll Angle"
@@ -1071,6 +1159,7 @@ class PlatformRollAngleFull(MappedElementParser):
 class PlatformAngleOfAttackFull(MappedElementParser):
     key = b'\x5C'
     TAG = 92
+    UDSKey = "-"
     LDSName = "Platform Angle of Attack (Full)"
     ESDName = ""
     UDSName = ""
@@ -1083,6 +1172,7 @@ class PlatformAngleOfAttackFull(MappedElementParser):
 class PlatformSideslipAngleFull(MappedElementParser):
     key = b'\x5D'
     TAG = 93
+    UDSKey = "-"
     LDSName = "Platform Sideslip Angle (Full)"
     ESDName = ""
     UDSName = ""
@@ -1095,6 +1185,7 @@ class PlatformSideslipAngleFull(MappedElementParser):
 # class MIISCoreIdentifier(MappedElementParser):
 #     key = b'\x5E'
 #     TAG = 94
+#     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
 #     LDSName = "MIIS Core Identifier"
 #     ESDName = ""
 #     UDSName = "Motion Imagery Identification System Core"
@@ -1104,16 +1195,17 @@ class PlatformSideslipAngleFull(MappedElementParser):
 # class SARMotionImageryLocalSet(MappedElementParser):
 #     key = b'\x5F'
 #     TAG = 95
+#     UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00"
 #     LDSName = "SAR Motion Imagery Local Set"
 #     ESDName = ""
 #     UDSName = "SAR Motion Imagery Local Set"
-
 
 
 @UASLocalMetadataSet.add_parser
 class TargetWidthExtended(MappedElementParser):
     key = b'\x60'
     TAG = 96
+    UDSKey = "06 0E 2B 34 01 01 01 01 07 01 09 02 01 00 00 00"
     LDSName = "Target Width Extended"
     ESDName = "Target Width"
     UDSName = "Target Width"
@@ -1125,6 +1217,7 @@ class TargetWidthExtended(MappedElementParser):
 class DensityAltitudeExtended(MappedElementParser):
     key = b'\x67'
     TAG = 103
+    UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 01 01 10 00 00 00"
     LDSName = "Density Altitude Extended"
     ESDName = "Density Altitude"
     UDSName = ""
@@ -1134,6 +1227,7 @@ class DensityAltitudeExtended(MappedElementParser):
 class SensorEllipsoidHeightExtended(StringElementParser):
     key = b'\x68'
     TAG = 104
+    UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 02 01 82 47 00 00"
     LDSName = "Sensor Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
@@ -1143,6 +1237,7 @@ class SensorEllipsoidHeightExtended(StringElementParser):
 class AlternatePlatformEllipsoidHeightExtended(StringElementParser):
     key = b'\x69'
     TAG = 105
+    UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 02 01 82 48 00 00"
     LDSName = " Alternate Platform Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
