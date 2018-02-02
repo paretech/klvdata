@@ -855,14 +855,14 @@ class ParserSingleShort(unittest.TestCase):
         self.assertEqual(bytes(PlatformAngleOfAttackFull(example_value)), example_ls_packet)
         self.assertEqual(bytes(PlatformAngleOfAttackFull(example_ls_packet[2:])), example_ls_packet)
 
-    def test_PlatformSideslipAngleFull(self):
-        # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 'x'
-        example_ls_packet = hexstr_to_bytes('5D 04 00 00 00 00')
-
-        from klvdata.misb0601 import PlatformSideslipAngleFull
-        self.assertEqual(bytes(PlatformSideslipAngleFull(example_value)), example_ls_packet)
-        self.assertEqual(bytes(PlatformSideslipAngleFull(example_ls_packet[2:])), example_ls_packet)
+#     def test_PlatformSideslipAngleFull(self):
+#         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
+#         example_value = 'x'
+#         example_ls_packet = hexstr_to_bytes('5D 04 00 00 00 00')
+# 
+#         from klvdata.misb0601 import PlatformSideslipAngleFull
+#         self.assertEqual(bytes(PlatformSideslipAngleFull(example_value)), example_ls_packet)
+#         self.assertEqual(bytes(PlatformSideslipAngleFull(example_ls_packet[2:])), example_ls_packet)
 
     # Tag 94 (0x5E) MIIS Core Identifier (MISB ST 1204)
 
@@ -870,7 +870,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_TargetWidthExtended(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 13_898.5463
+        example_value = 13898.5463
         example_ls_packet = hexstr_to_bytes('60 03 00 D9 2A')
 
         from klvdata.misb0601 import TargetWidthExtended
@@ -891,7 +891,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_DensityAltitudeExtended(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 23_456.24
+        example_value = 23456.24
         example_ls_packet = hexstr_to_bytes('67 03 2F 92 1E')
 
         from klvdata.misb0601 import DensityAltitudeExtended
@@ -900,7 +900,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_SensorEllipsoidHeightExtended(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 23_456.24
+        example_value = 23456.24
         example_ls_packet = hexstr_to_bytes('68 03 2F 92 1E')
 
         from klvdata.misb0601 import SensorEllipsoidHeightExtended
@@ -909,7 +909,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_AlternatePlatformEllipsoidHeightExtended(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 23_456.24
+        example_value = 23456.24
         example_ls_packet = hexstr_to_bytes('69 03 2F 92 1E')
 
         from klvdata.misb0601 import AlternatePlatformEllipsoidHeightExtended
