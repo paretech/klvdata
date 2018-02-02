@@ -105,13 +105,13 @@ class SetParser(Element, metaclass=ABCMeta):
         def repeat(items, indent=1):
             for item in items:
                 try:
-                    metadata[item.name] = item.value.value
+                    metadata[item.TAG] = (item.LSName, str(item.value.value))
                 except:
                     None
                 if hasattr(item, 'items'):
                     repeat(item.items.values(), indent + 1)
         repeat(self.items.values())
-        return metadata
+        return OrderedDict(metadata)
 
     def structure(self):
         print(str(type(self)))
