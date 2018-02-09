@@ -237,6 +237,19 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="klvdata.common.linear_map">
+<code class="descclassname">klvdata.common.</code><code class="descname">linear_map</code><span class="sig-paren">(</span><em>src_value</em>, <em>src_domain</em>, <em>dst_range</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.common.linear_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps source value (src_value) in the source domain
+(source_domain) onto the destination range (dest_range) using linear
+interpretation.</p>
+<p>Except that at the moment src_value is a bytes value that once converted
+to integer that it then is on the src_domain.</p>
+<p>Ideally would like to move the conversion from bytes to int externally.</p>
+<p>Once value is same base and format as src_domain (i.e. converted from bytes),
+it should always fall within the src_domain. If not, that’s a problem.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="klvdata.common.packet_checksum">
 <code class="descclassname">klvdata.common.</code><code class="descname">packet_checksum</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.common.packet_checksum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return two byte checksum from a SMPTE ST 336 KLV structured bytes object.</p>
