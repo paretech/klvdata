@@ -288,7 +288,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLatitudePoint1(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = -10.579637999887
+        frame_center_latitude = -10.5423886331461
+        example_value = -10.579637999887 - frame_center_latitude
         example_ls_packet = hexstr_to_bytes('1a 02 c0 6e')
 
         from klvdata.misb0601 import OffsetCornerLatitudePoint1
@@ -297,7 +298,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLongitudePoint1(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 29.1273677986333
+        frame_center_longitude = 29.157890122923
+        example_value = 29.1273677986333 - frame_center_longitude
         example_ls_packet = hexstr_to_bytes('1b 02 cb e9')
 
         from klvdata.misb0601 import OffsetCornerLongitudePoint1
@@ -306,7 +308,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLatitudePoint2(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = -10.5661816260963
+        frame_center_latitude = -10.5423886331461
+        example_value = -10.5661816260963 - frame_center_latitude
         example_ls_packet = hexstr_to_bytes('1c 02 d7 65')
 
         from klvdata.misb0601 import OffsetCornerLatitudePoint2
@@ -315,7 +318,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLongitudePoint2(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 29.140824172424
+        frame_center_longitude = 29.157890122923
+        example_value = 29.140824172424 - frame_center_longitude
         example_ls_packet = hexstr_to_bytes('1d 02 e2 e0')
 
         from klvdata.misb0601 import OffsetCornerLongitudePoint2
@@ -324,7 +328,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLatitudePoint3(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = -10.5527275411938
+        frame_center_latitude = -10.5423886331461
+        example_value = -10.5527275411938 - frame_center_latitude
         example_ls_packet = hexstr_to_bytes('1e 02 ee 5b')
 
         from klvdata.misb0601 import OffsetCornerLatitudePoint3
@@ -333,7 +338,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLongitudePoint3(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 29.1542782573265
+        frame_center_longitude = 29.157890122923
+        example_value = 29.1542782573265 - frame_center_longitude
         example_ls_packet = hexstr_to_bytes('1f 02 f9 d6')
 
         from klvdata.misb0601 import OffsetCornerLongitudePoint3
@@ -342,7 +348,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLatitudePoint4(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = -10.5392711674031
+        frame_center_latitude = -10.5423886331461
+        example_value = -10.5392711674031 - frame_center_latitude
         example_ls_packet = hexstr_to_bytes('20 02 05 52')
 
         from klvdata.misb0601 import OffsetCornerLatitudePoint4
@@ -351,7 +358,8 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OffsetCornerLongitudePoint4(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 29.1677346311172
+        frame_center_longitude = 29.157890122923
+        example_value = 29.1677346311172 - frame_center_longitude
         example_ls_packet = hexstr_to_bytes('21 02 10 cd')
 
         from klvdata.misb0601 import OffsetCornerLongitudePoint4
