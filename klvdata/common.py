@@ -96,36 +96,50 @@ def bytes_to_hexstr(value, start='', sep=' '):
     return start + sep.join(["{:02X}".format(byte) for byte in bytes(value)])
 
 
-def bytes_to_float(value, _domain, _range):
-    """Convert the fixed point value self.value to a floating point value."""
-    x1, x2 = _domain
+def linear_map(src_value, src_domain, dst_range):
+    """Maps source value (src_value) in the source domain
+    (source_domain) onto the destination range (dest_range) using linear
+    interpretation.
 
-    length = int((x2 - x1 - 1).bit_length() / 8)
-    if length != len(value):
+    Except that at the moment src_value is a bytes value that once converted
+    to integer that it then is on the src_domain.
+
+    Ideally would like to move the conversion from bytes to int externally.
+
+    Once value is same base and format as src_domain (i.e. converted from bytes),
+    it should always fall within the src_domain. If not, that's a problem.
+    """
+    src_min, src_max, dst_min, dst_max = src_domain + dst_range
+    # assert(src_min <= src_value <= src_max)
+
+    if not (src_min <= src_value <= src_max):
         raise ValueError
 
-    y1, y2 = _range
-    m = (y2 - y1) / (x2 - x1)
+    slope = (dst_max - dst_min) / (src_max - src_min)
+    dst_value = slope * (src_value - src_min) + dst_min
 
-    x = bytes_to_int(value, signed=any((i < 0 for i in _range)))
+    if not (dst_min <= dst_value <= dst_max):
+        raise ValueError
 
-    # Return y given x
-    return m * (x - x1) + y1
+    return dst_value
+
+
+def bytes_to_float(value, _domain, _range):
+    """Convert the fixed point value self.value to a floating point value."""
+    src_value = int().from_bytes(value, byteorder='big', signed=(min(_domain) < 0))
+    return linear_map(src_value, _domain, _range)
 
 
 def float_to_bytes(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
-    x1, x2 = _domain
-    y1, y2 = _range
-    m = (y2 - y1) / (x2 - x1)
-    y = value
-
-    length = int((x2 - x1 - 1).bit_length() / 8)
-    signed = any((i < 0 for i in _range))
-    x = round((1 / m) * (y - y1) + x1)
-
-    # Return x given y
-    return int_to_bytes(x, length, signed)
+    # Some classes like MappedElement are calling float_to_bytes with arguments _domain
+    # and _range in the incorrect order. The naming convention used is confusing and
+    # needs addressed. Until that time, swap the order here as a workaround...
+    src_domain, dst_range = _range, _domain
+    src_min, src_max, dst_min, dst_max = src_domain + dst_range
+    length = int((dst_max - dst_min - 1).bit_length() / 8)
+    dst_value = linear_map(value, src_domain=src_domain, dst_range=dst_range)
+    return round(dst_value).to_bytes(length, byteorder='big', signed=(dst_min < 0))
 
 
 def packet_checksum(data):
