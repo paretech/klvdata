@@ -755,7 +755,7 @@ class ParserSingleShort(unittest.TestCase):
     def test_SensorEastVelocity(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = -327
-        example_ls_packet = hexstr_to_bytes('50 02 80 00')
+        example_ls_packet = hexstr_to_bytes('50 02 00 00')
 
         from klvdata.misb0601 import SensorEastVelocity
         self.assertEqual(bytes(SensorEastVelocity(example_value)), example_ls_packet)
