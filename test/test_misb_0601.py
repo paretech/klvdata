@@ -243,7 +243,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_SlantRange(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 68590.98
+        example_value = 68590.9832
         example_ls_packet = hexstr_to_bytes('15 04 03 83 09 26')
 
         from klvdata.misb0601 import SlantRange
