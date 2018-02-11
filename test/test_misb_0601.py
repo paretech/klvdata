@@ -568,7 +568,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_GroundRange(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 3506979
+        example_value = 3506979.0316
         example_ls_packet = hexstr_to_bytes('39 04 b3 8e ac f1')
 
         from klvdata.misb0601 import GroundRange
