@@ -727,7 +727,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_OperationalMode(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = "Other"
+        example_value = b'\x00'
         example_ls_packet = hexstr_to_bytes('4D 01 00')
 
         from klvdata.misb0601 import OperationalMode
