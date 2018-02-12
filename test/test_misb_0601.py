@@ -467,7 +467,7 @@ class ParserSingleShort(unittest.TestCase):
 
     def test_TargetErrorEstimateCE90(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
-        example_value = 425.319
+        example_value = 425.21515
         example_ls_packet = hexstr_to_bytes('2D 02 1A 95')
 
         from klvdata.misb0601 import TargetErrorEstimateCE90
