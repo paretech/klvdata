@@ -838,7 +838,7 @@ class ParserSingleShort(unittest.TestCase):
     def test_PlatformPitchAngleFull(self):
         # Example value and packet per MISB ST 0601.11, Section 8 "Conversions and Mappings of Metadata Types".
         example_value = -0.4315251
-        example_ls_packet = hexstr_to_bytes('5A 04 62 E2 F2')
+        example_ls_packet = hexstr_to_bytes('5A 04 FF 62 E2 F2')
 
         from klvdata.misb0601 import PlatformPitchAngleFull
         self.assertEqual(bytes(PlatformPitchAngleFull(example_value)), example_ls_packet)
