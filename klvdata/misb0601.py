@@ -851,7 +851,7 @@ class PlatformMagneticHeading(MappedElementParser):
 @UASLocalMetadataSet.add_parser
 class UASLSVersionNumber(StringElementParser):
     key = b'\x41'
-    TAG = 64
+    TAG = 65
     UDSKey = "-"
     LDSName = "UAS Datalink LS Version Number"
     ESDName = "ESD ICD Version"
