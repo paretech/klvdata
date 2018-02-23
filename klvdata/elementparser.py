@@ -27,6 +27,7 @@ from abc import ABCMeta
 from abc import abstractmethod
 from klvdata.element import Element
 from klvdata.common import bytes_to_datetime
+from klvdata.common import bytes_to_int
 from klvdata.common import bytes_to_float
 from klvdata.common import bytes_to_hexstr
 from klvdata.common import bytes_to_str
@@ -82,7 +83,7 @@ class BytesElementParser(ElementParser, metaclass=ABCMeta):
 
 class BytesValue(BaseValue):
     def __init__(self, value):
-        self.value = value
+        self.value = bytes_to_int(value)
 
     def __bytes__(self):
         return bytes(self.value)
