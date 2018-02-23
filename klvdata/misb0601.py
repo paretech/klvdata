@@ -849,7 +849,7 @@ class PlatformMagneticHeading(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class UASLSVersionNumber(StringElementParser):
+class UASLSVersionNumber(BytesElementParser):
     key = b'\x41'
     TAG = 65
     UDSKey = "-"
