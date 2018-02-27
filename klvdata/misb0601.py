@@ -819,7 +819,7 @@ class WeaponLoad(MappedElementParser):
     ESDName = "Weapon Load"
     UDSName = ""
     _domain = (0, 2**16-1)
-    _range = (0, 2**8-1)
+    _range = (0, 2**16-1)
 
 @UASLocalMetadataSet.add_parser
 class WeaponFired(MappedElementParser):
