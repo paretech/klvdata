@@ -553,7 +553,7 @@ class OutsideAirTemperature(MappedElementParser):
     ESDName = "Air Temperature"
     UDSName = ""
     _domain = (0, 2**8-1)
-    _range = (-128, 127)
+    _range = (0, 2**8-1)
     units = 'celcius'
 
 
