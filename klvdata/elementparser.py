@@ -83,7 +83,7 @@ class BytesElementParser(ElementParser, metaclass=ABCMeta):
 
 class BytesValue(BaseValue):
     def __init__(self, value):
-        self.value = bytes_to_int(value)
+        self.value = value
 
     def __bytes__(self):
         return bytes(self.value)

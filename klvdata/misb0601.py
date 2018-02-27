@@ -480,13 +480,15 @@ class OffsetCornerLongitudePoint4(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class IcingDetected(StringElementParser):
+class IcingDetected(MappedElementParser):
     key = b'\x22'
     TAG = 34
     UDSKey = ""
     LDSName = "Icing Detected"
     ESDName = "Icing Detected"
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
     units = 'flag'
 
 
@@ -550,6 +552,9 @@ class OutsideAirTemperature(MappedElementParser):
     LDSName = "Outside Air Temperature"
     ESDName = "Air Temperature"
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (-128, 127)
+    units = 'celcius'
 
 
 @UASLocalMetadataSet.add_parser
@@ -599,50 +604,60 @@ class TargetTrackGateWidth(MappedElementParser):
     LDSName = "Target Track Gate Width"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 512)
     units = 'pixels'
 
 
 @UASLocalMetadataSet.add_parser
-class TargetTrackGateHeight(StringElementParser):
+class TargetTrackGateHeight(MappedElementParser):
     key = b'\x2C'
     TAG = 44
     UDSKey = "-"
     LDSName = "Target Track Gate Height"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 512)
     units = 'pixels'
 
 
 @UASLocalMetadataSet.add_parser
-class TargetErrorEstimateCE90(StringElementParser):
+class TargetErrorEstimateCE90(MappedElementParser):
     key = b'\x2D'
     TAG = 45
     UDSKey = "-"
     LDSName = "Target Error Estimate - CE90"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (0, 4095)
     units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
-class TargetErrorEstimateLE90(StringElementParser):
+class TargetErrorEstimateLE90(MappedElementParser):
     key = b'\x2E'
     TAG = 46
     UDSKey = "-"
     LDSName = "Target Error Estimate - LE90"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (0, 4095)
     units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
-class GenericFlagData01(StringElementParser):
+class GenericFlagData01(MappedElementParser):
     key = b'\x2F'
     TAG = 47
     UDSKey = "-"
     LDSName = "Generic Flag Data 01"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
 
 
 # @UASLocalMetadataSet.add_parser
@@ -796,44 +811,49 @@ class PlatformCallSign(StringElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class WeaponLoad(StringElementParser):
+class WeaponLoad(MappedElementParser):
     key = b'\x3C'
     TAG = 60
     UDSKey = "-"
     LDSName = "Weapon Load"
     ESDName = "Weapon Load"
     UDSName = ""
-
+    _domain = (0, 2**16-1)
+    _range = (0, 2**8-1)
 
 @UASLocalMetadataSet.add_parser
-class WeaponFired(StringElementParser):
+class WeaponFired(MappedElementParser):
     key = b'\x3D'
     TAG = 61
     UDSKey = "-"
     LDSName = "Weapon Fired"
     ESDName = "Weapon Fired"
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
 
 
 @UASLocalMetadataSet.add_parser
-class LaserPRFCode(StringElementParser):
+class LaserPRFCode(MappedElementParser):
     key = b'\x3E'
     TAG = 62
     UDSKey = "-"
     LDSName = "Laser PRF Code"
     ESDName = "Laser PRF Code"
     UDSName = ""
-
+    _domain = (0, 2**16-1)
+    _range = (0, 65535)
 
 @UASLocalMetadataSet.add_parser
-class SensorFieldOfViewName(StringElementParser):
+class SensorFieldOfViewName(MappedElementParser):
     key = b'\x3F'
     TAG = 63
     UDSKey = "-"
     LDSName = "Sensor Field of View Name"
     ESDName = "Sensor Field of View Name"
     UDSName = ""
-
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
 
 @UASLocalMetadataSet.add_parser
 class PlatformMagneticHeading(MappedElementParser):
@@ -849,13 +869,15 @@ class PlatformMagneticHeading(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class UASLSVersionNumber(BytesElementParser):
+class UASLSVersionNumber(MappedElementParser):
     key = b'\x41'
     TAG = 65
     UDSKey = "-"
     LDSName = "UAS Datalink LS Version Number"
     ESDName = "ESD ICD Version"
     UDSName = ""
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
     units = 'number'
 
 
@@ -1213,44 +1235,51 @@ class PlatformSideslipAngleFull(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class TargetWidthExtended(StringElementParser):
+class TargetWidthExtended(MappedElementParser):
     key = b'\x60'
     TAG = 96
     UDSKey = "06 0E 2B 34 01 01 01 01 07 01 09 02 01 00 00 00"
     LDSName = "Target Width Extended"
     ESDName = "Target Width"
     UDSName = "Target Width"
-    #_range = (0, +1500000)
+    _domain = (0, 2**8-1)
+    _range = (0, 2**8-1)
     units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
-class DensityAltitudeExtended(StringElementParser):
+class DensityAltitudeExtended(MappedElementParser):
     key = b'\x67'
     TAG = 103
     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 01 01 10 00 00 00"
     LDSName = "Density Altitude Extended"
     ESDName = "Density Altitude"
     UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (-900, 40000)
     units = 'meters'
 
 @UASLocalMetadataSet.add_parser
-class SensorEllipsoidHeightExtended(StringElementParser):
+class SensorEllipsoidHeightExtended(MappedElementParser):
     key = b'\x68'
     TAG = 104
     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 02 01 82 47 00 00"
     LDSName = "Sensor Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (-900, 40000)
     units = 'meters'
 
 
 @UASLocalMetadataSet.add_parser
-class AlternatePlatformEllipsoidHeightExtended(StringElementParser):
+class AlternatePlatformEllipsoidHeightExtended(MappedElementParser):
     key = b'\x69'
     TAG = 105
     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 02 01 82 48 00 00"
     LDSName = " Alternate Platform Ellipsoid Height Extended"
     ESDName = ""
     UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (-900, 40000)
     units = 'meters'
