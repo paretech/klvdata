@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # The MIT License (MIT)
 #
@@ -57,6 +58,9 @@ class KLVParser(object):
         return key, value
 
     def __read(self, size):
+        if size == 0:
+            return b''
+
         assert size > 0
 
         data = self.source.read(size)

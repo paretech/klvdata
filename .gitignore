@@ -110,3 +110,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+.pydevproject
+.project
+/pprint_packet.py
+/pprint_stdin.py
+/pprint_metadata_values.py

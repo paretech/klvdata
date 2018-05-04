@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # The MIT License (MIT)
 #
@@ -98,6 +99,21 @@ class SetParser(Element, metaclass=ABCMeta):
     def __str__(self):
         return str_dict(self.items)
 
+    def MetadataList(self):
+        ''' Return metadata dictionary'''
+        metadata = {}
+
+        def repeat(items, indent=1):
+            for item in items:
+                try:
+                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
+                except:
+                    None
+                if hasattr(item, 'items'):
+                    repeat(item.items.values(), indent + 1)
+        repeat(self.items.values())
+        return OrderedDict(metadata)
+
     def structure(self):
         print(str(type(self)))
 
@@ -115,7 +131,7 @@ def str_dict(values):
 
     def per_item(value, indent=0):
         for item in value:
-            if isinstance(item, self):
+            if isinstance(item):
                 out.append(indent * "\t" + str(item))
             else:
                 out.append(indent * "\t" + str(item))

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # The MIT License (MIT)
 #
@@ -26,6 +27,7 @@ from abc import ABCMeta
 from abc import abstractmethod
 from klvdata.element import Element
 from klvdata.common import bytes_to_datetime
+from klvdata.common import bytes_to_int
 from klvdata.common import bytes_to_float
 from klvdata.common import bytes_to_hexstr
 from klvdata.common import bytes_to_str
