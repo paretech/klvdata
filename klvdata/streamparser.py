@@ -24,8 +24,12 @@
 # SOFTWARE.
 
 from klvdata.element import UnknownElement
-
 from klvdata.klvparser import KLVParser
+
+try:
+    from pydevd import *
+except ImportError:
+    None
 
 
 class StreamParser:
@@ -42,12 +46,12 @@ class StreamParser:
 
     def __next__(self):
         key, value = next(self.iter_stream)
-
         if key in self.parsers:
             return self.parsers[key](value)
         else:
             # Even if KLV is not known, make best effort to parse and preserve.
-            # Element is an abstract super class, do not create instances on Element.
+            # Element is an abstract super class, do not create instances on
+            # Element.
             return UnknownElement(key, value)
 
     @classmethod

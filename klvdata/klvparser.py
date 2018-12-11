@@ -25,11 +25,17 @@
 
 from io import BytesIO
 from io import IOBase
+
 from klvdata.common import bytes_to_int
+try:
+    from pydevd import *
+except ImportError:
+    None
 
 
 class KLVParser(object):
     """Return key, value pairs parsed from an SMPTE ST 336 source."""
+
     def __init__(self, source, key_length):
         if isinstance(source, IOBase):
             self.source = source
@@ -69,4 +75,3 @@ class KLVParser(object):
             return data
         else:
             raise StopIteration
-
