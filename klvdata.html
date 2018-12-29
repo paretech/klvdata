@@ -220,8 +220,7 @@
 <dl class="function">
 <dt id="klvdata.common.hexstr_to_bytes">
 <code class="descclassname">klvdata.common.</code><code class="descname">hexstr_to_bytes</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.common.hexstr_to_bytes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return bytes object and filter out formatting characters from
-a string of hexadecimal numbers.</p>
+<dd><p>Return bytes object and filter out formatting characters from a string of hexadecimal numbers.</p>
 </dd></dl>
 
 <dl class="function">
@@ -235,11 +234,11 @@ a string of hexadecimal numbers.</p>
 <code class="descclassname">klvdata.common.</code><code class="descname">linear_map</code><span class="sig-paren">(</span><em>src_value</em>, <em>src_domain</em>, <em>dst_range</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.common.linear_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps source value (src_value) in the source domain
 (source_domain) onto the destination range (dest_range) using linear
-interpretation.
-Except that at the moment src_value is a bytes value that once converted
-to integer that it then is on the src_domain.
-Ideally would like to move the conversion from bytes to int externally.
-Once value is same base and format as src_domain (i.e. converted from bytes),
+interpretation.</p>
+<p>Except that at the moment src_value is a bytes value that once converted
+to integer that it then is on the src_domain.</p>
+<p>Ideally would like to move the conversion from bytes to int externally.</p>
+<p>Once value is same base and format as src_domain (i.e. converted from bytes),
 it should always fall within the src_domain. If not, that’s a problem.</p>
 </dd></dl>
 
@@ -300,6 +299,7 @@ length: Length is calculated based off value.</dd>
 <dt id="klvdata.elementparser.BaseValue">
 <em class="property">class </em><code class="descclassname">klvdata.elementparser.</code><code class="descname">BaseValue</code><a class="headerlink" href="#klvdata.elementparser.BaseValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract base class (superclass) used to insure internal interfaces are maintained.</p>
 </dd></dl>
 
 <dl class="class">
@@ -831,10 +831,10 @@ other normatively referenced security directives.</p>
 <dt id="klvdata.misb0601.Checksum">
 <em class="property">class </em><code class="descclassname">klvdata.misb0601.</code><code class="descname">Checksum</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.misb0601.Checksum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#klvdata.elementparser.BytesElementParser" title="klvdata.elementparser.BytesElementParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">klvdata.elementparser.BytesElementParser</span></code></a></p>
-<p>Checksum used to detect errors within a UAV Local Set packet.
-Checksum formed as lower 16-bits of summation performed on entire
-LS packet, including 16-byte US key and 1-byte checksum length.
-Initialized from bytes value as BytesValue.</p>
+<p>Checksum used to detect errors within a UAV Local Set packet.</p>
+<p>Checksum formed as lower 16-bits of summation performed on entire
+LS packet, including 16-byte US key and 1-byte checksum length.</p>
+<p>Initialized from bytes value as BytesValue.</p>
 <dl class="attribute">
 <dt id="klvdata.misb0601.Checksum.ESDName">
 <code class="descname">ESDName</code><em class="property"> = ''</em><a class="headerlink" href="#klvdata.misb0601.Checksum.ESDName" title="Permalink to this definition">¶</a></dt>
@@ -1768,8 +1768,8 @@ Initialized from bytes value as BytesValue.</p>
 <dt id="klvdata.misb0601.MissionID">
 <em class="property">class </em><code class="descclassname">klvdata.misb0601.</code><code class="descname">MissionID</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.misb0601.MissionID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#klvdata.elementparser.StringElementParser" title="klvdata.elementparser.StringElementParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">klvdata.elementparser.StringElementParser</span></code></a></p>
-<p>Mission ID is the descriptive mission identifier.
-Mission ID value field free text with maximum of 127 characters
+<p>Mission ID is the descriptive mission identifier.</p>
+<p>Mission ID value field free text with maximum of 127 characters
 describing the event.</p>
 <dl class="attribute">
 <dt id="klvdata.misb0601.MissionID.ESDName">
@@ -2955,10 +2955,10 @@ describing the event.</p>
 <dt id="klvdata.misb0601.PrecisionTimeStamp">
 <em class="property">class </em><code class="descclassname">klvdata.misb0601.</code><code class="descname">PrecisionTimeStamp</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.misb0601.PrecisionTimeStamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#klvdata.elementparser.DateTimeElementParser" title="klvdata.elementparser.DateTimeElementParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">klvdata.elementparser.DateTimeElementParser</span></code></a></p>
-<p>Precision Timestamp represented in microseconds.
-Precision Timestamp represented in the number of microseconds elapsed
-since midnight (00:00:00), January 1, 1970 not including leap seconds.
-See MISB ST 0601.11 for additional details.</p>
+<p>Precision Timestamp represented in microseconds.</p>
+<p>Precision Timestamp represented in the number of microseconds elapsed
+since midnight (00:00:00), January 1, 1970 not including leap seconds.</p>
+<p>See MISB ST 0601.11 for additional details.</p>
 <dl class="attribute">
 <dt id="klvdata.misb0601.PrecisionTimeStamp.ESDName">
 <code class="descname">ESDName</code><em class="property"> = ''</em><a class="headerlink" href="#klvdata.misb0601.PrecisionTimeStamp.ESDName" title="Permalink to this definition">¶</a></dt>
@@ -4315,310 +4315,10 @@ See MISB ST 0601.11 for additional details.</p>
 <dd><p>Bases: <a class="reference internal" href="#klvdata.element.Element" title="klvdata.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">klvdata.element.Element</span></code></a></p>
 <p>Parsable Element. Not intended to be used directly. Always as super class.</p>
 <dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLatitudePoint1Full">
-<code class="descname">GetCornerLatitudePoint1Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLatitudePoint1Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLatitudePoint2Full">
-<code class="descname">GetCornerLatitudePoint2Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLatitudePoint2Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLatitudePoint3Full">
-<code class="descname">GetCornerLatitudePoint3Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLatitudePoint3Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLatitudePoint4Full">
-<code class="descname">GetCornerLatitudePoint4Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLatitudePoint4Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLongitudePoint1Full">
-<code class="descname">GetCornerLongitudePoint1Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLongitudePoint1Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLongitudePoint2Full">
-<code class="descname">GetCornerLongitudePoint2Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLongitudePoint2Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLongitudePoint3Full">
-<code class="descname">GetCornerLongitudePoint3Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLongitudePoint3Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetCornerLongitudePoint4Full">
-<code class="descname">GetCornerLongitudePoint4Full</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetCornerLongitudePoint4Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetFrameCenterElevation">
-<code class="descname">GetFrameCenterElevation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetFrameCenterElevation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetFrameCenterLatitude">
-<code class="descname">GetFrameCenterLatitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetFrameCenterLatitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetFrameCenterLongitude">
-<code class="descname">GetFrameCenterLongitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetFrameCenterLongitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetImageSourceSensor">
-<code class="descname">GetImageSourceSensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetImageSourceSensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint1">
-<code class="descname">GetOffsetCornerLatitudePoint1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint2">
-<code class="descname">GetOffsetCornerLatitudePoint2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint3">
-<code class="descname">GetOffsetCornerLatitudePoint3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint4">
-<code class="descname">GetOffsetCornerLatitudePoint4</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLatitudePoint4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint1">
-<code class="descname">GetOffsetCornerLongitudePoint1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint2">
-<code class="descname">GetOffsetCornerLongitudePoint2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint3">
-<code class="descname">GetOffsetCornerLongitudePoint3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint4">
-<code class="descname">GetOffsetCornerLongitudePoint4</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetOffsetCornerLongitudePoint4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetPlatformHeadingAngle">
-<code class="descname">GetPlatformHeadingAngle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetPlatformHeadingAngle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetPlatformTailNumber">
-<code class="descname">GetPlatformTailNumber</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetPlatformTailNumber" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorHorizontalFieldOfView">
-<code class="descname">GetSensorHorizontalFieldOfView</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorHorizontalFieldOfView" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorLatitude">
-<code class="descname">GetSensorLatitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorLatitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorLongitude">
-<code class="descname">GetSensorLongitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorLongitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorRelativeAzimuthAngle">
-<code class="descname">GetSensorRelativeAzimuthAngle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorRelativeAzimuthAngle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorTrueAltitude">
-<code class="descname">GetSensorTrueAltitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorTrueAltitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSensorVerticalFieldOfView">
-<code class="descname">GetSensorVerticalFieldOfView</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSensorVerticalFieldOfView" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GetSlantRange">
-<code class="descname">GetSlantRange</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GetSlantRange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.GettargetWidth">
-<code class="descname">GettargetWidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.GettargetWidth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="klvdata.setparser.SetParser.MetadataList">
 <code class="descname">MetadataList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.MetadataList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return metadata dictionary</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLatitudePoint1Full">
-<code class="descname">SetCornerLatitudePoint1Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLatitudePoint1Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLatitudePoint2Full">
-<code class="descname">SetCornerLatitudePoint2Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLatitudePoint2Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLatitudePoint3Full">
-<code class="descname">SetCornerLatitudePoint3Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLatitudePoint3Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLatitudePoint4Full">
-<code class="descname">SetCornerLatitudePoint4Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLatitudePoint4Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLongitudePoint1Full">
-<code class="descname">SetCornerLongitudePoint1Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLongitudePoint1Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLongitudePoint2Full">
-<code class="descname">SetCornerLongitudePoint2Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLongitudePoint2Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLongitudePoint3Full">
-<code class="descname">SetCornerLongitudePoint3Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLongitudePoint3Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetCornerLongitudePoint4Full">
-<code class="descname">SetCornerLongitudePoint4Full</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetCornerLongitudePoint4Full" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetFrameCenterElevation">
-<code class="descname">SetFrameCenterElevation</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetFrameCenterElevation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetFrameCenterLatitude">
-<code class="descname">SetFrameCenterLatitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetFrameCenterLatitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetFrameCenterLongitude">
-<code class="descname">SetFrameCenterLongitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetFrameCenterLongitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetImageSourceSensor">
-<code class="descname">SetImageSourceSensor</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetImageSourceSensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint1">
-<code class="descname">SetOffsetCornerLatitudePoint1</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint2">
-<code class="descname">SetOffsetCornerLatitudePoint2</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint3">
-<code class="descname">SetOffsetCornerLatitudePoint3</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint4">
-<code class="descname">SetOffsetCornerLatitudePoint4</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLatitudePoint4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint1">
-<code class="descname">SetOffsetCornerLongitudePoint1</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint2">
-<code class="descname">SetOffsetCornerLongitudePoint2</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint3">
-<code class="descname">SetOffsetCornerLongitudePoint3</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint4">
-<code class="descname">SetOffsetCornerLongitudePoint4</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetOffsetCornerLongitudePoint4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetPlatformHeadingAngle">
-<code class="descname">SetPlatformHeadingAngle</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetPlatformHeadingAngle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetPlatformTailNumber">
-<code class="descname">SetPlatformTailNumber</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetPlatformTailNumber" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorHorizontalFieldOfView">
-<code class="descname">SetSensorHorizontalFieldOfView</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorHorizontalFieldOfView" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorLatitude">
-<code class="descname">SetSensorLatitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorLatitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorLongitude">
-<code class="descname">SetSensorLongitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorLongitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorRelativeAzimuthAngle">
-<code class="descname">SetSensorRelativeAzimuthAngle</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorRelativeAzimuthAngle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorTrueAltitude">
-<code class="descname">SetSensorTrueAltitude</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorTrueAltitude" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSensorVerticalFieldOfView">
-<code class="descname">SetSensorVerticalFieldOfView</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSensorVerticalFieldOfView" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SetSlantRange">
-<code class="descname">SetSlantRange</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SetSlantRange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="klvdata.setparser.SetParser.SettargetWidth">
-<code class="descname">SettargetWidth</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.SettargetWidth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="classmethod">
 <dt id="klvdata.setparser.SetParser.add_parser">
@@ -4663,8 +4363,7 @@ If you want those, see the staticmethod builtin.</p>
 <dl class="method">
 <dt id="klvdata.setparser.SetParser.structure">
 <code class="descname">structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#klvdata.setparser.SetParser.structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return metadata structure</p>
-</dd></dl>
+<dd></dd></dl>
 
 </dd></dl>
 
