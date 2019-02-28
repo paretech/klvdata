@@ -39,7 +39,8 @@ class SetParser(Element, metaclass=ABCMeta):
     def __init__(self, value, key_length=1):
         """All parser needs is the value, no other information"""
         super().__init__(self.key, value)
-        self.key_length = key_length
+        if not hasattr(self, 'key_length'):
+            self.key_length = key_length
         self.items = OrderedDict()
         self.parse()
 
