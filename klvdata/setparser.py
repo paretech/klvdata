@@ -63,6 +63,7 @@ class SetParser(Element, metaclass=ABCMeta):
             except KeyError:
                 self.items[key] = self._unknown_element(key, value)
 
+
     @classmethod
     def add_parser(cls, obj):
         """Decorator method used to register a parser to the class parsing repertoire.
@@ -100,18 +101,26 @@ class SetParser(Element, metaclass=ABCMeta):
         return str_dict(self.items)
 
     def MetadataList(self):
+        
         ''' Return metadata dictionary'''
+        
         metadata = {}
 
-        def repeat(items, indent=1):
+        def repeat(items, indent=1, parentTAG=0):
             for item in items:
                 try:
-                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
+                    if not parentTAG :
+                        metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
+                    else :
+                        metadata[parentTAG][len(metadata[parentTAG])-1][item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
                 except:
                     None
                 if hasattr(item, 'items'):
-                    repeat(item.items.values(), indent + 1)
+                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, {})
+                    repeat(item.items.values(), indent + 1, item.TAG)
+        
         repeat(self.items.values())
+        
         return OrderedDict(metadata)
 
     def structure(self):
