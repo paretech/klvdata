@@ -136,7 +136,7 @@ Documentation is available at https://paretech.github.io/klvdata.
 
 Contributing
 ------------
-Contributions are welcome!
+Contributions are welcome! See `Contributing <CONTRIBUTING.md>`_ for details.
 
 Contributors List:
 ------------------
