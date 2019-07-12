@@ -60,7 +60,7 @@ class SetParser(Element, metaclass=ABCMeta):
         for key, value in KLVParser(self.value, self.key_length):
             try:
                 self.items[key] = self.parsers[key](value)
-            except KeyError:
+            except (KeyError, TypeError):
                 self.items[key] = self._unknown_element(key, value)
 
     @classmethod
