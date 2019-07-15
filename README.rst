@@ -43,12 +43,12 @@ First:
 
 .. code-block:: console
 
-    $ pip install klvdata
+    $ pip3 install klvdata
     
     $ wget https://raw.githubusercontent.com/paretech/klvdata/master/data/DynamicConstantMISMMSPacketData.bin
 
     $ cat << EOF > klvdata_test.py
-    #!/usr/bin/env python
+    #!/usr/bin/env python3
     import sys, klvdata;
     for packet in klvdata.StreamParser(sys.stdin.buffer.read()): packet.structure()
     EOF
@@ -58,7 +58,7 @@ And then:
 
 .. code-block:: console
 
-    $ python ./klvdata_test.py < DynamicConstantMISMMSPacketData.bin
+    $ python3 ./klvdata_test.py < DynamicConstantMISMMSPacketData.bin
 
         <class 'klvdata.misb0601.UASLocalMetadataSet'>
             <class 'klvdata.misb0601.PrecisionTimeStamp'>
@@ -98,7 +98,7 @@ If you have FFmpeg installed and want to try it on real video from a drone with 
 .. code-block:: console
 
     $ wget http://samples.ffmpeg.org/MPEG2/mpegts-klv/Day%20Flight.mpg
-    $ ffmpeg -i Day\ Flight.mpg -map data-re -codec copy -f data - | python ./klvdata_test.py
+    $ ffmpeg -i Day\ Flight.mpg -map data-re -codec copy -f data - | python3 ./klvdata_test.py
 
         <class 'klvdata.misb0601.UASLocalMetadataSet'>
             <class 'klvdata.misb0601.PrecisionTimeStamp'>
