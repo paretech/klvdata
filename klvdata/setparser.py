@@ -62,6 +62,9 @@ class SetParser(Element, metaclass=ABCMeta):
                 self.items[key] = self.parsers[key](value)
             except KeyError:
                 self.items[key] = self._unknown_element(key, value)
+            except ValueError:
+                # print(f"ValueError key {key} has bad value '{value}'!\n")
+                self.items[key] = self._unknown_element(key, value)
 
     @classmethod
     def add_parser(cls, obj):
@@ -131,7 +134,7 @@ def str_dict(values):
 
     def per_item(value, indent=0):
         for item in value:
-            if isinstance(item):
+            if isinstance(item, Element):
                 out.append(indent * "\t" + str(item))
             else:
                 out.append(indent * "\t" + str(item))

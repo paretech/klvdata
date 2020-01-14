@@ -57,6 +57,8 @@ class Element(metaclass=ABCMeta):
     @property
     def length(self):
         """bytes: Return the BER encoded byte length of self.value."""
+        if self is None or self.value is None:
+            return 0
         return ber_encode(len(self))
 
     def __bytes__(self):
@@ -65,6 +67,8 @@ class Element(metaclass=ABCMeta):
 
     def __len__(self):
         """Return the byte length of self.value."""
+        if self.value is None:
+            return 0
         return len(bytes(self.value))
 
     @abstractmethod

@@ -119,12 +119,16 @@ class StringValue(BaseValue):
             self.value = bytes_to_str(value)
         except TypeError:
             self.value = value
+        #except ValueError:
+            #self.value = None
 
     def __bytes__(self):
         return str_to_bytes(self.value)
 
     def __str__(self):
-        return str(self.value)
+        if self.value is not None:
+            return str(self.value)
+        return ""
 
 
 class MappedElementParser(ElementParser, metaclass=ABCMeta):
@@ -152,12 +156,16 @@ class MappedValue(BaseValue):
             self.value = bytes_to_float(value, self._domain, self._range)
         except TypeError:
             self.value = value
+        #except ValueError:
+            #self.value = None
 
     def __bytes__(self):
         return float_to_bytes(self.value, self._domain, self._range)
 
     def __str__(self):
-        return format(self.value)
+        if self.value is not None:
+            return format(self.value)
+        return ""
 
     def __float__(self):
         return self.value
