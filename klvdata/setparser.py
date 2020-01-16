@@ -63,7 +63,6 @@ class SetParser(Element, metaclass=ABCMeta):
             except KeyError:
                 self.items[key] = self._unknown_element(key, value)
             except ValueError:
-                # print(f"ValueError key {key} has bad value '{value}'!\n")
                 self.items[key] = self._unknown_element(key, value)
 
     @classmethod
@@ -125,6 +124,8 @@ class SetParser(Element, metaclass=ABCMeta):
                 print(indent * "\t" + str(type(item)))
                 if hasattr(item, 'items'):
                     repeat(item.items.values(), indent+1)
+                else:
+                    print((indent+1) * "\t" + str(item.value))
 
         repeat(self.items.values())
 

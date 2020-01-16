@@ -119,8 +119,6 @@ class StringValue(BaseValue):
             self.value = bytes_to_str(value)
         except TypeError:
             self.value = value
-        #except ValueError:
-            #self.value = None
 
     def __bytes__(self):
         return str_to_bytes(self.value)
@@ -156,8 +154,6 @@ class MappedValue(BaseValue):
             self.value = bytes_to_float(value, self._domain, self._range)
         except TypeError:
             self.value = value
-        #except ValueError:
-            #self.value = None
 
     def __bytes__(self):
         return float_to_bytes(self.value, self._domain, self._range)
