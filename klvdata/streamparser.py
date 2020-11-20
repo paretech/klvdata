@@ -43,8 +43,14 @@ class StreamParser:
     def __next__(self):
         key, value = next(self.iter_stream)
 
+        if value is None:
+            return UnknownElement(key, b'')
+
         if key in self.parsers:
-            return self.parsers[key](value)
+            try:
+                return self.parsers[key](value)
+            except:
+                return UnknownElement(key, value)
         else:
             # Even if KLV is not known, make best effort to parse and preserve.
             # Element is an abstract super class, do not create instances on Element.
