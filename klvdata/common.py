@@ -150,14 +150,15 @@ def float_to_imapb(value, _length, _range):
         return b''
     
     bPow = ceil(log(_max - _min, 2))
-    dPow = 8 * length - 1
+    dPow = 8 * _length - 1
     sF = 2**(dPow - bPow)
     zOffset = 0.0
     if _min < 0 and _max > 0:
         zOffset = sF * _min - floor(sF * _min)
 
     y = int(sF * (value - _min) + zOffset)
-    return int_to_bytes(y, _length)
+
+    return int_to_bytes(y, _length, signed=True)
 
 def imapb_to_float(value, _range):
     _min, _max = _range
@@ -165,12 +166,13 @@ def imapb_to_float(value, _range):
     
     bPow = ceil(log(_max - _min, 2))
     dPow = 8 * length - 1
+    sF = 2**(dPow - bPow)
     sR = 2**(bPow - dPow)
     zOffset = 0.0
     if _min < 0 and _max > 0:
-        zOffset = sR * _min - floor(sR * _min)
+        zOffset = sF * _min - floor(sF * _min)
     
-    y = bytes_to_int(value)
+    y = bytes_to_int(value, signed=True)
     return sR * (y - zOffset) + _min
 
 def packet_checksum(data):

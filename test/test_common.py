@@ -198,6 +198,21 @@ class FixedPoint(unittest.TestCase):
                 float_to_bytes(20.0, _domain=(-(2**15-1), 2**15-1), _range=(-20, 20)),
                 b'\x7F\xFF')
 
+    def test_float_imapb(self):
+        from klvdata.common import float_to_imapb
+
+        with self.subTest("IMAP(0.1,0.9,2) x=0.5"):
+            self.assertEqual(
+                float_to_imapb(0.5, 2, (0.1,0.9)),
+                b'\x33\x33')
+
+    def test_float_imapb(self):
+        from klvdata.common import imapb_to_float
+
+        with self.subTest("IMAP(0.1,0.9,2) y=0x3333"):
+            self.assertEqual(
+                imapb_to_float(b'\x33\x33', (0.1,0.9)),
+                0.499993896484375)
 
 class Checksum(unittest.TestCase):
     def test_basic1(self):

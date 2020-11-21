@@ -293,9 +293,10 @@ class LocationValue(BaseValue):
                     imapb_to_float(value[8:10], (-900, 19000)))
 
     def __bytes__(self):
-        return (float_to_imapb(self.value(0), 4, (-90, 90)) + 
-                float_to_imapb(self.value(1), 4, (-180, 180)) + 
-                float_to_imapb(self.value(1), 2, (-900, 19000)))
+        lat, long, alt = self.value
+        return (float_to_imapb(lat, 4, (-90, 90)) + 
+                float_to_imapb(long, 4, (-180, 180)) + 
+                float_to_imapb(alt, 2, (-900, 19000)))
 
     def __str__(self):
         return str(self.value)
