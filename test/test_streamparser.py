@@ -39,6 +39,15 @@ class ParserSingleLong(unittest.TestCase):
             # packet.structure()
             pass
 
+    def test_parsefullfile(self):
+        # Realworld example
+        with open('./data/realflight.bin', 'rb') as f:
+            packet = f.read()
+
+        from klvdata.streamparser import StreamParser
+
+        for packet in StreamParser(packet):
+            metadata=packet.MetadataList()
 
 if __name__ == "__main__":
     unittest.main()

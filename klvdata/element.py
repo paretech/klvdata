@@ -26,7 +26,7 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from klvdata.common import ber_encode
-
+from klvdata.common import int_to_bytes
 
 # Proposed alternate names, "BaseElement" of modules "bases".
 class Element(metaclass=ABCMeta):
@@ -65,6 +65,8 @@ class Element(metaclass=ABCMeta):
 
     def __len__(self):
         """Return the byte length of self.value."""
+        if isinstance(self.value, int):
+            return len(int_to_bytes(self.value))
         return len(bytes(self.value))
 
     @abstractmethod
