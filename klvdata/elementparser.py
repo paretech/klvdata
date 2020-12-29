@@ -124,7 +124,9 @@ class StringValue(BaseValue):
         return str_to_bytes(self.value)
 
     def __str__(self):
-        return str(self.value)
+        if self.value is not None:
+            return str(self.value)
+        return ""
 
 
 class MappedElementParser(ElementParser, metaclass=ABCMeta):
@@ -157,7 +159,9 @@ class MappedValue(BaseValue):
         return float_to_bytes(self.value, self._domain, self._range)
 
     def __str__(self):
-        return format(self.value)
+        if self.value is not None:
+            return format(self.value)
+        return ""
 
     def __float__(self):
         return self.value

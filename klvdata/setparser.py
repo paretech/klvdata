@@ -62,6 +62,8 @@ class SetParser(Element, metaclass=ABCMeta):
                 self.items[key] = self.parsers[key](value)
             except (KeyError, TypeError):
                 self.items[key] = self._unknown_element(key, value)
+            except ValueError:
+                self.items[key] = self._unknown_element(key, value)
 
     @classmethod
     def add_parser(cls, obj):
@@ -122,6 +124,8 @@ class SetParser(Element, metaclass=ABCMeta):
                 print(indent * "\t" + str(type(item)))
                 if hasattr(item, 'items'):
                     repeat(item.items.values(), indent+1)
+                else:
+                    print((indent+1) * "\t" + str(item.value))
 
         repeat(self.items.values())
 
@@ -131,7 +135,7 @@ def str_dict(values):
 
     def per_item(value, indent=0):
         for item in value:
-            if isinstance(item):
+            if isinstance(item, Element):
                 out.append(indent * "\t" + str(item))
             else:
                 out.append(indent * "\t" + str(item))
