@@ -660,14 +660,14 @@ class GenericFlagData01(MappedElementParser):
     _range = (0, 2**8-1)
 
 
-# @UASLocalMetadataSet.add_parser
-# class SecurityLocalMetadataSet(MappedElementParser):
-#     key = b'\x30'
-#     TAG = 48
-#     UDSKey = "06 0E 2B 34 02 03 01 01 0E 01 03 03 02 00 00 00"
-#     LDSName = "Security Local Set"
-#     ESDName = ""
-#     UDSName = "Security Local Set"
+@UASLocalMetadataSet.add_parser
+class SecurityLocalMetadataSet(MappedElementParser):
+    key = b'\x30'
+    TAG = 48
+    UDSKey = "06 0E 2B 34 02 03 01 01 0E 01 03 03 02 00 00 00"
+    LDSName = "Security Local Set"
+    ESDName = ""
+    UDSName = "Security Local Set"
 
 
 @UASLocalMetadataSet.add_parser
