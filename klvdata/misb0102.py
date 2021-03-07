@@ -83,6 +83,7 @@ class SecurityLocalMetadataSet(SetParser):
     Must be a subclass of Element or duck type Element.
     """
     key, name = b'\x30', "Security Local Metadata Set"
+    key_length = 1                  
     parsers = {}
 
     _unknown_element = UnknownElement

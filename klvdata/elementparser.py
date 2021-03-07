@@ -34,6 +34,8 @@ from klvdata.common import bytes_to_str
 from klvdata.common import datetime_to_bytes
 from klvdata.common import float_to_bytes
 from klvdata.common import str_to_bytes
+from klvdata.common import ieee754_bytes_to_fp
+                                           
 
 
 class ElementParser(Element, metaclass=ABCMeta):
@@ -166,6 +168,24 @@ class MappedValue(BaseValue):
     def __float__(self):
         return self.value
 
+class IEEE754ElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(IEEE754Value(value))
+
+
+class IEEE754Value(BaseValue):
+    def __init__(self, value):
+        try:
+            self.value = ieee754_bytes_to_fp(value)
+        except TypeError:
+            self.value = value
+
+    def __bytes__(self):
+        #TODO
+        return ieee754_double_to_bytes(self.value)
+
+    def __str__(self):
+        return bytes_to_hexstr(self.value, start='0x', sep='')
 
 
 
