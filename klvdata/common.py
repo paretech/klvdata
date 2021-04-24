@@ -124,11 +124,11 @@ def linear_map(src_value, src_domain, dst_range):
     return dst_value
 
 
-def bytes_to_float(value, _domain, _range, error=None):
+def bytes_to_float(value, _domain, _range, _error=None):
     """Convert the fixed point value self.value to a floating point value."""
     src_value = int().from_bytes(value, byteorder='big', signed=(min(_domain) < 0))
 
-    if src_value == error:
+    if src_value == _error:
         return None
 
     return linear_map(src_value, _domain, _range)
