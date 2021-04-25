@@ -145,7 +145,7 @@ def ieee754_bytes_to_fp(value):
     else:
         raise ValueError
 
-def float_to_bytes(value, _domain, _range, _error):
+def float_to_bytes(value, _domain, _range, _error=None):
     """Convert the fixed point value self.value to a floating point value."""
     # Some classes like MappedElement are calling float_to_bytes with arguments _domain
     # and _range in the incorrect order. The naming convention used is confusing and
