@@ -1,7 +1,7 @@
 klvdata
 =======
-.. image:: https://travis-ci.org/paretech/klvdata.svg?branch=master
-    :target: https://travis-ci.org/paretech/klvdata
+.. image:: https://github.com/paretech/klvdata/actions/workflows/build.yml/badge.svg?branch=master
+    :target: https://github.com/paretech/klvdata/actions/workflows/build.yml
 
 .. image:: https://coveralls.io/repos/github/paretech/klvdata/badge.svg?branch=master
     :target: https://coveralls.io/github/paretech/klvdata?branch=master
