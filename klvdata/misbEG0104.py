@@ -265,7 +265,7 @@ class SensorRelativeAzimuthAngle(IEEE754ElementParser):
     _domain = (0, 2 ** 32 - 1)
     _range = (0, 360)
     units = 'degrees'
- 
+
 @UAVBasicUniversalMetadataSet.add_parser 
 class SensorRelativeElevationAngle(IEEE754ElementParser):
     key = hexstr_to_bytes("06 0e 2b 34 01 01 01 01 07 01 10 01 03 00 00 00")
@@ -601,24 +601,25 @@ class PlatformRollAngleFull(IEEE754ElementParser):
     _range = (-90, 90)
     units = 'degrees'
 
+
 @UAVBasicUniversalMetadataSet.add_parser
 class MIISCoreIdentifier(StringElementParser):
-     key = hexstr_to_bytes("06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00")
-     TAG = 94
-     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
-     LDSName = "MIIS Core Identifier"
-     ESDName = ""
-     UDSName = "Motion Imagery Identification System Core"
+    key = hexstr_to_bytes("06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00")
+    TAG = 94
+    UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
+    LDSName = "MIIS Core Identifier"
+    ESDName = ""
+    UDSName = "Motion Imagery Identification System Core"
 
 
 @UAVBasicUniversalMetadataSet.add_parser
 class SARMotionImageryLocalSet(StringElementParser):
-     key = hexstr_to_bytes("06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00")
-     TAG = 95
-     UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00"
-     LDSName = "SAR Motion Imagery Local Set"
-     ESDName = ""
-     UDSName = "SAR Motion Imagery Local Set"
+    key = hexstr_to_bytes("06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00")
+    TAG = 95
+    UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 0D 00 00 00"
+    LDSName = "SAR Motion Imagery Local Set"
+    ESDName = ""
+    UDSName = "SAR Motion Imagery Local Set"
 
 
 @UAVBasicUniversalMetadataSet.add_parser
@@ -670,4 +671,3 @@ class AlternatePlatformEllipsoidHeightExtended(IEEE754ElementParser):
     _domain = (0, 2**16-1)
     _range = (-900, 40000)
     units = 'meters'
-
