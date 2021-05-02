@@ -32,3 +32,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_SERVICE_NAME: github
+    - name: Make Sphinx Documentation
+      run: make --directory docs html
