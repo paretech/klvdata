@@ -29,6 +29,7 @@ from klvdata.elementparser import BytesElementParser
 from klvdata.elementparser import DateTimeElementParser
 from klvdata.elementparser import MappedElementParser
 from klvdata.elementparser import StringElementParser
+from klvdata.elementparser import StringValue
 from klvdata.setparser import SetParser
 from klvdata.streamparser import StreamParser
 
@@ -1025,7 +1026,7 @@ class RVTLocalSet(MappedElementParser):
 
 
 @UASLocalMetadataSet.add_parser
-class VMTILocalSet(MappedElementParser):
+class VMTILocalSet(StringValue):
     key = b'\x4A'
     TAG = 74
     UDSKey = "06 0E 2B 34 02 0B 01 01 0E 01 03 03 06 00 00 00"
