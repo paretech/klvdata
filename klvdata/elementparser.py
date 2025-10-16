@@ -35,7 +35,7 @@ from klvdata.common import datetime_to_bytes
 from klvdata.common import float_to_bytes
 from klvdata.common import str_to_bytes
 from klvdata.common import ieee754_bytes_to_fp
-                                           
+
 
 
 class ElementParser(Element, metaclass=ABCMeta):
@@ -92,6 +92,29 @@ class BytesValue(BaseValue):
 
     def __str__(self):
         return bytes_to_hexstr(self.value, start='0x', sep='')
+
+
+class EnumElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(EnumValue(value, self.enumMap))
+
+    @property
+    @classmethod
+    @abstractmethod
+    def enumMap(cls):
+        pass
+
+
+class EnumValue(BaseValue):
+    def __init__(self, value, enumMap):
+        self.rawValue = value
+        self.value = enumMap.get(value, f"??? ({self.__bytes__()})")
+
+    def __bytes__(self):
+        return bytes(self.rawValue)
+
+    def __str__(self):
+        return self.value
 
 
 class DateTimeElementParser(ElementParser, metaclass=ABCMeta):
