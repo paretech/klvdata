@@ -25,7 +25,7 @@
 
 from io import BytesIO
 from io import IOBase
-from klvdata.common import bytes_to_int
+from klvdata.common import bytes_to_int, int_to_bytes
 
 
 class KLVParser(object):
@@ -42,7 +42,24 @@ class KLVParser(object):
         return self
 
     def __next__(self):
-        key = self.__read(self.key_length)
+        # A length of None means the key is a variable length BER OID
+        if self.key_length is None:
+            oid = 0
+            byte = bytes_to_int(self.__read(1))
+            # We limit ourselves to four (4) bytes to prevent infinite loops.
+            for _ in range(4):
+                isFinal = byte < 128
+                oid = (oid << 7) + (byte & 0x7F)
+                if (isFinal):
+                    break
+                byte = bytes_to_int(self.__read(1))
+            else:
+                # We've haven't finished reading the key, so any subsequent reads will be invalid.
+                raise StopIteration
+
+            key = int_to_bytes(oid)
+        else:
+            key = self.__read(self.key_length)
 
         byte_length = bytes_to_int(self.__read(1))
 

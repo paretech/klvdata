@@ -104,18 +104,28 @@ class SetParser(Element, metaclass=ABCMeta):
 
     def MetadataList(self):
         ''' Return metadata dictionary'''
-        metadata = {}
 
-        def repeat(items, indent=1):
+        def repeat(items):
+            metadata = OrderedDict()
             for item in items:
-                try:
-                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
-                except:
-                    None
+                if hasattr(item, "TAG"):
+                    tag = item.TAG
+                else:
+                    tag = item.key
+
                 if hasattr(item, 'items'):
-                    repeat(item.items.values(), indent + 1)
-        repeat(self.items.values())
-        return OrderedDict(metadata)
+                    value = repeat(item.items.values())
+                elif hasattr(item.value, 'value'):
+                    value = str(item.value.value)
+                else:
+                    value = item.value
+
+                metadata[tag] = (item.LDSName, item.ESDName, item.UDSName, value)
+
+            return metadata
+
+        return repeat(self.items.values())
+
 
     def structure(self):
         print(str(type(self)))

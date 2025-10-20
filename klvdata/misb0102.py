@@ -23,10 +23,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from klvdata.common import hexstr_to_bytes
 from klvdata.element import UnknownElement
-from klvdata.elementparser import BytesElementParser
+from klvdata.elementparser import MappedElementParser
+from klvdata.elementparser import EnumElementParser
+from klvdata.elementparser import StringElementParser
 from klvdata.misb0601 import UASLocalMetadataSet
 from klvdata.setparser import SetParser
+from klvdata.streamparser import StreamParser
 
 _classifying_country_coding = {
     b'\x01': 'ISO-3166 Two Letter',
@@ -69,7 +73,17 @@ _object_country_coding = {
 
 
 class UnknownElement(UnknownElement):
-    pass
+    @property
+    def LDSName(self):
+        return "?"
+
+    @property
+    def ESDName(self):
+        return "?"
+
+    @property
+    def UDSName(self):
+        return "?"
 
 
 @UASLocalMetadataSet.add_parser
@@ -83,14 +97,21 @@ class SecurityLocalMetadataSet(SetParser):
     Must be a subclass of Element or duck type Element.
     """
     key, name = b'\x30', "Security Local Metadata Set"
-    key_length = 1                  
+    key_length = None # A length of None means the key is a variable length BER OID
+
+    TAG = 48
+    UDSKey = hexstr_to_bytes('06 0E 2B 34 - 02 03 01 01 - 0E 01 03 03 - 02 00 00 00')
+    LDSName = "Security Local Metadata Set"
+    ESDName = ""
+    UDSName = ""
+
     parsers = {}
 
     _unknown_element = UnknownElement
 
 
 @SecurityLocalMetadataSet.add_parser
-class SecurityClassification(BytesElementParser):
+class SecurityClassification(EnumElementParser):
     """MISB ST0102 Security Classification value interpretation parser.
 
     The Security Classification metadata element contains a value
@@ -99,10 +120,218 @@ class SecurityClassification(BytesElementParser):
     """
     key = b'\x01'
 
-    _classification = {
+    TAG = 1
+    UDSKey = "-"
+    LDSName = "Security Classification"
+    ESDName = ""
+    UDSName = ""
+
+    enumMap = {
         b'\x01': 'UNCLASSIFIED',
         b'\x02': 'RESTRICTED',
         b'\x03': 'CONFIDENTIAL',
         b'\x04': 'SECRET',
         b'\x05': 'TOP SECRET',
     }
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassifyingCountryAndReleasingInstructionCCM(EnumElementParser):
+    """
+    """
+    key = b'\x02'
+    TAG = 2
+    UDSKey = "-"
+    LDSName = "Classifying Country And Releasing Instruction Country Coding Method"
+    ESDName = ""
+    UDSName = ""
+
+    enumMap = _classifying_country_coding
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassifyingCountry(StringElementParser):
+    """
+    """
+    key = b'\x03'
+    TAG = 3
+    UDSKey = "-"
+    LDSName = "Classifying Country"
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class SecuritySCISHIInformation(StringElementParser):
+    """
+    """
+    key = b'\x04'
+    TAG = 4
+    UDSKey = "-"
+    LDSName = 'Security-SCI/SHI Information'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class Caveats(StringElementParser):
+    """
+    """
+    key = b'\x05'
+    TAG = 5
+    UDSKey = "-"
+    LDSName = 'Caveats'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ReleasingInstructions(StringElementParser):
+    """
+    """
+    key = b'\x06'
+    TAG = 6
+    UDSKey = "-"
+    LDSName = 'Releasing Instructions'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassifiedBy(StringElementParser):
+    """
+    """
+    key = b'\x07'
+    TAG = 7
+    UDSKey = "-"
+    LDSName = 'Classified By'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class DerivedFrom(StringElementParser):
+    """
+    """
+    key = b'\x08'
+    TAG = 8
+    UDSKey = "-"
+    LDSName = 'Derived From'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassificationReason(StringElementParser):
+    """
+    """
+    key = b'\x09'
+    TAG = 9
+    UDSKey = "-"
+    LDSName = 'Classification Reason'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class DeclassificationDate(StringElementParser):
+    """
+    """
+    key = b'\x0A'
+    TAG = 10
+    UDSKey = "-"
+    LDSName = 'Declassification Date'
+    ESDName = ""
+    UDSName = ""
+    min_length, max_length = 8, 8
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassificationAndMarkingSystem(StringElementParser):
+    """
+    """
+    key = b'\x0B'
+    TAG = 11
+    UDSKey = "-"
+    LDSName = 'Classification And Marking System'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ObjectCountryCodingMethod(EnumElementParser):
+    """
+    """
+    key = b'\x0C'
+    TAG = 12
+    UDSKey = "-"
+    LDSName = 'Object Country Coding Method'
+    ESDName = ""
+    UDSName = ""
+
+    enumMap = _object_country_coding
+
+
+@SecurityLocalMetadataSet.add_parser
+class ObjectCountryCodes(StringElementParser):
+    """
+    """
+    key = b'\x0D'
+    TAG = 13
+    UDSKey = "-"
+    LDSName = 'Object Country Codes'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassificationComments(StringElementParser):
+    """
+    """
+    key = b'\x0E'
+    TAG = 14
+    UDSKey = "-"
+    LDSName = 'Classification Comments'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class Version(MappedElementParser):
+    """
+    """
+    key = b'\x16'
+    TAG = 22
+    UDSKey = "-"
+    LDSName = 'Version'
+    ESDName = ""
+    UDSName = ""
+    _domain = (0, 2**16-1)
+    _range = (0, 2**16-1)
+    _error = None
+    units = 'number'
+
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassifyingCountryAndReleasingInstructionCCMVD(StringElementParser):
+    """
+    """
+    key = b'\x17'
+    TAG = 23
+    UDSKey = "-"
+    LDSName = 'Classifying Country And Releasing Instruction Courntry Coding Method Version Date'
+    ESDName = ""
+    UDSName = ""
+
+
+@SecurityLocalMetadataSet.add_parser
+class ClassifyingCountryCodeMethodVersionDate(StringElementParser):
+    """
+    """
+    key = b'\x18'
+    TAG = 24
+    UDSKey = "-"
+    LDSName = 'Classifying Country Code Method Version Date'
+    ESDName = ""
+    UDSName = ""

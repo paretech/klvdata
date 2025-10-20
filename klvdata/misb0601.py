@@ -35,7 +35,17 @@ from klvdata.streamparser import StreamParser
 
 
 class UnknownElement(UnknownElement):
-    pass
+    @property
+    def LDSName(self):
+        return "?"
+
+    @property
+    def ESDName(self):
+        return "?"
+
+    @property
+    def UDSName(self):
+        return "?"
 
 
 @StreamParser.add_parser
@@ -44,7 +54,7 @@ class UASLocalMetadataSet(SetParser):
     """
     key = hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')
     name = 'UAS Datalink Local Set'
-    key_length = 1
+    key_length = None # A length of None means the key is a variable length BER OID
     parsers = {}
 
     _unknown_element = UnknownElement
@@ -701,14 +711,14 @@ class GenericFlagData01(MappedElementParser):
     _error = None
 
 
-# @UASLocalMetadataSet.add_parser
-# class SecurityLocalMetadataSet(MappedElementParser):
-#     key = b'\x30'
-#     TAG = 48
-#     UDSKey = "06 0E 2B 34 02 03 01 01 0E 01 03 03 02 00 00 00"
-#     LDSName = "Security Local Set"
-#     ESDName = ""
-#     UDSName = "Security Local Set"
+@UASLocalMetadataSet.add_parser
+class SecurityLocalMetadataSet(MappedElementParser):
+    key = b'\x30'
+    TAG = 48
+    UDSKey = "06 0E 2B 34 02 03 01 01 0E 01 03 03 02 00 00 00"
+    LDSName = "Security Local Set"
+    ESDName = ""
+    UDSName = "Security Local Set"
 
 
 @UASLocalMetadataSet.add_parser
@@ -1292,14 +1302,14 @@ class PlatformSideslipAngleFull(MappedElementParser):
     units = 'degrees'
 
 
-#@UASLocalMetadataSet.add_parser
-# class MIISCoreIdentifier(StringElementParser):
-#     key = b'\x5E'
-#     TAG = 94
-#     UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
-#     LDSName = "MIIS Core Identifier"
-#     ESDName = ""
-#     UDSName = "Motion Imagery Identification System Core"
+@UASLocalMetadataSet.add_parser
+class MIISCoreIdentifier(BytesElementParser):
+    key = b'\x5E'
+    TAG = 94
+    UDSKey = "06 0E 2B 34 01 01 01 01 0E 01 04 05 03 00 00 00"
+    LDSName = "MIIS Core Identifier"
+    ESDName = ""
+    UDSName = "Motion Imagery Identification System Core"
 
 
 #@UASLocalMetadataSet.add_parser
