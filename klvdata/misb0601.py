@@ -32,6 +32,7 @@ from klvdata.elementparser import StringElementParser
 from klvdata.elementparser import StringValue
 from klvdata.setparser import SetParser
 from klvdata.streamparser import StreamParser
+from klvdata.streamparser import checksum_matches
 
 
 class UnknownElement(UnknownElement):
@@ -45,9 +46,18 @@ class UASLocalMetadataSet(SetParser):
     key = hexstr_to_bytes('06 0E 2B 34 - 02 0B 01 01 – 0E 01 03 01 - 01 00 00 00')
     name = 'UAS Datalink Local Set'
     key_length = 1
+    checksum_tag = b'\x01'
     parsers = {}
 
     _unknown_element = UnknownElement
+
+    def checksum_valid(self):
+        """Return True if the Checksum item (tag 1) matches the packet.
+
+        The packet is re-encoded with the shortest BER length. To check
+        packets exactly as received, use StreamParser(verify_checksum=True).
+        """
+        return checksum_matches(bytes(self), self.checksum_tag)
 
 
 @UASLocalMetadataSet.add_parser

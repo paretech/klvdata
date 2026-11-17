@@ -44,14 +44,21 @@ class KLVParser(object):
     def __next__(self):
         key = self.__read(self.key_length)
 
-        byte_length = bytes_to_int(self.__read(1))
+        length_bytes = self.__read(1)
+        byte_length = bytes_to_int(length_bytes)
 
         if byte_length < 128:
             # BER Short Form
             length = byte_length
         else:
             # BER Long Form
-            length = bytes_to_int(self.__read(byte_length - 128))
+            long_form = self.__read(byte_length - 128)
+            length_bytes += long_form
+            length = bytes_to_int(long_form)
+
+        # Kept so callers can rebuild the item exactly as it was sent
+        # (for example to verify a packet checksum).
+        self.length_bytes = length_bytes
 
         value = self.__read(length)
 
